@@ -9,7 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mime_type/mime_type.dart';
-import '../../features/common/widgets/custom_text.dart';
+import '../widgets/custom_text.dart';
 import '../../features/home/data/models/item_model.dart';
 import 'app_theme.dart';
 import '../../shared/models/data/constant.dart';

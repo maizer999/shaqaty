@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_core/features/common/widgets/custom_text.dart';
 import 'package:flutter_core/features/home/presentation/views/widgets/category_grid.dart';
 import 'package:flutter_core/features/home/presentation/views/widgets/section_grid.dart';
 import 'package:flutter_core/features/home/presentation/views/widgets/slider_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/widgets/custom_text.dart';
 import '../providers/home_provider.dart';
 
 class HomeScreen extends ConsumerWidget {

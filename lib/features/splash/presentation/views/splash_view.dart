@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_core/build_context.dart';
 import 'package:flutter_core/core/theme/app_theme.dart';
-
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/theme/settings.dart';
 import '../../../../core/theme/ui_utils.dart';
-import '../../../common/widgets/custom_text.dart';
+import '../../../../core/widgets/custom_text.dart';
 import '../../../home/presentation/views/home_screen.dart';
 
 class SplashImageView extends StatefulWidget {

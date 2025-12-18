@@ -1,21 +1,10 @@
-
-
-
-
-
-
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_core/build_context.dart';
 import 'package:flutter_core/core/theme/translate.dart';
 import 'package:flutter_core/core/theme/app_theme.dart';
-
 import '../theme/app_icon.dart';
 import '../theme/ui_utils.dart';
-import '../../features/common/widgets/custom_text.dart';
+import '../widgets/custom_text.dart';
 
 class NoInternet extends StatelessWidget {
   final VoidCallback? onRetry;

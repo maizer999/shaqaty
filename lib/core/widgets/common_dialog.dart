@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../constants/app_colors.dart';
 import '../constants/app_sizes.dart';
 import 'common_text_widget.dart';
@@ -47,12 +48,12 @@ class CommonDialog {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     if(title?.isNotEmpty == true)
-                    CommonTextWidget(
-                      text: title ?? '',
-                      fontSize: AppSizes.fSize16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                      AppSizes.height20,
+                      CommonTextWidget(
+                        text: title ?? '',
+                        fontSize: AppSizes.fSize16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    AppSizes.height20,
                     if (isCloseButtonRequired)
                       IconButton(
                         icon: const Icon(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_core/build_context.dart';
 import 'package:flutter_core/core/theme/app_theme.dart';
 
-import '../../../../core/theme/ui_utils.dart';
+import '../theme/ui_utils.dart';
 
 class LoadingWidgets {
   static bool isLoadingShowing = false;

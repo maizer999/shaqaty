@@ -1,18 +1,18 @@
 import 'package:flutter_core/core/theme/translate.dart';
 import 'package:flutter_core/core/theme/app_theme.dart';
-import 'package:flutter_core/features/home/presentation/widgets/promoted_widget.dart';
+import 'package:flutter_core/features/home/presentation/views/widgets/promoted_widget.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_core/build_context.dart';
 
-import '../../../../core/routes/route_constant.dart';
-import '../../../../core/theme/app_icon.dart';
-import '../../../../core/theme/ui_utils.dart';
-import '../../../../core/widgets/constant.dart';
-import '../../../../core/widgets/grid_list_adapter.dart';
-import '../../../common/widgets/custom_text.dart';
-import '../../data/models/home_screen_section_model.dart';
-import '../../data/models/item_model.dart';
+import '../../../../../core/routes/route_constant.dart';
+import '../../../../../core/theme/app_icon.dart';
+import '../../../../../core/theme/ui_utils.dart';
+import '../../../../../core/widgets/constant.dart';
+import '../../../../../core/widgets/grid_list_adapter.dart';
+import '../../../../../core/widgets/custom_text.dart';
+import '../../../data/models/home_screen_section_model.dart';
+import '../../../data/models/item_model.dart';
 
 class HomeSectionsAdapter extends StatelessWidget {
   final HomeScreenSection section;

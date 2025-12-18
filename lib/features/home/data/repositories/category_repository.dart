@@ -2,7 +2,7 @@
 
 
 import '../../../../core/network/api.dart';
-import '../../presentation/widgets/data_output.dart';
+import '../../presentation/views/widgets/data_output.dart';
 import '../models/category_model.dart';
 
 class CategoryRepository {
