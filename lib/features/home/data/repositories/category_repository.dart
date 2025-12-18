@@ -1,0 +1,36 @@
+
+
+
+import '../../../../core/network/api.dart';
+import '../../presentation/widgets/data_output.dart';
+import '../models/category_model.dart';
+
+class CategoryRepository {
+  Future<DataOutput<CategoryModel>> fetchCategories({
+    required int page,
+    int? categoryId,
+  }) async {
+    try {
+      Map<String, dynamic> parameters = {
+        Api.page: page,
+      };
+
+      if (categoryId != null) {
+        parameters[Api.categoryId] = categoryId;
+      }
+      Map<String, dynamic> response =
+          await Api.get(url: Api.getCategoriesApi, queryParameters: parameters);
+
+      List<CategoryModel> modelList = (response['data']['data'] as List).map(
+        (e) {
+          return CategoryModel.fromJson(e);
+        },
+      ).toList();
+      return DataOutput(
+          total: response['data']['total'] ?? 0, modelList: modelList);
+
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
