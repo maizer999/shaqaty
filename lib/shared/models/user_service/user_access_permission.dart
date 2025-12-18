@@ -151,7 +151,7 @@ class UserAccessList with UserAccessListMappable {
 
   String getIcon() {
     final url = pageIconPath?.replaceAll("../../../..", "");
-    return '${ApiEndPoints.baseImageURL}$url';
+    return "{ApiEndPoints.baseImageURL}$url";
   }
 }
 

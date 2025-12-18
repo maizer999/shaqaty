@@ -102,7 +102,7 @@ Future<void> downloadAndOpenFile(
     final dio = Dio();
 
     final response = await dio.get(
-      ApiEndPoints.downloadDocument,
+      "ApiEndPoints.downloadDocument",
       queryParameters: {
         "fileName": fileName,
         "filePath": filePath,

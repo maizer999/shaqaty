@@ -1,19 +1,7 @@
-//This class holds static references to API endpoints used throughout the application.
 
-import 'app_strings.dart';
-
-bool kIsProduction = true;
-
-class ApiEndPoints {
-
-  static const String baseURL_PROD =
-      "https://apigw.tabadul.sa/tabadul/pmis/mobileapi";
-
-  static String localizationByMap =
-      "$baseURL_PROD/lookupmaster/localization/locale-map";
-
-  static String downloadDocument = "$baseURL_PROD/mawani-file/file/download-file";
-
-  static const String baseImageURL = "https://pmis.fasah.sa";
-
+class ApiUrls {
+  static const String base = "https://admin.shaqaty.com/api";
+  static const String slider = "$base/get-slider";
+  static const String categories = "$base/get-categories";
+  static const String featured = "$base/get-featured-section";
 }

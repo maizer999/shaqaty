@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_core/features/home/presentation/widgets/app_theme.dart';
+import 'package:flutter_core/core/theme/app_theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 

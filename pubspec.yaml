@@ -34,7 +34,6 @@ dependencies:
   shimmer: ^3.0.0
   timeago: ^3.7.1
   timeago_flutter: ^3.7.0
-  flutter_bloc: ^9.1.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   lottie: ^3.3.1
@@ -106,7 +105,7 @@ dependencies:
   local_auth: ^2.3.0
   cryptography: ^2.7.0
   root_checker_plus: ^1.0.0
-
+  cached_network_image: ^3.3.1
 
 
 
@@ -141,13 +140,37 @@ flutter:
     - assets/svg/
     - assets/svg/bottomnav/
 
-#  fonts:
-#    - family: "bold"
-#      fonts:
-#        - asset: assets/fonts/Roboto-Bold.ttf
-#    - family: "medium"
-#      fonts:
-#        - asset: assets/fonts/Roboto-Medium.ttf
-#    - family: "regular"
-#      fonts:
-#        - asset: assets/fonts/Roboto-Regular.ttf
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/Manrope-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Manrope-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Manrope-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Manrope-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Manrope-ExtraBold.ttf
+          weight: 800
+
+    - family: NotoKufiArabic
+      fonts:
+        - asset: assets/fonts/NotoKufiArabic-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/NotoKufiArabic-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/NotoKufiArabic-Light.ttf
+          weight: 300
+        - asset: assets/fonts/NotoKufiArabic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/NotoKufiArabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/NotoKufiArabic-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/NotoKufiArabic-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/NotoKufiArabic-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/NotoKufiArabic-Black.ttf
+          weight: 900

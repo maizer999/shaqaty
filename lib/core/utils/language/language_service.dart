@@ -52,7 +52,7 @@ final languageTranslationProvider =
         };
 
         final response = await NetworkHandler.getRequest(
-          endpoint: ApiEndPoints.localizationByMap,
+          endpoint: "ApiEndPoints.localizationByMap",
           params: queryParams,
           headers: await NetworkHandler.getCommonHeadersWithoutToken(),
         );

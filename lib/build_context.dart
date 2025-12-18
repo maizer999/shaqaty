@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'features/home/presentation/widgets/app_theme.dart';
+import 'core/theme/app_theme.dart';
 
 extension CustomContext on BuildContext {
   double get screenWidth => MediaQuery.sizeOf(this).width;

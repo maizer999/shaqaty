@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import '../../../../core/routes/route_constant.dart';
-import '../../../../core/widgets/constant.dart';
-import '../../../../shared/models/data/leaf_location.dart';
-import '../../../common/widgets/helper_utils.dart';
-import '../../data/models/user_model.dart';
-import 'app_theme.dart';
+import '../routes/route_constant.dart';
+import '../widgets/constant.dart';
+import '../../shared/models/data/leaf_location.dart';
+import '../../features/common/widgets/helper_utils.dart';
+import '../../features/home/data/models/user_model.dart';
+import '../theme/app_theme.dart';
 import 'hive_keys.dart';
 
 class HiveUtils {

@@ -1,5 +1,5 @@
 import 'package:flutter_core/core/theme/translate.dart';
-import 'package:flutter_core/features/home/presentation/widgets/app_theme.dart';
+import 'package:flutter_core/core/theme/app_theme.dart';
 import 'package:flutter_core/features/home/presentation/widgets/promoted_widget.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
 import 'package:flutter/material.dart';

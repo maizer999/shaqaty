@@ -1,12 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_core/build_context.dart';
 import 'package:flutter_core/core/theme/translate.dart';
-import 'package:flutter_core/features/home/presentation/widgets/app_theme.dart';
+import 'package:flutter_core/core/theme/app_theme.dart';
 
-import '../../../../core/theme/app_icon.dart';
-import '../../../../core/theme/ui_utils.dart';
-import '../../../../core/widgets/grid_list_adapter.dart';
-import '../../../common/widgets/custom_text.dart';
+import '../theme/app_icon.dart';
+import '../theme/ui_utils.dart';
+import 'grid_list_adapter.dart';
+import '../../features/common/widgets/custom_text.dart';
 
 class SomethingWentWrong extends StatelessWidget {
   const SomethingWentWrong({super.key});

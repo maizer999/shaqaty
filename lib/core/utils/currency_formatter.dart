@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 
-import '../../../../core/widgets/constant.dart';
+import '../widgets/constant.dart';
 
 extension NumberFormatter on double {
   String get currencyFormat {
