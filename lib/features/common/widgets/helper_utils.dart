@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_core/build_context.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../user_managment/home/widgets/app_theme.dart';
+import '../../home/presentation/widgets/app_theme.dart';
 import 'custom_text.dart';
 //
 enum MessageType {
