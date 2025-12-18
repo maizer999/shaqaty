@@ -6,7 +6,7 @@ import '../../../features/common/widgets/custom_text.dart';
 import '../../../theme/app_icon.dart';
 import '../../../theme/settings.dart';
 import '../../../theme/ui_utils.dart';
-import '../../home/home_screen.dart';
+import '../../home/views/home_screen.dart';
 
 class SplashImageView extends StatefulWidget {
   const SplashImageView({super.key});
