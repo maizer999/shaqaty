@@ -1,6 +1,6 @@
-import 'package:flutter_core/features/home/data/models/seller_ratings_model.dart';
+import 'package:flutter_core/features/home/data/seller_ratings_model.dart';
 
-import '../../../../shared/models/data/localized_string.dart';
+import '../../../shared/models/data/localized_string.dart';
 import 'category_model.dart';
 import 'custom_field_model.dart';
 

@@ -9,13 +9,102 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mime_type/mime_type.dart';
+import '../../features/home/data/item_model.dart';
 import '../widgets/custom_text.dart';
-import '../../features/home/data/models/item_model.dart';
+import '../widgets/helper_utils.dart';
 import 'app_theme.dart';
 import '../../shared/models/data/constant.dart';
 import 'app_icon.dart';
 
 class UiUtils {
+
+
+  static Widget buildButton(
+      BuildContext context, {
+        double? height,
+        double? width,
+        BorderSide? border,
+        String? titleWhenProgress,
+        bool isInProgress = false,
+        double? fontSize,
+        double? radius,
+        bool? autoWidth,
+        Widget? prefixWidget,
+        EdgeInsetsGeometry? padding,
+        required VoidCallback onPressed,
+        required String buttonTitle,
+        bool? showProgressTitle,
+        double? progressWidth,
+        double? progressHeight,
+        bool? showElevation,
+        Color? textColor,
+        Color? buttonColor,
+        EdgeInsetsGeometry? outerPadding,
+        Color? disabledColor,
+        VoidCallback? onTapDisabledButton,
+        bool disabled = false,
+      }) {
+    String title = buttonTitle;
+
+    if (isInProgress) {
+      title = titleWhenProgress ?? buttonTitle;
+    }
+
+    return Padding(
+      padding: outerPadding ?? EdgeInsets.zero,
+      child: InkWell(
+        onTap: () {
+          if (disabled) {
+            onTapDisabledButton?.call();
+          }
+        },
+        child: MaterialButton(
+          minWidth: autoWidth == true ? null : (width ?? double.infinity),
+          height: height ?? 56,
+          padding: padding,
+          shape: RoundedRectangleBorder(
+            side: border ?? BorderSide.none,
+            borderRadius: BorderRadius.circular(radius ?? 8),
+          ),
+          elevation: (showElevation ?? true) ? 0.5 : 0,
+          color: buttonColor ?? context.color.territoryColor,
+          disabledColor: disabledColor ?? context.color.deactivateColor,
+          onPressed: (isInProgress || disabled)
+              ? null
+              : () {
+            HelperUtils.unfocus();
+            onPressed.call();
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (isInProgress) ...{
+                UiUtils.progress(
+                  width: progressWidth ?? 16,
+                  height: progressHeight ?? 16,
+                  showWhite: true,
+                ),
+              },
+              if (!isInProgress && prefixWidget != null) prefixWidget,
+              if (!isInProgress || (showProgressTitle ?? false))
+                Flexible(
+                  child: CustomText(
+                    title,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                    color: textColor ?? context.color.buttonColor,
+                    fontSize: fontSize ?? context.font.larger,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 
   static Widget imageType(
       String url, {

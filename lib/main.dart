@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_core/features/splash/view/splash_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -9,7 +10,6 @@ import 'core/constants/app_strings.dart';
 import 'core/utils/language/language_listner_widget.dart';
 import 'core/utils/language/translation_loader.dart';
 import 'core/utils/system_preferences_helper.dart';
-import 'features/splash/presentation/views/splash_view.dart';
 
 late final ProviderContainer providerContainer;
 
@@ -67,7 +67,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           ],
           builder: (context, child) => LanguageListener(child: child!),
           // Simply show the splash UI
-          home: const SplashImageView(),
+          home: const SplashScreen(),
         );
       },
     );

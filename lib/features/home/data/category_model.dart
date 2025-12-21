@@ -1,5 +1,5 @@
 
-import '../../../../core/network/api.dart';
+import '../../../core/network/api.dart';
 
 class Type {
   String? id;

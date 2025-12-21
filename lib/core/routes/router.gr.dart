@@ -11,12 +11,13 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i5;
 import 'package:flutter/material.dart' as _i6;
-
-import '../../shared/enums/dob_calendar_page.dart' as _i2;
-import '../../shared/enums/selectable_data_types.dart' as _i7;
-import '../widgets/common_dialog_view.dart' as _i1;
-import '../widgets/dob_calendar/view/tabs/gregorian_tab_page.dart' as _i3;
-import '../widgets/dob_calendar/view/tabs/hijri_tab_page.dart' as _i4;
+import 'package:flutter_core/core/widgets/common_dialog_view.dart' as _i1;
+import 'package:flutter_core/core/widgets/dob_calendar/view/tabs/gregorian_tab_page.dart'
+    as _i3;
+import 'package:flutter_core/core/widgets/dob_calendar/view/tabs/hijri_tab_page.dart'
+    as _i4;
+import 'package:flutter_core/shared/enums/dob_calendar_page.dart' as _i2;
+import 'package:flutter_core/shared/enums/selectable_data_types.dart' as _i7;
 
 /// generated route for
 /// [_i1.CommonResponseDialogView]

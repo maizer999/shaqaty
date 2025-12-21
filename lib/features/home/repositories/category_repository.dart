@@ -1,9 +1,6 @@
-
-
-
 import '../../../../core/network/api.dart';
-import '../../presentation/views/widgets/data_output.dart';
-import '../models/category_model.dart';
+import '../data/category_model.dart';
+import '../data/data_output.dart';
 
 class CategoryRepository {
   Future<DataOutput<CategoryModel>> fetchCategories({

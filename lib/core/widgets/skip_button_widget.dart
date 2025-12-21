@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_core/build_context.dart';
+import 'package:flutter_core/core/theme/app_theme.dart';
+import 'package:flutter_core/core/theme/translate.dart';
+
+class SkipButtonWidget extends StatelessWidget {
+  final VoidCallback? onTap;
+
+  const SkipButtonWidget({super.key, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton(
+      style: FilledButton.styleFrom(
+        backgroundColor: context.color.forthColor.withValues(alpha: .2),
+        foregroundColor: context.color.forthColor,
+        shape: StadiumBorder(),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        visualDensity: VisualDensity.compact,
+      ),
+      onPressed: onTap,
+      child: Text('skip'.translate(context)),
+    );
+  }
+}

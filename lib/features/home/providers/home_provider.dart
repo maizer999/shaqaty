@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../data/repositories/home_repository.dart';
+import '../repositories/home_repository.dart';
 
 final homeRepositoryProvider = Provider<HomeRepository>((ref) {
   return HomeRepository();
