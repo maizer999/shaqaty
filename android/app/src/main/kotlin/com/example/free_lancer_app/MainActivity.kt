@@ -1,4 +1,4 @@
-package com.example.flutter_core
+package com.maizer.Classify
 
 import io.flutter.embedding.android.FlutterActivity
 

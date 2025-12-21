@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_core/features/splash/view/splash_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/constants/app_strings.dart';
@@ -16,16 +15,23 @@ late final ProviderContainer providerContainer;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  // Initialize Firebase first
+  // await Firebase.initializeApp();
 
+  // Setup Crashlytics for Flutter errors
+  // FlutterError.onError = (errorDetails) {
+  //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  // };
+
+  // PlatformDispatcher.instance.onError = (error, stack) {
+  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  //   return true;
+  // };
+
+  // Initialize EasyLocalization
   await EasyLocalization.ensureInitialized();
   String? lang = await SystemPreferencesHelper.getLanguageCode();
+
   providerContainer = ProviderContainer();
 
   runApp(
@@ -66,11 +72,9 @@ class _MyAppState extends ConsumerState<MyApp> {
             GlobalCupertinoLocalizations.delegate,
           ],
           builder: (context, child) => LanguageListener(child: child!),
-          // Simply show the splash UI
           home: const SplashScreen(),
         );
       },
     );
   }
 }
-
