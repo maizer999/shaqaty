@@ -54,7 +54,7 @@ final languageTranslationProvider =
         final response = await NetworkHandler.getRequest(
           endpoint: "ApiEndPoints.localizationByMap",
           params: queryParams,
-          headers: await NetworkHandler.getCommonHeadersWithoutToken(),
+          // headers: await NetworkHandler.getCommonHeadersWithoutToken(),
         );
         if (response is Map<String, dynamic> && response.containsKey("data")) {
           ref.keepAlive();

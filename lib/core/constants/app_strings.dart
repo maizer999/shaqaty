@@ -7,12 +7,21 @@ class AppStrings {
   static const String appVersion = "1.0.0";
 
 //login view
+  static const loginTitle = 'LOGIN';
+  static const loginPage = 'PAGE';
+  static const emailHint = 'Enter your gmail address';
+  static const passwordHint = 'Enter your password';
+  static const rememberMe = 'Remember me';
+  static const forgotPassword = 'Forgot password?';
+  static const signIn = 'Sign in';
+  static const noAccount = 'Don’t have account? ';
+  static const signUp = 'Sign up';
+  static const continueWith = 'Or Continue with';
   static const String username = 'Username';
   static const String password = 'Password';
   static const String enterUsername = 'Please enter your username';
   static const String enterPassword = 'Please enter your password';
   static const String requiredField = 'This field is required';
-  static const String signIn = 'Sign In';
   static const String signInWithBiometric = 'Sign In with your Biometric ID';
 
 //error handling

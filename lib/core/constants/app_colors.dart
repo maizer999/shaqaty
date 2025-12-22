@@ -3,6 +3,15 @@ import 'package:flutter/material.dart';
 
 class AppColors {
 
+
+  static const primary = Color(0xFF21899C);
+  static const inputBg = Color(0xFF4DA1B0);
+  static const accent = Color(0xFFF56B3F);
+  static const highlight = Color(0xFFFE9879);
+  static const checkboxGradientStart = Color(0xFF00AD8F);
+  static const checkboxGradientEnd = Color(0xFF7BF4DF);
+
+
   static const Color kBackground = Color(0xFFF4F6FA);
 
   static const Color kPrimaryColor = Color(0xFF006782);

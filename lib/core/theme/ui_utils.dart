@@ -12,7 +12,7 @@ import 'package:mime_type/mime_type.dart';
 import '../../features/home/data/item_model.dart';
 import '../widgets/custom_text.dart';
 import '../widgets/helper_utils.dart';
-import 'app_theme.dart';
+import 'theme.dart';
 import '../../shared/models/data/constant.dart';
 import 'app_icon.dart';
 

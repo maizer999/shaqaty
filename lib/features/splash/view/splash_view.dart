@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_core/core/theme/app_theme.dart';
+import 'package:flutter_core/core/theme/theme.dart';
 import 'package:flutter_core/features/login/views/login_view.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/theme/settings.dart';
@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 padding: const EdgeInsets.only(top: 10.0),
                 width: 150,
                 height: 150,
-                child: UiUtils.getSvg(AppIcons.splashLogo),
+                child: CustomText("Splash Logo")
               ),
               const SizedBox(height: 10),
               CustomText(

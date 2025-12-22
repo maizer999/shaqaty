@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_core/build_context.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../theme/app_theme.dart';
+import '../theme/theme.dart';
 import 'custom_text.dart';
 //
 enum MessageType {

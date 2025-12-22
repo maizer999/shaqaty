@@ -4,17 +4,21 @@ import 'package:flutter/material.dart';
 /// COLORS
 /// =======================================================
 
+
+
+
+
 /// Light colors
 const Color primaryColorLight = Color(0xFFF6F5FA);
 const Color secondaryColorLight = Color(0xFFFFFFFF);
-const Color territoryColorLight = Color(0xffF8ECBB);
+const Color territoryColorLight = Color(0xff00B2CA);
 const Color forthColorLight = Color(0xffFA6E53);
 const Color textDarkColor = Color(0xFF000000);
 
 /// Dark colors
 const Color primaryColorDark = Color(0xff121212);
 const Color secondaryColorDark = Color(0xff1C1C1C);
-const Color territoryColorDark = Color(0xffF8ECBB);
+const Color territoryColorDark = Color(0xff00B2CA);
 const Color textColorDarkTheme = Color(0xffFDFDFD);
 
 /// Messages
@@ -29,7 +33,7 @@ const Color deactivateButtonColor = Color(0xffFE0000);
 const Color activateButtonColor = Color(0xFF02AD11);
 
 
-const Color territoryColor_ = Color(0xffF8ECBB);
+const Color territoryColor_ = Color(0xFF21899C);
 const Color forthColor_ = Color(0xffFA6E53);
 /// =======================================================
 /// COLOR HELPERS (Brightness-safe)
