@@ -27,29 +27,29 @@ class NetworkHandler {
   static final _okRange = List.generate(200, (i) => i + 200);
   static final _clientErrorsRange = List.generate(100, (i) => i + 400);
   static final _serverErrorsRange = List.generate(100, (i) => i + 500);
+  late final Dio _dio;
 
   static Map<String, dynamic> currentRequest = {};
 
   /// Returns a configured Dio instance
-  static Future<Dio> getDio({bool isPCs = false}) async {
-    final dio = Dio(BaseOptions(
+
+
+
+
+  NetworkHandler({bool isPCs = false}) {
+    _dio = Dio(BaseOptions(
       connectTimeout: const Duration(seconds: 90),
       receiveTimeout: const Duration(seconds: 90),
     ));
 
     if (kDebugMode) {
-      dio.interceptors.add(TalkerDioLogger(
-        talker: talker,
-        settings: TalkerDioLoggerSettings(
-          responseFilter: (res) => !res.requestOptions.path.contains("locale-map"),
-        ),
-      ));
-      dio.interceptors.add(DioInterceptToCurl(printOnSuccess: true));
+      _dio.interceptors.add(DioInterceptToCurl(printOnSuccess: true));
     }
 
-    // dio.interceptors.add(await _getRefreshInterceptor(dio, isPCs: isPCs));
-    dio.interceptors.add(DioCacheInterceptor(options: await _getCacheOptions()));
-    return dio;
+    // Add cache interceptor
+    _getCacheOptions().then((cacheOptions) {
+      _dio.interceptors.add(DioCacheInterceptor(options: cacheOptions));
+    });
   }
 
   // static Future<Interceptor> _getRefreshInterceptor(Dio dio, {bool isPCs = false}) async {
@@ -98,133 +98,171 @@ class NetworkHandler {
   }
 
   // ============================ Basic Requests ============================
-  static Future getRequest({
+  Future<Response> getRequest({
     required String endpoint,
     Map<String, dynamic>? params,
-    Map<String, dynamic>? data,
     Map<String, String>? headers,
     CancelToken? cancelToken,
-    bool isPCs = false,
   }) async {
-    _prepareRequest(endpoint, params, data, headers, NetworkRequestType.get);
-    try {
-      final response = await (await getDio(isPCs: isPCs)).get(
-        endpoint,
-        queryParameters: params,
-        data: data,
-        options: Options(headers: headers),
-        cancelToken: cancelToken,
-      );
-      return _handleResult(response);
-    } on DioException catch (e) {
-      return _handleDioError(e);
-    }
+    return _handleRequest(() => _dio.get(
+      endpoint,
+      queryParameters: params,
+      options: Options(headers: headers),
+      cancelToken: cancelToken,
+    ));
   }
 
-  static Future postRequest({
+
+  Future<Response> postRequest({
     required String endpoint,
     Map<String, dynamic>? data,
     Map<String, dynamic>? params,
-    required Map<String, String> headers,
+    Map<String, String>? headers = const {},
     CancelToken? cancelToken,
-    bool isPCs = false,
   }) async {
-    _prepareRequest(endpoint, params, data, headers, NetworkRequestType.post);
-    try {
-      final response = await (await getDio(isPCs: isPCs)).post(
-        endpoint,
-        data: data,
-        queryParameters: params,
-        options: Options(headers: headers),
-        cancelToken: cancelToken,
-      );
-      return _handleResult(response);
-    } on DioException catch (e) {
-      return _handleDioError(e);
-    }
+    return _handleRequest(() => _dio.post(
+      endpoint,
+      data: data,
+      queryParameters: params,
+      options: Options(headers: headers),
+      cancelToken: cancelToken,
+    ));
   }
 
-  static Future putRequest({
+  Future<Response> putRequest({
     required String endpoint,
     Map<String, dynamic>? data,
     Map<String, dynamic>? params,
-    required Map<String, String> headers,
+    Map<String, String>? headers = const {},
   }) async {
-    _prepareRequest(endpoint, params, data, headers, NetworkRequestType.put);
-    try {
-      final response = await (await getDio()).put(
-        endpoint,
-        data: data,
-        queryParameters: params,
-        options: Options(headers: headers),
-      );
-      return _handleResult(response);
-    } on DioException catch (e) {
-      return _handleDioError(e);
-    }
+    return _handleRequest(() => _dio.put(
+      endpoint,
+      data: data,
+      queryParameters: params,
+      options: Options(headers: headers),
+    ));
   }
 
-  static Future deleteRequest({
+  Future<Response> deleteRequest({
     required String endpoint,
     Map<String, dynamic>? data,
     Map<String, dynamic>? params,
-    required Map<String, String> headers,
+    Map<String, String>? headers = const {},
   }) async {
-    _prepareRequest(endpoint, params, data, headers, NetworkRequestType.delete);
-    try {
-      final response = await (await getDio()).delete(
-        endpoint,
-        data: jsonEncode(data),
-        queryParameters: params,
-        options: Options(headers: headers),
-      );
-      return _handleResult(response);
-    } catch (_) {
-      rethrow;
-    }
+    return _handleRequest(() => _dio.delete(
+      endpoint,
+      data: data != null ? jsonEncode(data) : null,
+      queryParameters: params,
+      options: Options(headers: headers),
+    ));
   }
 
   // ============================ Multipart Requests ============================
-  static Future postMultiPartRequest({
+  Future<Response> postMultiPartRequest({
     required String endpoint,
     Map<String, dynamic>? data,
     Map<String, dynamic>? params,
-    required Map<String, String> headers,
+    Map<String, String>? headers = const {},
   }) async {
-    _prepareRequest(endpoint, params, data, headers, NetworkRequestType.postMultipart);
-    final formData = await prepareMultiPartData(data);
+    final formData = await _prepareMultiPartData(data);
+    return _handleRequest(() => _dio.post(
+      endpoint,
+      data: formData,
+      queryParameters: params,
+      options: Options(headers: headers),
+    ));
+  }
+
+
+  Future<FormData> _prepareMultiPartData(Map<String, dynamic>? data) async {
+    final formData = FormData();
+    if (data == null) return formData;
+
+    for (final entry in data.entries) {
+      if (entry.value is File) {
+        final file = entry.value as File;
+        final mimeType = lookupMimeType(file.path);
+        if (mimeType != null) {
+          formData.files.add(MapEntry(
+            entry.key,
+            MultipartFile.fromFileSync(
+              file.path,
+              filename: file.path.split('/').last,
+              contentType: DioMediaType.parse(mimeType),
+            ),
+          ));
+        }
+      } else {
+        formData.fields.add(MapEntry(entry.key, entry.value.toString()));
+      }
+    }
+
+    return formData;
+  }
+
+  // ============================ Internal Helpers ============================
+
+  Future<Response> _handleRequest(Future<Response> Function() request) async {
     try {
-      final response = await (await getDio()).post(
-        endpoint,
-        data: formData,
-        queryParameters: params,
-        options: Options(headers: headers),
-      );
-      return _handleResult(response);
+      final response = await request();
+      _logResponse(response);
+      _validateStatus(response);
+      return response;
     } on DioException catch (e) {
-      return _handleDioError(e);
+      _logError(e);
+      throw _mapDioException(e);
     }
   }
 
-  static Future putMultiPartRequest({
+  void _validateStatus(Response response) {
+    final statusCode = response.statusCode ?? 0;
+    if (statusCode >= 200 && statusCode < 300) return;
+
+    throw _mapStatusToException(statusCode, response.data);
+  }
+
+  void _logResponse(Response response) {
+    if (!kDebugMode) return;
+    print('┌────────────── [http-response] ──────────────');
+    print('│ URL: ${response.requestOptions.uri}');
+    print('│ Status: ${response.statusCode}');
+    print('│ Data: ${response.data}');
+    print('└──────────────────────────────────────────────');
+  }
+
+  void _logError(DioException e) {
+    if (!kDebugMode) return;
+    print('┌────────────── [http-error] ────────────────');
+    print('│ URL: ${e.requestOptions.uri}');
+    print('│ Error: ${e.error}');
+    print('│ Response: ${e.response?.data}');
+    print('└──────────────────────────────────────────────');
+  }
+
+  AppException _mapDioException(DioException e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.connectionError:
+        return ConnectionIssueException(response: e.response?.data);
+      case DioExceptionType.badResponse:
+        return _mapStatusToException(e.response?.statusCode, e.response?.data);
+      default:
+        return ServerErrorException(response: e.response?.data);
+    }
+  }
+  Future<Response> putMultiPartRequest({
     required String endpoint,
     Map<String, dynamic>? data,
     Map<String, dynamic>? params,
-    required Map<String, String> headers,
+    Map<String, String>? headers = const {},
   }) async {
-    _prepareRequest(endpoint, params, data, headers, NetworkRequestType.putMultipart);
-    final formData = await prepareMultiPartData(data);
-    try {
-      final response = await (await getDio()).put(
-        endpoint,
-        data: formData,
-        queryParameters: params,
-        options: Options(headers: headers),
-      );
-      return _handleResult(response);
-    } on DioException catch (e) {
-      return _handleDioError(e);
-    }
+    final formData = await _prepareMultiPartData(data);
+    return _handleRequest(() => _dio.put(
+      endpoint,
+      data: formData,
+      queryParameters: params,
+      options: Options(headers: headers),
+    ));
   }
 
   static Future<FormData> prepareMultiPartData(Map<String, dynamic>? data) async {
@@ -321,7 +359,7 @@ class NetworkHandler {
   }
 
   // ============================ Headers ============================
-  static Future<Map<String, String>> getFormUrlencodedHeaders() async {
+   Future<Map<String, String>> getFormUrlencodedHeaders() async {
     final languageCode = await SystemPreferencesHelper.getLanguageCode();
     return {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -368,7 +406,7 @@ class NetworkHandler {
 
   static Future<String?> getAccessToken() async => SecureStorageHelper.getAccessToken();
 
-  static Future<T> executeApiCall<T>(Future<T> Function() operation, {bool checkInternet = true}) async {
+   Future<T> executeApiCall<T>(Future<T> Function() operation, {bool checkInternet = true}) async {
     try {
       return await operation();
     } on MapperException catch (e) {

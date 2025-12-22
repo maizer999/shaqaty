@@ -5,31 +5,40 @@ import '../../../core/network/network_handler.dart';
 import '../models/login_response.dart';
 
 class LoginUserService {
+  final NetworkHandler _network = NetworkHandler();
 
   Future<Result<LoginResponse, AppException>> loginUserService({
-    String? username,
-    String? password,
+    required String username,
+    required String password,
   }) async {
     final requestBody = {
-      'username': username,
+      'email': username,
       'password': password,
     };
 
     try {
-      return await NetworkHandler.executeApiCall(() async {
-        final jsonResponse = await NetworkHandler.postRequest(
-          headers: await NetworkHandler.getFormUrlencodedHeaders(),
-          endpoint: '/login',
+
+      return await _network.executeApiCall(() async {
+        final response = await _network.postRequest(
+          endpoint: 'https://admin.shaqaty.com/api/login',
           data: requestBody,
+          headers: await _network.getFormUrlencodedHeaders(),
         );
 
-        final response = LoginResponseMapper.fromMap(jsonResponse);
-        return Success(response);
+        // Extract data from Dio Response
+        final Map<String, dynamic> jsonResponse = response.data;
+
+        final loginResponse = LoginResponseMapper.fromMap(jsonResponse);
+
+        return Success(loginResponse);
       });
-    } catch (e) {
-      return Error(e as AppException);
+    } on AppException catch (e) {
+      return Error(e);
+    } catch (_) {
+      return Error(ServerErrorException());
     }
   }
+
 }
 
 

@@ -37,62 +37,76 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF21899C),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const LoginHeader(),
-                const SizedBox(height: 16),
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(), // Hide keyboard when tapping outside
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
+              ),
+              child: IntrinsicHeight(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const LoginHeader(),
+                      const SizedBox(height: 16),
 
-                AuthTextField(
-                  controller: emailController,
-                  hint: 'Enter your email',
-                  icon: Icons.mail_rounded,
-                  validator: (v) => v!.isEmpty ? 'Email required' : null,
-                ),
-                const SizedBox(height: 12),
-                AuthTextField(
-                  controller: passwordController,
-                  hint: 'Enter your password',
-                  icon: Icons.lock,
-                  obscure: isObscure,
-                  suffix: IconButton(
-                    icon: Icon(isObscure ? Icons.visibility : Icons.visibility_off, color: Colors.white70),
-                    onPressed: () => setState(() => isObscure = !isObscure),
+                      AuthTextField(
+                        controller: emailController,
+                        hint: 'Enter your email',
+                        icon: Icons.mail_rounded,
+                        validator: (v) => v!.isEmpty ? 'Email required' : null,
+                      ),
+                      const SizedBox(height: 12),
+                      AuthTextField(
+                        controller: passwordController,
+                        hint: 'Enter your password',
+                        icon: Icons.lock,
+                        obscure: isObscure,
+                        suffix: IconButton(
+                          icon: Icon(
+                            isObscure ? Icons.visibility : Icons.visibility_off,
+                            color: Colors.white70,
+                          ),
+                          onPressed: () => setState(() => isObscure = !isObscure),
+                        ),
+                        validator: (v) => v!.isEmpty ? 'Password required' : null,
+                      ),
+                      const SizedBox(height: 16),
+                      const RememberForgotRow(),
+                      const SizedBox(height: 24),
+
+                      SignInButton(
+                        isLoading: loginState.isLoading,
+                        onTap: () {
+                          FocusScope.of(context).unfocus(); // Hide keyboard on button tap
+                          if (_formKey.currentState!.validate()) {
+                            ref.read(loginUserProvider.notifier).loginUser(
+                              username: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                            );
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      const DividerWithText(text: 'Or Continue with'),
+                      const SizedBox(height: 20),
+                      const SocialButtons(),
+                      const SizedBox(height: 20),
+                      const LoginFooter(),
+
+                      if (loginState.hasError)
+                        Text(
+                          loginState.error.toString(),
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                    ],
                   ),
-                  validator: (v) => v!.isEmpty ? 'Password required' : null,
                 ),
-                const SizedBox(height: 16),
-                const RememberForgotRow(),
-                const SizedBox(height: 24),
-
-                SignInButton(
-                  isLoading: loginState.isLoading,
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      ref.read(loginUserProvider.notifier).loginUser(
-                        username: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                      );
-                    }
-                  },
-                ),
-                const SizedBox(height: 20),
-                const DividerWithText(text: 'Or Continue with'),
-                const SizedBox(height: 20),
-                const SocialButtons(),
-                const SizedBox(height: 20),
-                const LoginFooter(),
-
-                if (loginState.hasError)
-                  Text(
-                    loginState.error.toString(),
-                    style: const TextStyle(color: Colors.red),
-                  ),
-              ],
+              ),
             ),
           ),
         ),
