@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_core/build_context.dart';
 import 'package:flutter_core/core/theme/theme.dart';
-import 'package:flutter_core/core/theme/translate.dart';
 
 class SkipButtonWidget extends StatelessWidget {
   final VoidCallback? onTap;
@@ -20,7 +19,7 @@ class SkipButtonWidget extends StatelessWidget {
         visualDensity: VisualDensity.compact,
       ),
       onPressed: onTap,
-      child: Text('skip'.translate(context)),
+      child: Text('skip'),
     );
   }
 }

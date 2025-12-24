@@ -143,9 +143,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/
     - assets/translations/
-    - assets/svg/
+    - assets/images/
     - assets/svg/bottomnav/
     - assets/svg/
 

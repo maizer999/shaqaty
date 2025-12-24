@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/network/app_cached_image.dart';
+import '../../data/models/category_response.dart';
 
-class CategoryGrid extends StatelessWidget {
-  final List categories;
-  const CategoryGrid({super.key, required this.categories});
+class CategoryGridWidget extends StatelessWidget {
+  final List<CategoryItem> categories;
+
+  const CategoryGridWidget({
+    super.key,
+    required this.categories,
+  });
 
   @override
   Widget build(BuildContext context) {
     if (categories.isEmpty) return const SizedBox();
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -19,19 +25,21 @@ class CategoryGrid extends StatelessWidget {
       ),
       itemBuilder: (_, index) {
         final cat = categories[index];
+
         return Column(
           children: [
             Expanded(
               child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: AppCachedImage(
+                  imageUrl: cat.image ?? '',
                   borderRadius: BorderRadius.circular(12),
-                  child: AppCachedImage(
-                    imageUrl: cat["image"],
-                    borderRadius: BorderRadius.circular(12),
-                  )),
+                ),
+              ),
             ),
             const SizedBox(height: 6),
             Text(
-              cat["name"],
+              cat.translatedName ?? cat.name ?? '',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontFamily: 'NotoKufiArabic',

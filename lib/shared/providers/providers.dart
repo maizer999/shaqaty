@@ -15,7 +15,7 @@ final selectedStatusFilterChipProvider = StateProvider.autoDispose<StatusModel>(
   name: "selectedStatusFilterChipProvider",
 );
 final lastSubmittedStatusProvider = StateProvider<String?>((ref) => "");
-//common status filter provider
+//common status filter controllers
 final commonStatusIdsProvider =
     Provider.autoDispose.family<List<int>, List<StatusModel>>(
   (ref, availableStatuses) {

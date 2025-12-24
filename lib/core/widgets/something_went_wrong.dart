@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_core/build_context.dart';
-import 'package:flutter_core/core/theme/translate.dart';
 import 'package:flutter_core/core/theme/theme.dart';
 import '../theme/app_icon.dart';
 import '../theme/ui_utils.dart';
@@ -31,7 +30,7 @@ class NoChatFound extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: sidePadding),
             child: CustomText(
-              "${"noChatFoundStartNewConversation".translate(context)}",
+              "${"noChatFoundStartNewConversation"}",
               fontSize: context.font.larger,
               textAlign: TextAlign.center,
               color: context.color.territoryColor,

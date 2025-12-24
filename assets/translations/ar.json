@@ -1,1 +1,6 @@
-{}
+{
+  "homeTab": "Home",
+  "chat": "Chat",
+  "myAdsTab": "My Ads",
+  "profileTab": "Profile"
+}

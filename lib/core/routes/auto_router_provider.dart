@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// may be context is not present
 final navigatorKey = GlobalKey<NavigatorState>();
 
-/// This provider used for storing router
+/// This controllers used for storing router
 /// and can be acessed by reading it using ProviderRef/WidgetRef
 final autoRouterProvider = Provider.autoDispose<AppRouter>(
   (ref) => AppRouter(navigatorKey: navigatorKey),

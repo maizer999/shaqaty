@@ -89,6 +89,12 @@ class AppStrings {
   static const String tapToAdd = "Tap to Add";
 
 
+
+  static const String homeTab = "Home";
+  static const String chat = "Chat" ;
+  static const String myAdsTab =  "My Ads" ;
+  static const String profileTab   =  "Profile" ;
+
   static const String title = 'title';
   static const String subTitle = 'subTitle';
   static const String coastal = "Coastal";

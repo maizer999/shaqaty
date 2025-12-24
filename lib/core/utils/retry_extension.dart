@@ -92,7 +92,7 @@ extension RetryExtension<T> on Ref<T> {
 
 /// Example Usage:
 /// 
-/// A provider using the retry logic to fetch data with automatic retries on failure.
+/// A controllers using the retry logic to fetch data with automatic retries on failure.
 /// ```dart
 /// final anotherProvider = FutureProvider.autoDispose<String>((ref) async {
 ///   final retryFunction = ref.withRetryFunction(

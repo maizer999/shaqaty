@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_core/build_context.dart';
-import 'package:flutter_core/core/theme/translate.dart';
 import 'package:flutter_core/core/theme/theme.dart';
 import '../theme/app_icon.dart';
 import '../theme/ui_utils.dart';
@@ -28,7 +27,7 @@ class NoInternet extends StatelessWidget {
             UiUtils.getSvg(AppIcons.no_internet),
             const SizedBox(height: 20),
             CustomText(
-              "noInternet".translate(context),
+              "noInternet",
               fontSize: context.font.extraLarge,
               color: context.color.territoryColor,
               fontWeight: FontWeight.w600,
@@ -37,7 +36,7 @@ class NoInternet extends StatelessWidget {
             SizedBox(
               width: context.screenWidth * 0.8,
               child: CustomText(
-                "noInternetErrorMsg".translate(context),
+                "noInternetErrorMsg",
                 textAlign: TextAlign.center,
               ),
             ),
@@ -51,7 +50,7 @@ class NoInternet extends StatelessWidget {
                   ),
                 ),
                 child: CustomText(
-                  "retry".translate(context),
+                  "retry",
                   color: context.color.territoryColor,
                 ),
               ),

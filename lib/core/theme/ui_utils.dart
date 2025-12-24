@@ -3,13 +3,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_core/build_context.dart';
-import 'package:flutter_core/core/theme/translate.dart';
 import 'package:flutter_core/core/utils/currency_formatter.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mime_type/mime_type.dart';
 import '../../features/home/data/item_model.dart';
+import '../hive/hive_utils.dart';
+import '../routes/route_constant.dart';
 import '../widgets/custom_text.dart';
 import '../widgets/helper_utils.dart';
 import 'theme.dart';
@@ -207,6 +208,70 @@ class UiUtils {
     return uniqueParts.join(', ');
   }
 
+
+  static void checkUser({
+    required Function() onNotGuest,
+    required BuildContext context,
+  }) {
+    if (!HiveUtils.isUserAuthenticated()) {
+      _loginBox(context);
+    } else {
+      onNotGuest.call();
+    }
+  }
+
+  static void _loginBox(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: false,
+      enableDrag: false,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.fromLTRB(
+            30,
+            30,
+            30,
+            MediaQuery.of(context).padding.bottom,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(
+                "loginIsRequiredForAccessingThisFeatures",
+                fontSize: context.font.larger,
+              ),
+              const SizedBox(height: 5),
+              CustomText(
+                "tapOnLoginToAuthorize",
+                fontSize: context.font.small,
+              ),
+              const SizedBox(height: 10),
+              MaterialButton(
+                elevation: 0,
+                color: context.color.territoryColor,
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(
+                    context,
+                    Routes.login,
+                    arguments: {"popToCurrent": true},
+                  );
+                },
+                child: CustomText(
+                  "loginNow",
+                  color: context.color.buttonColor,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
   static Widget getPriceWidget(ItemModel item, BuildContext context) {
     final category = item.category;
     final color = context.color.territoryColor;
@@ -229,7 +294,7 @@ class UiUtils {
         );
       } else if (min != null) {
         return CustomText(
-          "${"from".translate(context)}\t${min.currencyFormat}",
+          "${"from"}\t${min.currencyFormat}",
           color: color,
           fontWeight: FontWeight.bold,
           softWrap: true,
@@ -239,7 +304,7 @@ class UiUtils {
         );
       } else if (max != null) {
         return CustomText(
-          "${"up_to".translate(context)}\t${max.currencyFormat}",
+          "${"up_to"}\t${max.currencyFormat}",
           color: color,
           fontWeight: FontWeight.bold,
           softWrap: true,

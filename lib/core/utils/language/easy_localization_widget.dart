@@ -20,11 +20,11 @@
 //
 // class _CustomEasyLocalizationState
 //     extends ConsumerState<CustomEasyLocalization> {
-//   /// A watcher for language translation provider
+//   /// A watcher for language translation controllers
 //   /// which will help in rebuilding the easy localization when translation cannot be loaded from server
 //   /// but later will render the whole ui after got translation data from server
 //   ///
-//   /// Here if provider have state [AsyncError] means the provider have error loading the translation
+//   /// Here if controllers have state [AsyncError] means the controllers have error loading the translation
 //   /// but if later when it comes data rebuild the whole app using invalidating [languageTranslationProvider]
 //   ///
 //   void listenToTranslation(

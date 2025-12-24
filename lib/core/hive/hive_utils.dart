@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import '../../features/home/data/user_model.dart';
 import '../routes/route_constant.dart';
 import '../widgets/constant.dart';
 import '../../shared/models/data/leaf_location.dart';
@@ -96,12 +95,12 @@ class HiveUtils {
     await Hive.box(HiveKeys.userDetailsBox).put(HiveKeys.jwtToken, token);
   }
 
-  static UserModel getUserDetails() {
-
-    return UserModel.fromJson(
-      Map.from(Hive.box(HiveKeys.userDetailsBox).toMap()),
-    );
-  }
+  // static UserModel getUserDetails() {
+  //
+  //   return UserModel.fromJson(
+  //     Map.from(Hive.box(HiveKeys.userDetailsBox).toMap()),
+  //   );
+  // }
 
   static void setUserIsAuthenticated(bool value) {
     Hive.box(HiveKeys.authBox).put(HiveKeys.isAuthenticated, value);
