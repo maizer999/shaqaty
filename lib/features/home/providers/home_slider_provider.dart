@@ -13,10 +13,17 @@ import '../service/home_services.dart';
 class CategoryParams {
   final int page;
 
-  CategoryParams({
-    this.page = 1,
-  });
+  const CategoryParams({this.page = 1});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is CategoryParams && page == other.page;
+
+  @override
+  int get hashCode => page.hashCode;
 }
+
 
 class CategoryNotifier
     extends AutoDisposeFamilyAsyncNotifier<List<CategoryItem>, CategoryParams> {
