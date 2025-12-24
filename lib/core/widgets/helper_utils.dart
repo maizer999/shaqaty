@@ -30,6 +30,9 @@ class HelperUtils {
     }
   }
 
+
+
+
   static Future<void> precacheSVG(List<String> urls) async {
     for (String imageUrl in urls) {
       try {

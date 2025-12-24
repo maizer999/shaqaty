@@ -29,14 +29,11 @@ class CategoryListWidget extends StatelessWidget {
           title: CustomText(category.name ?? ''),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
-            final ids = [...categoryIds, category.id.toString()];
             Navigator.pushNamed(
               context,
-              Routes.itemsList,
+              Routes.adDetailsScreen, // Ensure this constant exists in your RouteConstant file
               arguments: {
-                'catID': category.id.toString(),
-                'catName': category.name ?? '',
-                'categoryIds': ids,
+                'model': category, // This is your ItemModel object
               },
             );
           },
