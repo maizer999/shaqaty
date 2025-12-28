@@ -121,7 +121,7 @@ dependencies:
   custom_lint: any
   dart_mappable_builder: ^4.5.0
   json_serializable: ^6.7.0
-
+  another_flutter_splash_screen:  ^1.2.1
   youtube_player_flutter: ^9.1.1
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by  the package is
@@ -147,6 +147,8 @@ flutter:
     - assets/images/
     - assets/svg/bottomnav/
     - assets/svg/
+
+
 
   fonts:
     - family: Manrope

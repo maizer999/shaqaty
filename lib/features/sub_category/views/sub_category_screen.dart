@@ -4,7 +4,9 @@ import 'package:shimmer/shimmer.dart';
 import '../../../build_context.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/theme/ui_utils.dart';
+import '../../../core/utils/shimmer_loading.dart';
 import '../../../core/widgets/custom_text.dart';
+import '../../add_details/ad_details_screen.dart';
 import '../controllers/sub_category_provider.dart';
 import '../models/sub_category_response.dart';
 
@@ -51,7 +53,15 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
       ),
       body: subCategoriesAsync.when(
         data: (categories) => _buildBody(categories),
-        loading: () => _buildLoadingState(),
+        loading: () => ShimmerLoading(
+          child: Container(
+            height: 180,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
         error: (error, stack) => _buildErrorWidget(error, params),
       ),
     );
@@ -130,66 +140,82 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
               ),
             ],
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: context.color.territoryColor.withOpacity(0.1),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: () {
+              // print data
+              debugPrint('Category tapped: ${category.name}');
+              debugPrint('Category id: ${category.id}');
+
+              // navigation
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AdDetailsScreen(model: category,),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: UiUtils.imageType(
-                    category.image ?? "",
-                    fit: BoxFit.cover,
+              );
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: context.color.territoryColor.withOpacity(0.1),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: UiUtils.imageType(
+                      category.image ?? "",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      category.name ?? "",
-                      fontWeight: FontWeight.w600,
-                      fontSize: context.font.large,
-                      maxLines: 2,
-                    ),
-                    if (hasSubtitle)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: CustomText(
-                          category.description ?? "",
-                          fontSize: 16,
-                          maxLines: 2,  // <-- limit to 2 lines
-                          overflow: TextOverflow.ellipsis,
-                          color: context.color.territoryColor.withOpacity(0.7),
-                        ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        category.name ?? "",
+                        fontWeight: FontWeight.w600,
+                        fontSize: context.font.large,
+                        maxLines: 2,
                       ),
-                  ],
+                      if (hasSubtitle)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: CustomText(
+                            category.description ?? "",
+                            fontSize: 16,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            color: context.color.territoryColor.withOpacity(0.7),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-
-              const SizedBox(width: 8),
-              Container(
-                width: 35,
-                height: 35,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: context.color.backgroundColor,
+                const SizedBox(width: 8),
+                Container(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: context.color.backgroundColor,
+                  ),
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 16,
+                    color: context.color.territoryColor,
+                  ),
                 ),
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                  color: context.color.territoryColor,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
+
         );
       },
     );

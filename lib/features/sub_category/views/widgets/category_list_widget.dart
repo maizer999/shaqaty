@@ -31,9 +31,9 @@ class CategoryListWidget extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(
               context,
-              Routes.adDetailsScreen, // Ensure this constant exists in your RouteConstant file
+              Routes.adDetailsScreen,
               arguments: {
-                'model': category, // This is your ItemModel object
+                'model': category,
               },
             );
           },

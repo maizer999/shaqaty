@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/network/app_cached_image.dart';
+
 class LoginHeader extends StatelessWidget {
   const LoginHeader({super.key});
 
@@ -11,7 +13,18 @@ class LoginHeader extends StatelessWidget {
 
     return Column(
       children: [
-        SvgPicture.asset('assets/svg/logo2.svg', height: size.height / 8),
+
+        ClipRRect(
+          borderRadius: BorderRadius.circular(100), // Adjust this for more/less rounding
+          child: Image.asset(
+            'assets/svg/home.png',
+            height: size.height / 6,
+            fit: BoxFit.cover,
+          ),
+        ),
+
+
+        // SvgPicture.asset('assets/svg/logo2.svg', height: size.height / 8),
         const SizedBox(height: 16),
         Text.rich(
           TextSpan(

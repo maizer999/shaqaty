@@ -11,6 +11,7 @@ import 'package:mime_type/mime_type.dart';
 import '../../features/home/data/item_model.dart';
 import '../hive/hive_utils.dart';
 import '../routes/route_constant.dart';
+import '../utils/blurred_dialog_box.dart';
 import '../widgets/custom_text.dart';
 import '../widgets/helper_utils.dart';
 import 'theme.dart';
@@ -19,7 +20,27 @@ import 'app_icon.dart';
 
 class UiUtils {
 
+  static Future showBlurredDialoge(
+      BuildContext context, {
+        required BlurDialog dialoge,
+        double? sigmaX,
+        double? sigmaY,
+      }) async {
+    return await Navigator.push(
+      context,
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: true,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          if (dialoge is BlurredDialogBox) return dialoge;
+          if (dialoge is BlurredDialogBuilderBox) return dialoge;
+          if (dialoge is EmptyDialogBox) return dialoge;
 
+          return Container();
+        },
+      ),
+    );
+  }
   static Widget buildButton(
       BuildContext context, {
         double? height,

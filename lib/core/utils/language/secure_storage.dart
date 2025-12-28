@@ -84,6 +84,24 @@ class SecureStorageHelper {
     secureStorage.saveTemp(key: SecureStorageConstants.token, value: token);
   }
 
+  static Future<void> setCredentials(String username, String password) async {
+    final secureStorage = providerContainer.read(secureStorageProvider);
+    await secureStorage.save(key: SecureStorageConstants.userName, value: username);
+    await secureStorage.save(key: SecureStorageConstants.password, value: password);
+  }
+
+  /// Retrieves the stored username and password
+  static Future<Map<String, String?>> getCredentials() async {
+    final secureStorage = providerContainer.read(secureStorageProvider);
+    final user = await secureStorage.get(key: SecureStorageConstants.userName);
+    final pass = await secureStorage.get(key: SecureStorageConstants.password);
+    return {
+      SecureStorageConstants.userName: user,
+      SecureStorageConstants.password: pass,
+    };
+  }
+
+
   static Future<String?> getTempAccessToken() async {
     final secureStorage = providerContainer.read(secureStorageProvider);
     final value = secureStorage.getTemp(key: SecureStorageConstants.token);

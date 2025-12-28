@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_core/features/home/views/widgets/category_grid.dart';
 import 'package:flutter_core/features/home/views/widgets/home_slider_widget.dart';
+import '../../../core/utils/shimmer_loading.dart';
 import '../../../core/widgets/bottom_navigation_bar/custom_bottom_navigation_bar.dart';
 import '../providers/home_category_provider.dart';
 import '../providers/home_slider_provider.dart';
@@ -39,9 +40,14 @@ class HomeScreen extends ConsumerWidget {
               sliderAsync.when(
                 data: (sliders) =>
                     HomeSliderWidget(sliders: sliders),
-                loading: () => const SizedBox(
-                  height: 180,
-                  child: Center(child: CircularProgressIndicator()),
+                loading: () =>ShimmerLoading(
+                  child: Container(
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
                 error: (_, __) => const SizedBox(),
               ),
@@ -55,7 +61,15 @@ class HomeScreen extends ConsumerWidget {
                 data: (categories) =>
                     CategoryGridWidget(categories: categories),
                 loading: () =>
-                const Center(child: CircularProgressIndicator()),
+                    ShimmerLoading(
+                      child: Container(
+                        height: 180,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
                 error: (_, __) => const SizedBox(),
               ),
             ],

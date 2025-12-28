@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_core/core/theme/theme.dart';
 import 'package:flutter_core/features/login/views/login_view.dart';
-import '../../../../core/theme/app_icon.dart';
-import '../../../../core/theme/settings.dart';
-import '../../../../core/theme/ui_utils.dart';
-import '../../../../core/widgets/custom_text.dart';
-import 'package:flutter_core/build_context.dart';
-
+import 'package:flutter_core/features/login/views/widgets/login_header.dart';
+import 'package:http/http.dart' as ref;
+import '../../../core/utils/language/secure_storage.dart';
 import '../../home/views/home_screen.dart';
+import '../../login/views/controller/login_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -27,54 +24,77 @@ class _SplashScreenState extends State<SplashScreen> {
   void _startSplash() async {
     await Future.delayed(const Duration(seconds: 2));
 
-    // You can also provide supported languages here if needed
-    // final supportedLanguages = ['en', 'ar'];
+    // 1. Check for stored credentials
+    final credentials = await SecureStorageHelper.getCredentials();
 
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
+    print(credentials[SecureStorageConstants.userName]);
+    print(credentials[SecureStorageConstants.password]);
+
+
+      if (credentials[SecureStorageConstants.userName] != null && credentials[SecureStorageConstants.password] != null) {
+        try {
+
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+        } catch (e) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+        }
+      } else {
+        // 3. No credentials? Go to Login
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: context.color.territoryColor,
-          statusBarIconBrightness: Brightness.light,
-          systemNavigationBarColor: context.color.territoryColor,
-          systemNavigationBarIconBrightness: Brightness.light,
-        ),
-        child: Scaffold(
-          backgroundColor: context.color.territoryColor,
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: UiUtils.getSvg(AppIcons.companyLogo),
-          ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.only(top: 10.0),
-                width: 150,
-                height: 150,
-                child: CustomText("Splash Logo")
-              ),
-              const SizedBox(height: 10),
-              CustomText(
-                AppSettings.applicationName,
-                fontSize: context.font.xxLarge,
-                color: context.color.secondaryColor,
-                textAlign: TextAlign.center,
-                fontWeight: FontWeight.w600,
-              ),
-            ],
+    // Matching the LoginScreen background color
+    const Color themeColor = Color(0xFF21899C);
+
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, // Transparent looks better with safe area
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: themeColor,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+      child: Scaffold(
+        backgroundColor: themeColor, // Same as LoginScreen
+        body: SafeArea(
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(flex: 2),
+
+                /// ✅ Reusing your existing LoginHeader (Logo + Text)
+                const LoginHeader(),
+
+                const Spacer(flex: 1),
+
+                /// ⏳ Loading Indicator (Optional but professional)
+                const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
+                ),
+
+                const Spacer(flex: 2),
+
+                /// 📝 Branding at the bottom
+                const Opacity(
+                  opacity: 0.8,
+                  child: Text(
+                    "Home Use App",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
         ),
       ),

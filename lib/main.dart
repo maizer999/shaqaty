@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_core/features/splash/view/splash_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,19 +12,20 @@ late final ProviderContainer providerContainer;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  // Initialize Firebase first (optional)
-  // await Firebase.initializeApp();
-
   providerContainer = ProviderContainer();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('ar'), Locale('en')],
+      supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/translations',
-      fallbackLocale: const Locale('ar'),
-      child: ProviderScope(
-        child: const MyApp(),
-      ),
+      fallbackLocale: const Locale('en'),
+      startLocale: const Locale('ar'),
+      child: const ProviderScope(child: MyApp()),
     ),
   );
 }
@@ -43,11 +45,15 @@ class _MyAppState extends ConsumerState<MyApp> {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: AppStrings.appName, // using AppStrings
-          builder: (context, child) => child!, // no LanguageListener needed
+          title: 'My App',
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
           home: const SplashScreen(),
         );
       },
     );
   }
 }
+
+

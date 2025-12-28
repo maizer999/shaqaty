@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_core/core/widgets/custom_text.dart';
 import 'package:flutter_core/core/widgets/auth_text_field.dart';
+import '../../../core/utils/language/secure_storage.dart';
 import 'controller/login_provider.dart';
 import 'package:flutter_core/features/login/views/widgets/divider_with_text.dart';
 import 'package:flutter_core/features/login/views/widgets/login_footer.dart';
@@ -25,14 +26,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final passwordController = TextEditingController();
   bool isObscure = true;
 
-
   @override
   void initState() {
     super.initState();
+    // Default values for testing; clear these for production
     emailController.text = 'maizer99@gmail.com';
     passwordController.text = '123456';
   }
-
 
   @override
   void dispose() {
@@ -117,9 +117,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         obscure: isObscure,
                         suffix: IconButton(
                           icon: Icon(
-                            isObscure
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                            isObscure ? Icons.visibility : Icons.visibility_off,
                             color: Colors.white70,
                           ),
                           onPressed: () {
@@ -137,20 +135,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       /// 🔘 Sign In Button
                       SignInButton(
                         isLoading: loginState.isLoading,
-                        onTap: () {
+                        onTap: () async {
                           if (loginState.isLoading) return;
 
                           FocusScope.of(context).unfocus();
 
                           if (_formKey.currentState!.validate()) {
-                            ref
-                                .read(loginUserProvider.notifier)
-                                .loginUser(
-                              username:
-                              emailController.text.trim(),
-                              password:
-                              passwordController.text.trim(),
+                            final username = emailController.text.trim();
+                            final password = passwordController.text.trim();
+
+                            await ref.read(loginUserProvider.notifier).loginUser(
+                              username: username,
+                              password: password,
                             );
+
+                            await SecureStorageHelper.setCredentials(
+                                username, password);
                           }
                         },
                       ),

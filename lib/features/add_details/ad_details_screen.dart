@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '../home/data/item_model.dart'; // Adjust path
+import 'package:flutter_core/core/widgets/custom_text.dart';
+import '../../core/network/app_cached_image.dart';
+import '../sub_category/models/sub_category_response.dart';
 
 class AdDetailsScreen extends StatefulWidget {
-  final ItemModel? model;
+  final SubCategoryItem? model;
 
   const AdDetailsScreen({super.key, this.model});
 
@@ -11,8 +13,7 @@ class AdDetailsScreen extends StatefulWidget {
 }
 
 class _AdDetailsScreenState extends State<AdDetailsScreen> {
-  int _currentPage = 0;
-  final List<String?> images = [];
+  final List<String> images = [];
 
   @override
   void initState() {
@@ -21,10 +22,8 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
   }
 
   void _prepareImages() {
-    if (widget.model != null) {
-      images.add(widget.model!.image);
-      images.addAll(widget.model!.galleryImages?.map((e) => e.image) ?? []);
-      if (widget.model!.videoLink?.isNotEmpty ?? false) images.add(widget.model!.videoLink);
+    if (widget.model?.image?.isNotEmpty ?? false) {
+      images.add(widget.model!.image!);
     }
   }
 
@@ -33,81 +32,110 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
     final item = widget.model;
 
     if (item == null) {
-      return const Scaffold(body: Center(child: Text("No Data Available")));
+      return const Scaffold(
+        body: Center(child: Text("No Data Available")),
+      );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(item.translatedName ?? "Details"),
+        title: Text(item.name ?? "Details"),
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
-            onPressed: () => {} //HelperUtils.shareItem(context, "ad", item.slug!),
+            onPressed: () {
+              debugPrint("Share item id: ${item.id}");
+            },
           )
         ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Image Section
-          SizedBox(
-            height: 250,
-            child: PageView.builder(
-              itemCount: images.length,
-              onPageChanged: (index) => setState(() => _currentPage = index),
-              itemBuilder: (context, index) => Image.network(images[index]!, fit: BoxFit.cover),
+          // Image
+          if (images.isNotEmpty)
+            SizedBox(
+              height: 250,
+              child: PageView.builder(
+                itemCount: images.length,
+                itemBuilder: (context, index) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child:
+                    AppCachedImage(
+                      imageUrl: images[index] ?? '',
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+
+
+                  );
+                },
+              ),
             ),
-          ),
+
           const SizedBox(height: 16),
 
-          // Basic Info
-          Text(item.translatedName ?? '', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          Text('\$${item.price}', style: const TextStyle(fontSize: 20, color: Colors.green, fontWeight: FontWeight.w600)),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              const Icon(Icons.location_on, size: 16, color: Colors.grey),
-              Text(item.translatedAddress ?? '', style: const TextStyle(color: Colors.grey)),
-            ],
+          // Title
+          Text(
+            item.name ?? '',
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const Divider(height: 32),
 
-          // Custom Fields Section
-          const Text("Details", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          _buildCustomFieldsGrid(item),
+          const SizedBox(height: 8),
+
+          // Price
+          if (item.price != null)
+            Text(
+              '\$${item.price}',
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.green,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+
+          const SizedBox(height: 6),
+
+          // Location
+          if (item.city != null || item.state != null || item.country != null)
+            Row(
+              children: [
+                const Icon(Icons.location_on, size: 16, color: Colors.grey),
+                const SizedBox(width: 4),
+                Text(
+                  [
+                    item.city,
+                    item.state,
+                    item.country,
+                  ].where((e) => e != null && e.isNotEmpty).join(', '),
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
 
           const Divider(height: 32),
 
           // Description
-          const Text("Description", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          Text(item.description ?? ''),
+          if (item.description?.isNotEmpty ?? false) ...[
+            const Text(
+              "Description",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            CustomText(
+              item.description!,
+
+
+              overflow: TextOverflow.visible,
+              softWrap: true,
+            )
+
+          ],
         ],
       ),
-    );
-  }
-
-  Widget _buildCustomFieldsGrid(ItemModel item) {
-    final fields = item.allTranslatedCustomFields ?? [];
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisExtent: 50,
-      ),
-      itemCount: fields.length,
-      itemBuilder: (context, index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(fields[index].name ?? '', style: const TextStyle(color: Colors.grey, fontSize: 12)),
-            Text(fields[index].value ?? '', style: const TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        );
-      },
     );
   }
 }
