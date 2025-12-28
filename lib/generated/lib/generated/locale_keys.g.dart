@@ -58,6 +58,7 @@ abstract class  LocaleKeys {
   static const confirmLogoutTitle = 'confirmLogoutTitle';
   static const pleaseChangeNetwork = 'pleaseChangeNetwork';
   static const contactUs = 'contactUs';
+  static const continue_kw = 'continue_kw';
   static const copylink = 'copylink';
   static const country = 'country';
   static const uptoDate = 'uptoDate';
@@ -205,5 +206,7 @@ abstract class  LocaleKeys {
   static const promotedItems = 'promotedItems';
   static const items = 'items';
   static const itemNameLbl = 'itemNameLbl';
+  static const home = 'home';
+  static const add_details = 'add_details';
 
 }

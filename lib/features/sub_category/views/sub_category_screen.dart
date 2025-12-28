@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../build_context.dart';
 import '../../../core/theme/theme.dart';
@@ -7,6 +8,7 @@ import '../../../core/theme/ui_utils.dart';
 import '../../../core/utils/shimmer_loading.dart';
 import '../../../core/widgets/custom_text.dart';
 import '../../add_details/ad_details_screen.dart';
+import '../../common/base_scaffold.dart';
 import '../controllers/sub_category_provider.dart';
 import '../models/sub_category_response.dart';
 
@@ -40,17 +42,8 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
     final params = SubCategoryParams(categoryId: widget.catId);
     final subCategoriesAsync = ref.watch(subCategoryProvider(params));
 
-    return Scaffold(
-      backgroundColor: context.color.backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        titleSpacing: 0,
-        title: CustomText(
-          widget.catName,
-          maxLines: 1,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+    return BaseScaffold(
+      title:  widget.catName.tr,
       body: subCategoriesAsync.when(
         data: (categories) => _buildBody(categories),
         loading: () => ShimmerLoading(

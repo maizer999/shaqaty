@@ -54,7 +54,7 @@
   "confirmLogoutTitle": "تأكيد تسجيل الخروج",
   "pleaseChangeNetwork": "يرجى تغيير الشبكة أو محاولة تغيير DNS",
   "contactUs": "اتصل بنا",
-  "continue": "استمرار",
+  "continue_kw": "استمرار",
   "copylink": "نسخ الرابط",
   "country": "الدولة",
   "uptoDate": "أحدث إصدار",
@@ -201,5 +201,8 @@
   "promoted": "مروج",
   "promotedItems": "إعلانات مميزة",
   "items": "الإعلانات",
-  "itemNameLbl": "اسم الإعلان"
+  "itemNameLbl": "اسم الإعلان",
+  "home": "الرئيسية",
+  "add_details" : "تفاصيل الاعلان"
+
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_core/core/widgets/custom_text.dart';
 import '../../core/network/app_cached_image.dart';
+import '../common/base_scaffold.dart';
 import '../sub_category/models/sub_category_response.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AdDetailsScreen extends StatefulWidget {
   final SubCategoryItem? model;
@@ -37,18 +39,9 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(item.name ?? "Details"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () {
-              debugPrint("Share item id: ${item.id}");
-            },
-          )
-        ],
-      ),
+    return BaseScaffold(
+      title:  "add_details".tr(),
+
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -120,9 +113,10 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
 
           // Description
           if (item.description?.isNotEmpty ?? false) ...[
-            const Text(
-              "Description",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            CustomText(
+              "descriptionLbl".tr(),
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
             ),
             const SizedBox(height: 8),
             CustomText(

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_core/core/widgets/custom_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_core/features/home/views/widgets/category_grid.dart';
 import 'package:flutter_core/features/home/views/widgets/home_slider_widget.dart';
+import 'package:get/get.dart';
 import '../../../core/utils/shimmer_loading.dart';
 import '../../../core/widgets/bottom_navigation_bar/custom_bottom_navigation_bar.dart';
+import '../../common/base_scaffold.dart';
 import '../providers/home_category_provider.dart';
 import '../providers/home_slider_provider.dart';
 
@@ -20,14 +23,7 @@ class HomeScreen extends ConsumerWidget {
     final categoryAsync =
     ref.watch(categoryProvider(const CategoryParams(page: 1)));
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
-      /// ✅ ADD IT HERE
-      bottomNavigationBar: CustomBottomNavigationBar(
-        controller: _bottomNavigationController,
-      ),
-
+    return BaseScaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),

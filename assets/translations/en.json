@@ -55,7 +55,7 @@
   "confirmLogoutTitle": "Logout Confirmation",
   "pleaseChangeNetwork": "Please change network or try changing DNS",
   "contactUs": "Contact us",
-  "continue": "Continue",
+  "continue_kw": "Continue",
   "copylink": "Copy link",
   "country": "Country",
   "uptoDate": "Latest version",
@@ -202,5 +202,8 @@
   "promoted": "PROMOTED",
   "promotedItems": "Featured Ads",
   "items": "Advertisements",
-  "itemNameLbl": "Ad name"
+  "itemNameLbl": "Ad name",
+  "home": "home",
+  "add_details" : "advertisement details"
+
 }
