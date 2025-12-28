@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../../build_context.dart';
 import '../../theme/app_icon.dart';
 import '../../theme/theme.dart';
