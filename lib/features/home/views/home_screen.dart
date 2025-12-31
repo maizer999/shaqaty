@@ -24,6 +24,7 @@ class HomeScreen extends ConsumerWidget {
     ref.watch(categoryProvider(const CategoryParams(page: 1)));
 
     return BaseScaffold(
+      showFab: true,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),

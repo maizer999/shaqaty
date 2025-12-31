@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../build_context.dart';
@@ -8,12 +7,10 @@ import '../../theme/theme.dart';
 import '../../theme/ui_utils.dart';
 import '../custom_text.dart';
 
-/// Custom Navigation bar that gives space to the centerDocked FAB button
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({required this.controller, super.key});
 
   final BottomNavigationController controller;
-
   @override
   State<CustomBottomNavigationBar> createState() =>
       _CustomBottomNavigationBarState();
