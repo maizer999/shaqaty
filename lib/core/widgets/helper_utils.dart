@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_core/build_context.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../shared/models/data/constant.dart';
 import '../theme/theme.dart';
 import 'custom_text.dart';
 //
@@ -30,6 +34,33 @@ class HelperUtils {
     }
   }
 
+
+  static Future<File> compressImageFile(File file) async {
+    try {
+      final int fileSize = await file.length();
+
+      if (fileSize <= Constant.maxSizeInBytes) {
+        return file;
+      }
+
+      final filePath = file.absolute.path;
+      final lastIndex = filePath.lastIndexOf(RegExp(r'.png|.jp'));
+      final splitted = filePath.substring(0, (lastIndex));
+      final outPath = "${splitted}_out${filePath.substring(lastIndex)}";
+
+      XFile? result = await FlutterImageCompress.compressAndGetFile(
+        filePath,
+        outPath,
+        quality: Constant.uploadImageQuality,
+        rotate: 0,
+        keepExif: true,
+      );
+
+      return File(result!.path);
+    } catch (e) {
+      throw Exception("Error compressing image: $e");
+    }
+  }
 
 
 

@@ -40,7 +40,7 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
     }
 
     return BaseScaffold(
-      title:  "add_details".tr(),
+      title:  "addDetails".tr(),
 
       body: ListView(
         padding: const EdgeInsets.all(16),

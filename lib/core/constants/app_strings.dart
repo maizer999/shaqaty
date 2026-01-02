@@ -90,10 +90,16 @@ class AppStrings {
 
 
 
-  static const String homeTab = "Home";
   static const String chat = "Chat" ;
   static const String myAdsTab =  "My Ads" ;
   static const String profileTab   =  "Profile" ;
+  static const String addDetails   =  "add_details" ;
+  static const String addAdvertisement   =  "add_advertisement" ;
+  static const String selectCategory   =  "select_category" ;
+
+
+
+
 
   static const String title = 'title';
   static const String subTitle = 'subTitle';

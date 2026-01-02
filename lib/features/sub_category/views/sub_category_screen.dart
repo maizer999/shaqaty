@@ -15,13 +15,14 @@ import '../models/sub_category_response.dart';
 class SubCategoryScreen extends ConsumerStatefulWidget {
   final String catName;
   final int catId;
-  final List<String> categoryIds;
+  // Change this to hold the actual objects for the breadcrumb UI
+  final List<dynamic> breadCrumbItems;
 
   const SubCategoryScreen({
     super.key,
     required this.catName,
     required this.catId,
-    required this.categoryIds,
+    required this.breadCrumbItems, // Pass the objects
   });
 
   @override
