@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_core/core/widgets/custom_text.dart';
-import 'package:flutter_core/features/addAds/views/add_item_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/utils/shimmer_loading.dart';
 import '../../common/base_scaffold.dart';
@@ -8,6 +7,7 @@ import '../../home/providers/home_slider_provider.dart';
 import '../../home/views/widgets/category_grid.dart';
 import '../../sub_category/views/sub_category_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'add_item_image_view.dart';
 
 
 class SelectCategoryScreen extends ConsumerWidget {
@@ -57,16 +57,10 @@ class SelectCategoryScreen extends ConsumerWidget {
                         );
                       } else {
                         print("DEBUG: Navigating to AddItemDetails (Final Category)");
-                        // Since there are no sub-categories, we go to the form
-                        Navigator.push(
-                          context,
-                          AddItemDetails.route(
-                            RouteSettings(
-                              arguments: {
-                                "breadCrumbItems": [selectedCat], // Pass as a list for breadcrumbs
-                                "isEdit": false,
-                              },
-                            ),
+
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AddItemImageView(),
                           ),
                         );
                       }

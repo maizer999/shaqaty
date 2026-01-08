@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_core/core/widgets/custom_text.dart';
 import 'package:flutter_core/core/widgets/auth_text_field.dart';
+import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/language/secure_storage.dart';
 import 'controller/login_provider.dart';
 import 'package:flutter_core/features/login/views/widgets/divider_with_text.dart';
@@ -74,11 +75,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       );
     });
 
-    /// 👀 UI STATE
     final loginState = ref.watch(loginUserProvider);
-
     return Scaffold(
-      backgroundColor: const Color(0xFF21899C),
+      backgroundColor: AppColors.primary,
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),

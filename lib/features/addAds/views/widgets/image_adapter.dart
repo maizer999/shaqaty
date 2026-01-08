@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../../../core/theme/ui_utils.dart';
+import '../../../../core/theme/ui_utils.dart';
 
 class ImageAdapter extends StatelessWidget {
   final dynamic image;

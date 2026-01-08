@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_core/features/login/views/login_view.dart';
 import 'package:flutter_core/features/login/views/widgets/login_header.dart';
 import 'package:http/http.dart' as ref;
+import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/language/secure_storage.dart';
 import '../../home/views/home_screen.dart';
 import '../../login/views/controller/login_provider.dart';
@@ -48,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     // Matching the LoginScreen background color
-    const Color themeColor = Color(0xFF21899C);
+    const Color themeColor = AppColors.primary;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(

@@ -173,6 +173,38 @@ class NetworkHandler {
     ));
   }
 
+  Future<Response> postMultipartFormData({
+    required String endpoint,
+    required FormData formData,
+    Map<String, String>? headers,
+  }) async {
+    try {
+      print("DEBUG: Sending request to $endpoint");
+
+      final response = await _dio.post(
+        endpoint,
+        data: formData,
+        options: Options(
+          headers: headers,
+          contentType: "multipart/form-data",
+        ),
+      );
+
+      print("DEBUG: Raw Response received: ${response.statusCode}");
+
+      // 🔥 FIX: Return the whole 'response', NOT 'response.data'
+      return response;
+
+    } on DioException catch (e) {
+      print("DEBUG: Dio Error: ${e.message}");
+      print("DEBUG: Response Data: ${e.response?.data}");
+      rethrow;
+    } catch (e) {
+      print("DEBUG: Unexpected Error: $e");
+      rethrow;
+    }
+  }
+
 
   Future<FormData> _prepareMultiPartData(Map<String, dynamic>? data) async {
     final formData = FormData();
@@ -365,6 +397,15 @@ class NetworkHandler {
       "Content-Type": "application/x-www-form-urlencoded",
       'Accept': 'application/json',
       'Accept-Language': languageCode ?? 'en',
+    };
+  }
+
+
+  Future<Map<String, String>> getMultipartHeaders() async {
+    final token = await SecureStorageHelper.getAccessToken();
+    return {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': 'Bearer static_fake_token_123',
     };
   }
 

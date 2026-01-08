@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_core/core/constants/app_colors.dart';
 import 'package:flutter_svg/svg.dart';
 
 enum FabType { diamond, round, ellipse, svg }
@@ -44,7 +45,7 @@ class DiamondFab extends StatelessWidget {
     } else {
       return FloatingActionButton(
         onPressed: onPressed,
-        backgroundColor: const Color(0xFF21899C),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         elevation: 4,
         shape: _shapeBorder,

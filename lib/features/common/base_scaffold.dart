@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_core/core/widgets/custom_text.dart';
+import '../../core/constants/app_colors.dart';
 import '../../core/theme/ui_utils.dart';
 import '../../core/widgets/bottom_navigation_bar/custom_bottom_navigation_bar.dart';
 import '../../core/widgets/bottom_navigation_bar/diamond_fab.dart';
@@ -12,6 +13,7 @@ class BaseScaffold extends StatelessWidget {
   final bool showAppBar;
   final bool showBottomNav;
   final bool showFab;
+  final Widget? bottomNavigationBar;
   final BottomNavigationController? bottomNavController;
 
   const BaseScaffold({
@@ -22,6 +24,7 @@ class BaseScaffold extends StatelessWidget {
     this.showBottomNav = true,
     this.bottomNavController,
     this.showFab = false,
+    this.bottomNavigationBar,
   });
 
   @override
@@ -43,18 +46,21 @@ class BaseScaffold extends StatelessWidget {
                 color: Colors.white,
               ),
               centerTitle: true,
-              backgroundColor: const Color(0xFF21899C),
+              backgroundColor: AppColors.primary,
               elevation: 4,
               iconTheme: const IconThemeData(color: Colors.white),
             ),
           )
               : null,
           body: SafeArea(child: body),
-          bottomNavigationBar: showBottomNav
+
+          bottomNavigationBar: bottomNavigationBar ?? (showBottomNav
               ? CustomBottomNavigationBar(
             controller: bottomNavController ?? BottomNavigationController(),
           )
-              : null,
+              : null),
+
+
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           floatingActionButton: showFab && isLoggedIn
               ? DiamondFab(

@@ -5,8 +5,13 @@ class AppStrings {
   static const String fontFamily = "MixArabRegular";
   static const String mawaniFontFamily = "MixArabRegular";
   static const String appVersion = "1.0.0";
-
-//login view
+  static String discover = "Discover & compare prices";
+  static String arrowLeft = "assets/images/Vector.png";
+  static String arrowUp = "assets/images/Vector01.png";
+  static String selectCamera = "assets/images/select_camera.png";
+  static String selectGallery = "assets/images/gallery.png";
+  static String loginBackgroundImage = "assets/images/login_backgground.png";
+  static String loginCamera = "assets/images/camera.png";
   static const loginTitle = 'LOGIN';
   static const loginPage = 'PAGE';
   static const emailHint = 'Enter your gmail address';

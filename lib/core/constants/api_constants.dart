@@ -4,4 +4,5 @@ class ApiUrls {
   static const String slider = "$base/get-slider";
   static const String categories = "$base/get-categories";
   static const String featured = "$base/get-featured-section";
+  static const String addAds = "$base/add-item";
 }

@@ -15,6 +15,7 @@ import '../routes/route_constant.dart';
 import '../utils/blurred_dialog_box.dart';
 import '../utils/language/secure_storage.dart';
 import '../widgets/custom_text.dart';
+import '../widgets/full_screen_image_view.dart';
 import '../widgets/helper_utils.dart';
 import 'theme.dart';
 import '../../shared/models/data/constant.dart';
@@ -144,6 +145,24 @@ class UiUtils {
         },
       ),
     );
+  }
+
+  static void showFullScreenImage(
+      BuildContext context, {
+        required ImageProvider provider,
+        VoidCallback? then,
+      }) {
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(
+        barrierDismissible: true,
+        builder: (BuildContext context) =>
+            FullScreenImageView(provider: provider),
+      ),
+    )
+        .then((value) {
+      then?.call();
+    });
   }
   static Widget buildButton(
       BuildContext context, {

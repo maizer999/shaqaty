@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_core/core/widgets/custom_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_core/features/home/views/widgets/category_grid.dart';
 import 'package:flutter_core/features/home/views/widgets/home_slider_widget.dart';
-import 'package:get/get.dart';
 import '../../../core/utils/shimmer_loading.dart';
 import '../../../core/widgets/bottom_navigation_bar/custom_bottom_navigation_bar.dart';
-import '../../addAds/views/add_item_screen.dart';
 import '../../common/base_scaffold.dart';
 import '../../sub_category/views/sub_category_screen.dart';
-import '../data/category_model.dart';
 import '../providers/home_category_provider.dart';
 import '../providers/home_slider_provider.dart';
 

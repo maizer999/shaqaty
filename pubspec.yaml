@@ -113,7 +113,7 @@ dependencies:
   cryptography: ^2.7.0
   root_checker_plus: ^1.0.0
   cached_network_image: ^3.3.1
-  dotted_border: ^3.1.0
+  dotted_border: ^2.1.0
   flutter_image_compress: ^2.4.0
 
 

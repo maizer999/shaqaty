@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../shared/providers/access_control_logic.dart';
 import '../../shared/providers/rollbase_string_constant.dart';
 import '../constants/app_colors.dart';
@@ -74,7 +75,7 @@ class CommonButtonWidget extends ConsumerWidget {
     return ConstrainedBox(
       constraints: BoxConstraints.tightFor(
         width: width,
-        height: height ?? AppSizes.hSize30,
+        height: height ?? AppSizes.hSize60,
       ),
       child: Container(
         width: width,
@@ -137,10 +138,10 @@ class CommonButtonWidget extends ConsumerWidget {
                               softWrap: true,
                               maxLines: 2,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: color ?? Colors.white,
-                                fontSize: fontSize ?? 14.0.sp,
-                                fontFamily: AppStrings.fontFamily,
+                              style: GoogleFonts.cairo(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
                             ).tr(),
                             if (rightIcon) AppSizes.width10,
