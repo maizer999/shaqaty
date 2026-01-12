@@ -22,7 +22,7 @@ class CommonButtonWidget extends ConsumerWidget {
   Color? borderColor;
   final double? borderWidth;
   FontWeight? fontWeight;
-  Color? color;
+  Color? fontColor;
   final EdgeInsets? padding;
   String? accessCheckText;
   final String pageURl;
@@ -40,7 +40,7 @@ class CommonButtonWidget extends ConsumerWidget {
       this.backgroundColor,
       this.borderColor,
       this.borderWidth,
-      this.color,
+      this.fontColor,
       this.text,
       this.borderRadius,
       this.fontSize,
@@ -116,11 +116,10 @@ class CommonButtonWidget extends ConsumerWidget {
                           softWrap: true,
                           maxLines: 2,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: color ?? Colors.white,
-                            fontSize: fontSize ?? 14.0.sp,
-                            fontWeight: fontWeight ?? FontWeight.w400,
-                            fontFamily: AppStrings.fontFamily,
+                          style: GoogleFonts.cairo(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: fontColor,
                           ),
                         ).tr()
                       : Row(
@@ -128,7 +127,7 @@ class CommonButtonWidget extends ConsumerWidget {
                           children: [
                             if (!rightIcon)
                               Image.asset(
-                                color: color,
+                                color: fontColor,
                                 icon ?? "",
                                 height: AppSizes.hSize30,
                               ),
@@ -172,7 +171,7 @@ class CommonButtonWidget extends ConsumerWidget {
           backgroundColor = AppColors.kTransparent;
           borderColor = AppColors.kTransparent;
           text ??= AppStrings.reject;
-          color = AppColors.kRed;
+          fontColor = AppColors.kRed;
         case ButtonType.submit:
           accessCheckText = RollBaseStringConstant.createAccess;
           backgroundColor = AppColors.kPrimaryColor;
@@ -181,12 +180,12 @@ class CommonButtonWidget extends ConsumerWidget {
           backgroundColor = AppColors.kTransparent;
           borderColor = AppColors.kTransparent;
           text ??= AppStrings.cancel;
-          color = AppColors.kRed;
+          fontColor = AppColors.kRed;
         case ButtonType.outline:
           accessCheckText = RollBaseStringConstant.approveRejectAccess;
           backgroundColor = AppColors.kTransparent;
           borderColor = AppColors.kBorderColor;
-          color = AppColors.kcDarkGray2Color;
+          fontColor = AppColors.kcDarkGray2Color;
         case ButtonType.login:
           backgroundColor = AppColors.kPrimaryColor;
         default:

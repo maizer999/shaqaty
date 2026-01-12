@@ -6,11 +6,8 @@ import 'package:flutter_core/features/common/base_scaffold.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_sizes.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../core/widgets/common_button_widget.dart';
-import '../../../core/widgets/general_button.dart';
 import 'add_item_form.dart';
 
 class AddItemImageView extends ConsumerWidget {
@@ -76,15 +73,19 @@ class AddItemImageView extends ConsumerWidget {
                             : null,
                       ),
                       child: images.isEmpty
-                          ? Center(
-                        child: Text(
-                          'اضغط لإضافة الصورة الرئيسية',
-                          style: GoogleFonts.balooThambi2(
-                            fontSize: 16,
-                            color: Colors.white70,
+                          ?
+                        Center(
+                          child: GestureDetector(
+                            onTap: () => _pickImage(),
+                            child: Text(
+                              'اضغط لإضافة الصورة الرئيسية',
+                              style: GoogleFonts.balooThambi2(
+                                fontSize: 18,
+                                color: Colors.black26,
+                              ),
+                            ),
                           ),
-                        ),
-                      )
+                        )
                           : null,
                     );
                   },
@@ -100,7 +101,8 @@ class AddItemImageView extends ConsumerWidget {
                         return const Center(
                           child: CustomText(
                             'الرجاء إضافة صورة على الأقل',
-                            fontSize: 16,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
                           ),
                         );
                       }
@@ -128,8 +130,9 @@ class AddItemImageView extends ConsumerWidget {
 
                 // Pick image button
                 CommonButtonWidget(
+                  fontColor: Colors.white,
                   text: 'اضافة صور',
-                  onTap: () {  _pickImage;},
+                  onTap: () => _pickImage(), // ✅ correct
                 ),
               ],
             ),
@@ -143,6 +146,7 @@ class AddItemImageView extends ConsumerWidget {
         child:
 
         CommonButtonWidget(
+          fontColor: Colors.white,
           text: 'التالي ',
           onTap: () { _goToFormScreen(context) ; },)
       ),

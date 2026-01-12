@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../common/base_scaffold.dart';
 import '../providers/item_provider.dart';
+import 'add_item_map_view.dart';
 
 class AddItemFormScreen extends ConsumerStatefulWidget {
   final List<File> images;
@@ -160,19 +160,43 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
                 child: SizedBox(
                   width: double.infinity,
                   height: 56,
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _onSubmit,
+                  child:
+
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MapPickerScreen(),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1E1E1E),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     ),
-                    child: _isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text(
+                    child: const Text(
                       "إرسال البيانات",
-                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
+                  // ElevatedButton(
+                  //
+                  //   onPressed: _isLoading ? null : _onSubmit,
+                  //   style: ElevatedButton.styleFrom(
+                  //     backgroundColor: const Color(0xFF1E1E1E),
+                  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  //   ),
+                  //   child: _isLoading
+                  //       ? const CircularProgressIndicator(color: Colors.white)
+                  //       : const Text(
+                  //     "إرسال البيانات",
+                  //     style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  //   ),
+                  // ),
                 ),
               ),
             ],
