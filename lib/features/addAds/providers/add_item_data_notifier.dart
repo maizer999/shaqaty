@@ -20,6 +20,10 @@ class AddItemDataNotifier extends StateNotifier<AddItemData> {
   void setLongitude(String val) => state = state.copyWith(longitude: val);
   void setShowOnlyToPremium(String val) => state = state.copyWith(showOnlyToPremium: val);
   void setImages(List<File> val) => state = state.copyWith(images: val);
+
+  void addImages(List<File> newImages) {
+    state = state.copyWith(images: [...state.images, ...newImages]);
+  }
 }
 
 final addItemDataProvider = StateNotifierProvider<AddItemDataNotifier, AddItemData>(

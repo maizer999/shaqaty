@@ -8,33 +8,45 @@ import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_sizes.dart';
 import '../../../core/widgets/common_button_widget.dart';
+import '../providers/add_item_data_notifier.dart';
 import 'add_item_form.dart';
 
 class AddItemImageView extends ConsumerWidget {
   final double latitude;
   final double longitude;
 
-
-  AddItemImageView({super.key ,  required this.latitude, required this.longitude,});
+  AddItemImageView({
+    super.key,
+    required this.latitude,
+    required this.longitude,
+  });
 
   final ValueNotifier<List<File>> imagesNotifier = ValueNotifier([]);
 
-  // Pick multiple images
-  Future<void> _pickImage() async {
+  // Pick multiple images and update provider
+  Future<void> _pickImage(WidgetRef ref) async {
     final picker = ImagePicker();
     final pickedFiles = await picker.pickMultiImage();
 
     if (pickedFiles.isNotEmpty) {
+      final files = pickedFiles.map((x) => File(x.path)).toList();
+
+      // تحديث الـProvider
+      ref.read(addItemDataProvider.notifier).addImages(files);
+
+      // تحديث الـValueNotifier للـUI
       imagesNotifier.value = [
         ...imagesNotifier.value,
-        ...pickedFiles.map((x) => File(x.path)),
+        ...files,
       ];
     }
   }
 
   // Navigate to form screen with selected images
-  void _goToFormScreen(BuildContext context) {
-    if (imagesNotifier.value.isEmpty) {
+  void _goToFormScreen(BuildContext context, WidgetRef ref) {
+    final images = ref.read(addItemDataProvider).images;
+
+    if (images.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("الرجاء اختيار صورة واحدة على الأقل")),
       );
@@ -43,7 +55,7 @@ class AddItemImageView extends ConsumerWidget {
 
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => AddItemFormScreen(images: imagesNotifier.value),
+        builder: (context) => AddItemFormScreen(images: images),
       ),
     );
   }
@@ -77,19 +89,18 @@ class AddItemImageView extends ConsumerWidget {
                             : null,
                       ),
                       child: images.isEmpty
-                          ?
-                        Center(
-                          child: GestureDetector(
-                            onTap: () => _pickImage(),
-                            child: Text(
-                              'اضغط لإضافة الصورة الرئيسية',
-                              style: GoogleFonts.balooThambi2(
-                                fontSize: 18,
-                                color: Colors.black26,
-                              ),
+                          ? Center(
+                        child: GestureDetector(
+                          onTap: () => _pickImage(ref),
+                          child: Text(
+                            'اضغط لإضافة الصورة الرئيسية',
+                            style: GoogleFonts.balooThambi2(
+                              fontSize: 18,
+                              color: Colors.black26,
                             ),
                           ),
-                        )
+                        ),
+                      )
                           : null,
                     );
                   },
@@ -117,6 +128,8 @@ class AddItemImageView extends ConsumerWidget {
                           imagesNotifier.value = [
                             ...imagesNotifier.value..removeAt(index)
                           ];
+                          // تحديث الـProvider بعد الحذف
+                          ref.read(addItemDataProvider.notifier).setImages(imagesNotifier.value);
                         },
                         onTap: (index) {
                           final selected = images[index];
@@ -124,6 +137,8 @@ class AddItemImageView extends ConsumerWidget {
                             selected,
                             ...images.where((e) => e != selected),
                           ];
+                          // تحديث الـProvider بعد الترتيب
+                          ref.read(addItemDataProvider.notifier).setImages(imagesNotifier.value);
                         },
                       );
                     },
@@ -136,7 +151,7 @@ class AddItemImageView extends ConsumerWidget {
                 CommonButtonWidget(
                   fontColor: Colors.white,
                   text: 'اضافة صور',
-                  onTap: () => _pickImage(), // ✅ correct
+                  onTap: () => _pickImage(ref),
                 ),
               ],
             ),
@@ -147,12 +162,11 @@ class AddItemImageView extends ConsumerWidget {
       // Next button to go to form screen
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-        child:
-
-        CommonButtonWidget(
+        child: CommonButtonWidget(
           fontColor: Colors.white,
-          text: 'التالي ',
-          onTap: () { _goToFormScreen(context) ; },)
+          text: 'التالي',
+          onTap: () => _goToFormScreen(context, ref),
+        ),
       ),
     );
   }

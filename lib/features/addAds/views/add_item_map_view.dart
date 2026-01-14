@@ -3,20 +3,25 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_core/features/addAds/views/add_item_image_view.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-class AddItemMapView extends StatefulWidget {
+import '../providers/add_item_data_notifier.dart';
+
+class AddItemMapView extends ConsumerStatefulWidget {
   const AddItemMapView({super.key});
 
   @override
-  State<AddItemMapView> createState() => _AddItemMapViewState();
+  ConsumerState<AddItemMapView> createState() => _AddItemMapViewState();
 }
 
-class _AddItemMapViewState extends State<AddItemMapView> {
+class _AddItemMapViewState extends ConsumerState<AddItemMapView> {
   GoogleMapController? _mapController;
+
   LatLng _currentPosition = const LatLng(31.963158, 35.930359);
   Marker? _selectedMarker;
 
@@ -25,8 +30,7 @@ class _AddItemMapViewState extends State<AddItemMapView> {
 
   Timer? _debounce;
 
-  /// 🔑 Required for Places REST API
-  static const String _apiKey = 'YOUR_GOOGLE_API_KEY';
+  static const String _apiKey = 'AIzaSyAboJqqCU48ksA9hu3ylF41e5DUhrE2Kho';
 
   @override
   void initState() {
@@ -42,10 +46,10 @@ class _AddItemMapViewState extends State<AddItemMapView> {
   }
 
   Future<void> _requestLocationPermission() async {
-    var status = await Permission.location.request();
+    final status = await Permission.location.request();
     if (!status.isGranted) return;
 
-    Position position = await Geolocator.getCurrentPosition(
+    final position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
 
@@ -58,20 +62,17 @@ class _AddItemMapViewState extends State<AddItemMapView> {
     });
 
     _mapController?.animateCamera(
-      CameraUpdate.newLatLng(_currentPosition),
+      CameraUpdate.newLatLngZoom(_currentPosition, 15),
     );
   }
 
-  /// 🔍 Debounced auto-search
   void _onSearchChanged(String value) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-
+    _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () {
       _searchPlaces(value);
     });
   }
 
-  /// 🔍 Google Places Autocomplete
   Future<void> _searchPlaces(String input) async {
     if (input.isEmpty) {
       setState(() => _searchResults.clear());
@@ -97,7 +98,6 @@ class _AddItemMapViewState extends State<AddItemMapView> {
     }
   }
 
-  /// 📍 Select place from dropdown
   Future<void> _selectPlace(String placeId, String description) async {
     final uri = Uri.parse(
       'https://maps.googleapis.com/maps/api/place/details/json'
@@ -109,7 +109,7 @@ class _AddItemMapViewState extends State<AddItemMapView> {
     final data = json.decode(response.body);
 
     final location = data['result']['geometry']['location'];
-    final LatLng latLng = LatLng(location['lat'], location['lng']);
+    final latLng = LatLng(location['lat'], location['lng']);
 
     setState(() {
       _searchController.text = description;
@@ -134,16 +134,64 @@ class _AddItemMapViewState extends State<AddItemMapView> {
     });
   }
 
-  void _goToNextView() {
+  /// 📍 استخراج عنوان ذكي (بدون Plus Codes)
+  Future<Map<String, String>> _resolveAddress(LatLng location) async {
+    final placemarks = await placemarkFromCoordinates(
+      location.latitude,
+      location.longitude,
+    );
+
+    if (placemarks.isEmpty) return {};
+
+    final p = placemarks.first;
+
+    final country = p.country ?? '';
+    final city = p.locality?.isNotEmpty == true
+        ? p.locality!
+        : p.administrativeArea ?? '';
+
+    final state = p.subLocality?.isNotEmpty == true
+        ? p.subLocality!
+        : p.subAdministrativeArea ?? '';
+
+    final street = p.thoroughfare?.isNotEmpty == true
+        ? p.thoroughfare!
+        : p.street ?? '';
+
+    return {
+      'country': country,
+      'city': city,
+      'state': state,
+      'street': street,
+    };
+  }
+
+  Future<void> _goToNextView() async {
     if (_selectedMarker == null) return;
 
-    final LatLng location = _selectedMarker!.position;
+    final location = _selectedMarker!.position;
 
-    final String googleMapsUrl =
-        'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}';
+    try {
+      final address = await _resolveAddress(location);
 
+      debugPrint('=== Final Address ===');
+      address.forEach((k, v) => debugPrint('$k: $v'));
+      debugPrint('lat: ${location.latitude}');
+      debugPrint('lng: ${location.longitude}');
+      debugPrint('====================');
 
-    print('Selected Location: Latitude=$googleMapsUrl');
+      /// تحديث الـ provider
+      // ref.read(addItemDataProvider.notifier).updateLocation(
+      //   country: address['country'] ?? '',
+      //   city: address['city'] ?? '',
+      //   state: address['state'] ?? '',
+      //   address: address['street'] ?? '',
+      //   latitude: location.latitude.toString(),
+      //   longitude: location.longitude.toString(),
+      // );
+    } catch (e) {
+      debugPrint('Reverse geocoding error: $e');
+    }
 
     Navigator.push(
       context,
@@ -160,7 +208,7 @@ class _AddItemMapViewState extends State<AddItemMapView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Location on Map'),
+        title: const Text('Select Location'),
         backgroundColor: Colors.teal,
       ),
       body: Stack(
@@ -172,14 +220,10 @@ class _AddItemMapViewState extends State<AddItemMapView> {
             ),
             myLocationEnabled: true,
             myLocationButtonEnabled: true,
-            onMapCreated: (controller) {
-              _mapController = controller;
-            },
+            onMapCreated: (controller) => _mapController = controller,
             markers: _selectedMarker != null ? {_selectedMarker!} : {},
             onTap: _onMapTap,
           ),
-
-          /// 🔍 Search Box + Dropdown
           Positioned(
             top: 12,
             left: 16,
@@ -193,7 +237,7 @@ class _AddItemMapViewState extends State<AddItemMapView> {
                     controller: _searchController,
                     onChanged: _onSearchChanged,
                     decoration: const InputDecoration(
-                      hintText: 'Search for a place',
+                      hintText: 'Search location',
                       prefixIcon: Icon(Icons.search),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.all(14),
@@ -210,7 +254,7 @@ class _AddItemMapViewState extends State<AddItemMapView> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: _searchResults.length,
-                      itemBuilder: (context, index) {
+                      itemBuilder: (_, index) {
                         final item = _searchResults[index];
                         return ListTile(
                           title: Text(item['description']),
@@ -225,21 +269,19 @@ class _AddItemMapViewState extends State<AddItemMapView> {
               ],
             ),
           ),
-
-          /// 🔽 Bottom Confirm Button
           Positioned(
             left: 16,
             right: 16,
             bottom: 20,
             child: ElevatedButton(
+              onPressed: _selectedMarker == null ? null : _goToNextView,
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
                 backgroundColor: Colors.teal,
+                padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              onPressed: _selectedMarker == null ? null : _goToNextView,
               child: const Text(
                 'Confirm Location',
                 style: TextStyle(fontSize: 16),

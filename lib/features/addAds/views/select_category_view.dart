@@ -7,6 +7,7 @@ import '../../home/providers/home_slider_provider.dart';
 import '../../home/views/widgets/category_grid.dart';
 import '../../sub_category/views/sub_category_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
+import '../providers/add_item_data_notifier.dart';
 import 'add_item_image_view.dart';
 import 'add_item_map_view.dart';
 
@@ -58,7 +59,9 @@ class SelectCategoryScreen extends ConsumerWidget {
                         );
                       } else {
                         print("DEBUG: Navigating to AddItemDetails (Final Category)");
+                        print("DEBUG: Navigating to AddItemDetails ${selectedCat.id.toString()}");
 
+                        ref.read(addItemDataProvider.notifier).setCategoryId(selectedCat.id.toString());
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => AddItemMapView(),

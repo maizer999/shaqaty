@@ -3,12 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../common/base_scaffold.dart';
+import '../../home/views/home_screen.dart';
+import '../providers/add_item_data_notifier.dart';
 import '../providers/item_provider.dart';
-import 'add_item_map_view.dart';
 
 class AddItemFormScreen extends ConsumerStatefulWidget {
   final List<File> images;
-  const AddItemFormScreen({super.key, required this.images});
+  final double latitude;
+  final double longitude;
+
+  const AddItemFormScreen({
+    super.key,
+    required this.images,
+    this.latitude = 31.963158,
+    this.longitude = 35.930359,
+  });
 
   @override
   ConsumerState<AddItemFormScreen> createState() => _AddItemFormScreenState();
@@ -17,15 +26,15 @@ class AddItemFormScreen extends ConsumerStatefulWidget {
 class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _contactController = TextEditingController();
-  final TextEditingController _videoController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _countryController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _stateController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController(text: "منتج تجريبي");
+  final TextEditingController _descController = TextEditingController(text: "وصف تجريبي");
+  final TextEditingController _priceController = TextEditingController(text: "100");
+  final TextEditingController _contactController = TextEditingController(text: "0799999999");
+  final TextEditingController _videoController = TextEditingController(text: "https://youtube.com/example");
+  final TextEditingController _addressController = TextEditingController(text: "شارع تجريبي، مبنى 1");
+  final TextEditingController _countryController = TextEditingController(text: "الأردن");
+  final TextEditingController _cityController = TextEditingController(text: "عمان");
+  final TextEditingController _stateController = TextEditingController(text: "جاردنز");
 
   bool _isLoading = false;
 
@@ -42,31 +51,74 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
     setState(() => _isLoading = true);
 
     try {
+      // تحديث الـ Provider بالبيانات الحالية
+      final notifier = ref.read(addItemDataProvider.notifier);
+      notifier.setName(_nameController.text);
+      notifier.setDescription(_descController.text);
+      notifier.setCategoryId("2");
+      notifier.setAllCategoryIds("2");
+      notifier.setPrice(_priceController.text);
+      notifier.setContact(_contactController.text);
+      notifier.setVideoLink(_videoController.text);
+      notifier.setAddress(_addressController.text);
+      notifier.setCountry(_countryController.text);
+      notifier.setCity(_cityController.text);
+      notifier.setStateName(_stateController.text);
+      notifier.setLatitude(widget.latitude.toString());
+      notifier.setLongitude(widget.longitude.toString());
+      notifier.setShowOnlyToPremium("1");
+      notifier.addImages(widget.images);
+
+      // ✅ طباعة كل البيانات الحالية في Provider
+      final state = ref.read(addItemDataProvider);
+      print("=== Provider Current State ===");
+      print("Name: ${state.name}");
+      print("Description: ${state.description}");
+      print("CategoryId: ${state.categoryId}");
+      print("AllCategoryIds: ${state.allCategoryIds}");
+      print("Price: ${state.price}");
+      print("Contact: ${state.contact}");
+      print("VideoLink: ${state.videoLink}");
+      print("Address: ${state.address}");
+      print("Country: ${state.country}");
+      print("City: ${state.city}");
+      print("State: ${state.state}");
+      print("Latitude: ${state.latitude}");
+      print("Longitude: ${state.longitude}");
+      print("ShowOnlyToPremium: ${state.showOnlyToPremium}");
+      print("Images count: ${state.images.length}");
+      print("==============================");
+
+      // متابعة عملية الإرسال
       final result = await ref.read(itemRepositoryProvider).addItem(
-        name: _nameController.text,
-        description: _descController.text,
-        categoryId: "2",
-        price: _priceController.text,
-        contact: _contactController.text,
-        videoLink: _videoController.text,
-        allCategoryIds: "2",
-        address: _addressController.text,
-        latitude: "23.232639",
-        longitude: "69.6415341",
-        country: _countryController.text,
-        city: _cityController.text,
-        state: _stateController.text,
-        showOnlyToPremium: "1",
-        galleryImages: widget.images,
+        name: state.name ?? "",
+        description: state.description ?? "",
+        categoryId: state.categoryId ?? "",
+        allCategoryIds: state.allCategoryIds ?? "",
+        price: state.price ?? "",
+        contact: state.contact ?? "",
+        videoLink: state.videoLink ?? "",
+        address: state.address ?? "",
+        latitude: state.latitude ?? "",
+        longitude: state.longitude ?? "",
+        country: state.country ?? "",
+        city: state.city ?? "",
+        state: state.state ?? "",
+        showOnlyToPremium: state.showOnlyToPremium ?? "1",
+        galleryImages: state.images,
       );
 
       result.when(
             (response) {
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(content: Text(response.message ?? "تم رفع البيانات بنجاح")),
-          // );
-          _showSuccessDialog("تم رفع البيانات بنجاح" , context);
-          // Navigator.of(context).pop(); // back to previous screen
+          _showSuccessDialog(
+            "تم رفع البيانات بنجاح",
+            context,
+            onConfirmed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) =>  HomeScreen()),
+              );
+            },
+          );
         },
             (error) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -74,6 +126,7 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
           );
         },
       );
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("فشل الإرسال: $e")),
@@ -86,25 +139,8 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      // title:  "addDetails".tr(),Directionality(
-      // textDirection: TextDirection.rtl,
-      // child: Scaffold(
-      //   backgroundColor: Colors.white,
-      //   appBar: AppBar(
-      //     leading: IconButton(
-      //       icon: const Icon(Icons.arrow_forward, color: Colors.black),
-      //       onPressed: () => Navigator.pop(context),
-      //     ),
-      //     title: const Text(
-      //       "رفع بيانات KYC",
-      //       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
-      //     ),
-      //     backgroundColor: Colors.white,
-      //     elevation: 0,
-      //     centerTitle: true,
-      //   ),
-
-          body: Form(
+      body: SafeArea(
+        child: Form(
           key: _formKey,
           child: Column(
             children: [
@@ -160,48 +196,26 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
                 child: SizedBox(
                   width: double.infinity,
                   height: 56,
-                  child:
-
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const AddItemMapView(),
-                        ),
-                      );
-                    },
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _onSubmit,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1E1E1E),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     ),
-                    child: const Text(
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
                       "إرسال البيانات",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  // ElevatedButton(
-                  //
-                  //   onPressed: _isLoading ? null : _onSubmit,
-                  //   style: ElevatedButton.styleFrom(
-                  //     backgroundColor: const Color(0xFF1E1E1E),
-                  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                  //   ),
-                  //   child: _isLoading
-                  //       ? const CircularProgressIndicator(color: Colors.white)
-                  //       : const Text(
-                  //     "إرسال البيانات",
-                  //     style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                  //   ),
-                  // ),
                 ),
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _inputLabel(String label) => Padding(
@@ -227,7 +241,7 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
             hintStyle: GoogleFonts.cairo(fontSize: 13, color: Colors.grey),
             errorStyle: GoogleFonts.cairo(color: Colors.red, height: 0.8),
             filled: true,
-            fillColor: const Color(0xFFF1F8F5),
+            fillColor: const Color(0xFFFFFFFF),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -246,8 +260,8 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
       );
 }
 
-
-void _showSuccessDialog(String message , BuildContext context ) {
+// ✅ Dialog النجاح مع callback للانتقال للصفحة الرئيسية
+void _showSuccessDialog(String message, BuildContext context, {VoidCallback? onConfirmed}) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -256,7 +270,6 @@ void _showSuccessDialog(String message , BuildContext context ) {
         textDirection: TextDirection.rtl,
         child: AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          // Centers the icon and title area
           title: const Center(
             child: Icon(Icons.check_circle, color: Colors.green, size: 60),
           ),
@@ -265,13 +278,15 @@ void _showSuccessDialog(String message , BuildContext context ) {
             textAlign: TextAlign.center,
             style: GoogleFonts.cairo(fontWeight: FontWeight.bold),
           ),
-          // 🔥 This line centers all buttons in the actions list
           actionsAlignment: MainAxisAlignment.center,
           actions: [
             SizedBox(
-              width: double.infinity, // Makes the button wider if you prefer
+              width: double.infinity,
               child: TextButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  if (onConfirmed != null) onConfirmed();
+                },
                 child: Text(
                   "حسناً",
                   style: GoogleFonts.cairo(
