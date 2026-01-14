@@ -8,6 +8,7 @@ import '../../home/views/widgets/category_grid.dart';
 import '../../sub_category/views/sub_category_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'add_item_image_view.dart';
+import 'add_item_map_view.dart';
 
 
 class SelectCategoryScreen extends ConsumerWidget {
@@ -60,7 +61,7 @@ class SelectCategoryScreen extends ConsumerWidget {
 
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => AddItemImageView(),
+                            builder: (context) => AddItemMapView(),
                           ),
                         );
                       }

@@ -166,7 +166,7 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const MapPickerScreen(),
+                          builder: (context) => const AddItemMapView(),
                         ),
                       );
                     },

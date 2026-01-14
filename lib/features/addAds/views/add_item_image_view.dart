@@ -11,7 +11,11 @@ import '../../../core/widgets/common_button_widget.dart';
 import 'add_item_form.dart';
 
 class AddItemImageView extends ConsumerWidget {
-  AddItemImageView({super.key});
+  final double latitude;
+  final double longitude;
+
+
+  AddItemImageView({super.key ,  required this.latitude, required this.longitude,});
 
   final ValueNotifier<List<File>> imagesNotifier = ValueNotifier([]);
 
