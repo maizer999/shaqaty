@@ -486,6 +486,7 @@ class SubCategoryItemMapper extends ClassMapperBase<SubCategoryItem> {
   static SubCategoryItemMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SubCategoryItemMapper._());
+      TranslatedItemMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -585,6 +586,112 @@ class SubCategoryItemMapper extends ClassMapperBase<SubCategoryItem> {
     key: r'admin_edit_reason',
     opt: true,
   );
+  static double? _$latitude(SubCategoryItem v) => v.latitude;
+  static const Field<SubCategoryItem, double> _f$latitude = Field(
+    'latitude',
+    _$latitude,
+    opt: true,
+  );
+  static double? _$longitude(SubCategoryItem v) => v.longitude;
+  static const Field<SubCategoryItem, double> _f$longitude = Field(
+    'longitude',
+    _$longitude,
+    opt: true,
+  );
+  static String? _$address(SubCategoryItem v) => v.address;
+  static const Field<SubCategoryItem, String> _f$address = Field(
+    'address',
+    _$address,
+    opt: true,
+  );
+  static String? _$contact(SubCategoryItem v) => v.contact;
+  static const Field<SubCategoryItem, String> _f$contact = Field(
+    'contact',
+    _$contact,
+    opt: true,
+  );
+  static int? _$showOnlyToPremium(SubCategoryItem v) => v.showOnlyToPremium;
+  static const Field<SubCategoryItem, int> _f$showOnlyToPremium = Field(
+    'showOnlyToPremium',
+    _$showOnlyToPremium,
+    key: r'show_only_to_premium',
+    opt: true,
+  );
+  static String? _$status(SubCategoryItem v) => v.status;
+  static const Field<SubCategoryItem, String> _f$status = Field(
+    'status',
+    _$status,
+    opt: true,
+  );
+  static String? _$rejectedReason(SubCategoryItem v) => v.rejectedReason;
+  static const Field<SubCategoryItem, String> _f$rejectedReason = Field(
+    'rejectedReason',
+    _$rejectedReason,
+    key: r'rejected_reason',
+    opt: true,
+  );
+  static String? _$videoLink(SubCategoryItem v) => v.videoLink;
+  static const Field<SubCategoryItem, String> _f$videoLink = Field(
+    'videoLink',
+    _$videoLink,
+    key: r'video_link',
+    opt: true,
+  );
+  static Map<String, dynamic>? _$user(SubCategoryItem v) => v.user;
+  static const Field<SubCategoryItem, Map<String, dynamic>> _f$user = Field(
+    'user',
+    _$user,
+    opt: true,
+  );
+  static Map<String, dynamic>? _$category(SubCategoryItem v) => v.category;
+  static const Field<SubCategoryItem, Map<String, dynamic>> _f$category = Field(
+    'category',
+    _$category,
+    opt: true,
+  );
+  static List<dynamic>? _$galleryImages(SubCategoryItem v) => v.galleryImages;
+  static const Field<SubCategoryItem, List<dynamic>> _f$galleryImages = Field(
+    'galleryImages',
+    _$galleryImages,
+    key: r'gallery_images',
+    opt: true,
+  );
+  static List<dynamic>? _$featuredItems(SubCategoryItem v) => v.featuredItems;
+  static const Field<SubCategoryItem, List<dynamic>> _f$featuredItems = Field(
+    'featuredItems',
+    _$featuredItems,
+    key: r'featured_items',
+    opt: true,
+  );
+  static bool? _$isFeature(SubCategoryItem v) => v.isFeature;
+  static const Field<SubCategoryItem, bool> _f$isFeature = Field(
+    'isFeature',
+    _$isFeature,
+    key: r'is_feature',
+    opt: true,
+  );
+  static int? _$totalLikes(SubCategoryItem v) => v.totalLikes;
+  static const Field<SubCategoryItem, int> _f$totalLikes = Field(
+    'totalLikes',
+    _$totalLikes,
+    key: r'total_likes',
+    opt: true,
+  );
+  static bool? _$isLiked(SubCategoryItem v) => v.isLiked;
+  static const Field<SubCategoryItem, bool> _f$isLiked = Field(
+    'isLiked',
+    _$isLiked,
+    key: r'is_liked',
+    opt: true,
+  );
+  static TranslatedItem? _$translatedItem(SubCategoryItem v) =>
+      v.translatedItem;
+  static const Field<SubCategoryItem, TranslatedItem> _f$translatedItem = Field(
+    'translatedItem',
+    _$translatedItem,
+    key: r'translated_item',
+    opt: true,
+  );
 
   @override
   final MappableFields<SubCategoryItem> fields = const {
@@ -603,6 +710,22 @@ class SubCategoryItemMapper extends ClassMapperBase<SubCategoryItem> {
     #updatedAt: _f$updatedAt,
     #isEditedByAdmin: _f$isEditedByAdmin,
     #adminEditReason: _f$adminEditReason,
+    #latitude: _f$latitude,
+    #longitude: _f$longitude,
+    #address: _f$address,
+    #contact: _f$contact,
+    #showOnlyToPremium: _f$showOnlyToPremium,
+    #status: _f$status,
+    #rejectedReason: _f$rejectedReason,
+    #videoLink: _f$videoLink,
+    #user: _f$user,
+    #category: _f$category,
+    #galleryImages: _f$galleryImages,
+    #featuredItems: _f$featuredItems,
+    #isFeature: _f$isFeature,
+    #totalLikes: _f$totalLikes,
+    #isLiked: _f$isLiked,
+    #translatedItem: _f$translatedItem,
   };
   @override
   final bool ignoreNull = true;
@@ -624,6 +747,22 @@ class SubCategoryItemMapper extends ClassMapperBase<SubCategoryItem> {
       updatedAt: data.dec(_f$updatedAt),
       isEditedByAdmin: data.dec(_f$isEditedByAdmin),
       adminEditReason: data.dec(_f$adminEditReason),
+      latitude: data.dec(_f$latitude),
+      longitude: data.dec(_f$longitude),
+      address: data.dec(_f$address),
+      contact: data.dec(_f$contact),
+      showOnlyToPremium: data.dec(_f$showOnlyToPremium),
+      status: data.dec(_f$status),
+      rejectedReason: data.dec(_f$rejectedReason),
+      videoLink: data.dec(_f$videoLink),
+      user: data.dec(_f$user),
+      category: data.dec(_f$category),
+      galleryImages: data.dec(_f$galleryImages),
+      featuredItems: data.dec(_f$featuredItems),
+      isFeature: data.dec(_f$isFeature),
+      totalLikes: data.dec(_f$totalLikes),
+      isLiked: data.dec(_f$isLiked),
+      translatedItem: data.dec(_f$translatedItem),
     );
   }
 
@@ -689,6 +828,16 @@ extension SubCategoryItemValueCopy<$R, $Out>
 
 abstract class SubCategoryItemCopyWith<$R, $In extends SubCategoryItem, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
+  get user;
+  MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
+  get category;
+  ListCopyWith<$R, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
+  get galleryImages;
+  ListCopyWith<$R, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
+  get featuredItems;
+  TranslatedItemCopyWith<$R, TranslatedItem, TranslatedItem>?
+  get translatedItem;
   $R call({
     int? id,
     String? name,
@@ -705,6 +854,22 @@ abstract class SubCategoryItemCopyWith<$R, $In extends SubCategoryItem, $Out>
     String? updatedAt,
     int? isEditedByAdmin,
     String? adminEditReason,
+    double? latitude,
+    double? longitude,
+    String? address,
+    String? contact,
+    int? showOnlyToPremium,
+    String? status,
+    String? rejectedReason,
+    String? videoLink,
+    Map<String, dynamic>? user,
+    Map<String, dynamic>? category,
+    List<dynamic>? galleryImages,
+    List<dynamic>? featuredItems,
+    bool? isFeature,
+    int? totalLikes,
+    bool? isLiked,
+    TranslatedItem? translatedItem,
   });
   SubCategoryItemCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -719,6 +884,46 @@ class _SubCategoryItemCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<SubCategoryItem> $mapper =
       SubCategoryItemMapper.ensureInitialized();
+  @override
+  MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
+  get user => $value.user != null
+      ? MapCopyWith(
+          $value.user!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(user: v),
+        )
+      : null;
+  @override
+  MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
+  get category => $value.category != null
+      ? MapCopyWith(
+          $value.category!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(category: v),
+        )
+      : null;
+  @override
+  ListCopyWith<$R, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
+  get galleryImages => $value.galleryImages != null
+      ? ListCopyWith(
+          $value.galleryImages!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(galleryImages: v),
+        )
+      : null;
+  @override
+  ListCopyWith<$R, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
+  get featuredItems => $value.featuredItems != null
+      ? ListCopyWith(
+          $value.featuredItems!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(featuredItems: v),
+        )
+      : null;
+  @override
+  TranslatedItemCopyWith<$R, TranslatedItem, TranslatedItem>?
+  get translatedItem =>
+      $value.translatedItem?.copyWith.$chain((v) => call(translatedItem: v));
   @override
   $R call({
     Object? id = $none,
@@ -736,6 +941,22 @@ class _SubCategoryItemCopyWithImpl<$R, $Out>
     Object? updatedAt = $none,
     Object? isEditedByAdmin = $none,
     Object? adminEditReason = $none,
+    Object? latitude = $none,
+    Object? longitude = $none,
+    Object? address = $none,
+    Object? contact = $none,
+    Object? showOnlyToPremium = $none,
+    Object? status = $none,
+    Object? rejectedReason = $none,
+    Object? videoLink = $none,
+    Object? user = $none,
+    Object? category = $none,
+    Object? galleryImages = $none,
+    Object? featuredItems = $none,
+    Object? isFeature = $none,
+    Object? totalLikes = $none,
+    Object? isLiked = $none,
+    Object? translatedItem = $none,
   }) => $apply(
     FieldCopyWithData({
       if (id != $none) #id: id,
@@ -753,6 +974,22 @@ class _SubCategoryItemCopyWithImpl<$R, $Out>
       if (updatedAt != $none) #updatedAt: updatedAt,
       if (isEditedByAdmin != $none) #isEditedByAdmin: isEditedByAdmin,
       if (adminEditReason != $none) #adminEditReason: adminEditReason,
+      if (latitude != $none) #latitude: latitude,
+      if (longitude != $none) #longitude: longitude,
+      if (address != $none) #address: address,
+      if (contact != $none) #contact: contact,
+      if (showOnlyToPremium != $none) #showOnlyToPremium: showOnlyToPremium,
+      if (status != $none) #status: status,
+      if (rejectedReason != $none) #rejectedReason: rejectedReason,
+      if (videoLink != $none) #videoLink: videoLink,
+      if (user != $none) #user: user,
+      if (category != $none) #category: category,
+      if (galleryImages != $none) #galleryImages: galleryImages,
+      if (featuredItems != $none) #featuredItems: featuredItems,
+      if (isFeature != $none) #isFeature: isFeature,
+      if (totalLikes != $none) #totalLikes: totalLikes,
+      if (isLiked != $none) #isLiked: isLiked,
+      if (translatedItem != $none) #translatedItem: translatedItem,
     }),
   );
   @override
@@ -772,11 +1009,247 @@ class _SubCategoryItemCopyWithImpl<$R, $Out>
     updatedAt: data.get(#updatedAt, or: $value.updatedAt),
     isEditedByAdmin: data.get(#isEditedByAdmin, or: $value.isEditedByAdmin),
     adminEditReason: data.get(#adminEditReason, or: $value.adminEditReason),
+    latitude: data.get(#latitude, or: $value.latitude),
+    longitude: data.get(#longitude, or: $value.longitude),
+    address: data.get(#address, or: $value.address),
+    contact: data.get(#contact, or: $value.contact),
+    showOnlyToPremium: data.get(
+      #showOnlyToPremium,
+      or: $value.showOnlyToPremium,
+    ),
+    status: data.get(#status, or: $value.status),
+    rejectedReason: data.get(#rejectedReason, or: $value.rejectedReason),
+    videoLink: data.get(#videoLink, or: $value.videoLink),
+    user: data.get(#user, or: $value.user),
+    category: data.get(#category, or: $value.category),
+    galleryImages: data.get(#galleryImages, or: $value.galleryImages),
+    featuredItems: data.get(#featuredItems, or: $value.featuredItems),
+    isFeature: data.get(#isFeature, or: $value.isFeature),
+    totalLikes: data.get(#totalLikes, or: $value.totalLikes),
+    isLiked: data.get(#isLiked, or: $value.isLiked),
+    translatedItem: data.get(#translatedItem, or: $value.translatedItem),
   );
 
   @override
   SubCategoryItemCopyWith<$R2, SubCategoryItem, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   ) => _SubCategoryItemCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
+class TranslatedItemMapper extends ClassMapperBase<TranslatedItem> {
+  TranslatedItemMapper._();
+
+  static TranslatedItemMapper? _instance;
+  static TranslatedItemMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = TranslatedItemMapper._());
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'TranslatedItem';
+
+  static String? _$name(TranslatedItem v) => v.name;
+  static const Field<TranslatedItem, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
+  static String? _$description(TranslatedItem v) => v.description;
+  static const Field<TranslatedItem, String> _f$description = Field(
+    'description',
+    _$description,
+    opt: true,
+  );
+  static String? _$address(TranslatedItem v) => v.address;
+  static const Field<TranslatedItem, String> _f$address = Field(
+    'address',
+    _$address,
+    opt: true,
+  );
+  static String? _$rejectedReason(TranslatedItem v) => v.rejectedReason;
+  static const Field<TranslatedItem, String> _f$rejectedReason = Field(
+    'rejectedReason',
+    _$rejectedReason,
+    key: r'rejected_reason',
+    opt: true,
+  );
+  static String? _$adminEditReason(TranslatedItem v) => v.adminEditReason;
+  static const Field<TranslatedItem, String> _f$adminEditReason = Field(
+    'adminEditReason',
+    _$adminEditReason,
+    key: r'admin_edit_reason',
+    opt: true,
+  );
+  static String? _$city(TranslatedItem v) => v.city;
+  static const Field<TranslatedItem, String> _f$city = Field(
+    'city',
+    _$city,
+    opt: true,
+  );
+  static String? _$state(TranslatedItem v) => v.state;
+  static const Field<TranslatedItem, String> _f$state = Field(
+    'state',
+    _$state,
+    opt: true,
+  );
+  static String? _$country(TranslatedItem v) => v.country;
+  static const Field<TranslatedItem, String> _f$country = Field(
+    'country',
+    _$country,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<TranslatedItem> fields = const {
+    #name: _f$name,
+    #description: _f$description,
+    #address: _f$address,
+    #rejectedReason: _f$rejectedReason,
+    #adminEditReason: _f$adminEditReason,
+    #city: _f$city,
+    #state: _f$state,
+    #country: _f$country,
+  };
+  @override
+  final bool ignoreNull = true;
+
+  static TranslatedItem _instantiate(DecodingData data) {
+    return TranslatedItem(
+      name: data.dec(_f$name),
+      description: data.dec(_f$description),
+      address: data.dec(_f$address),
+      rejectedReason: data.dec(_f$rejectedReason),
+      adminEditReason: data.dec(_f$adminEditReason),
+      city: data.dec(_f$city),
+      state: data.dec(_f$state),
+      country: data.dec(_f$country),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static TranslatedItem fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<TranslatedItem>(map);
+  }
+
+  static TranslatedItem fromJson(String json) {
+    return ensureInitialized().decodeJson<TranslatedItem>(json);
+  }
+}
+
+mixin TranslatedItemMappable {
+  String toJson() {
+    return TranslatedItemMapper.ensureInitialized().encodeJson<TranslatedItem>(
+      this as TranslatedItem,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return TranslatedItemMapper.ensureInitialized().encodeMap<TranslatedItem>(
+      this as TranslatedItem,
+    );
+  }
+
+  TranslatedItemCopyWith<TranslatedItem, TranslatedItem, TranslatedItem>
+  get copyWith => _TranslatedItemCopyWithImpl<TranslatedItem, TranslatedItem>(
+    this as TranslatedItem,
+    $identity,
+    $identity,
+  );
+  @override
+  String toString() {
+    return TranslatedItemMapper.ensureInitialized().stringifyValue(
+      this as TranslatedItem,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return TranslatedItemMapper.ensureInitialized().equalsValue(
+      this as TranslatedItem,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return TranslatedItemMapper.ensureInitialized().hashValue(
+      this as TranslatedItem,
+    );
+  }
+}
+
+extension TranslatedItemValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, TranslatedItem, $Out> {
+  TranslatedItemCopyWith<$R, TranslatedItem, $Out> get $asTranslatedItem =>
+      $base.as((v, t, t2) => _TranslatedItemCopyWithImpl<$R, $Out>(v, t, t2));
+}
+
+abstract class TranslatedItemCopyWith<$R, $In extends TranslatedItem, $Out>
+    implements ClassCopyWith<$R, $In, $Out> {
+  $R call({
+    String? name,
+    String? description,
+    String? address,
+    String? rejectedReason,
+    String? adminEditReason,
+    String? city,
+    String? state,
+    String? country,
+  });
+  TranslatedItemCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _TranslatedItemCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, TranslatedItem, $Out>
+    implements TranslatedItemCopyWith<$R, TranslatedItem, $Out> {
+  _TranslatedItemCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<TranslatedItem> $mapper =
+      TranslatedItemMapper.ensureInitialized();
+  @override
+  $R call({
+    Object? name = $none,
+    Object? description = $none,
+    Object? address = $none,
+    Object? rejectedReason = $none,
+    Object? adminEditReason = $none,
+    Object? city = $none,
+    Object? state = $none,
+    Object? country = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (name != $none) #name: name,
+      if (description != $none) #description: description,
+      if (address != $none) #address: address,
+      if (rejectedReason != $none) #rejectedReason: rejectedReason,
+      if (adminEditReason != $none) #adminEditReason: adminEditReason,
+      if (city != $none) #city: city,
+      if (state != $none) #state: state,
+      if (country != $none) #country: country,
+    }),
+  );
+  @override
+  TranslatedItem $make(CopyWithData data) => TranslatedItem(
+    name: data.get(#name, or: $value.name),
+    description: data.get(#description, or: $value.description),
+    address: data.get(#address, or: $value.address),
+    rejectedReason: data.get(#rejectedReason, or: $value.rejectedReason),
+    adminEditReason: data.get(#adminEditReason, or: $value.adminEditReason),
+    city: data.get(#city, or: $value.city),
+    state: data.get(#state, or: $value.state),
+    country: data.get(#country, or: $value.country),
+  );
+
+  @override
+  TranslatedItemCopyWith<$R2, TranslatedItem, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _TranslatedItemCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

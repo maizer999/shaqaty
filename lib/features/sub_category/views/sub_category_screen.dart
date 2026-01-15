@@ -11,18 +11,18 @@ import '../../add_details/ad_details_screen.dart';
 import '../../common/base_scaffold.dart';
 import '../controllers/sub_category_provider.dart';
 import '../models/sub_category_response.dart';
+import 'map_view_cat_view.dart';
 
 class SubCategoryScreen extends ConsumerStatefulWidget {
   final String catName;
   final int catId;
-  // Change this to hold the actual objects for the breadcrumb UI
   final List<dynamic> breadCrumbItems;
 
   const SubCategoryScreen({
     super.key,
     required this.catName,
     required this.catId,
-    required this.breadCrumbItems, // Pass the objects
+    required this.breadCrumbItems,
   });
 
   @override
@@ -44,18 +44,10 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
     final subCategoriesAsync = ref.watch(subCategoryProvider(params));
 
     return BaseScaffold(
-      title:  widget.catName.tr,
+      title: widget.catName.tr,
       body: subCategoriesAsync.when(
         data: (categories) => _buildBody(categories),
-        loading: () => ShimmerLoading(
-          child: Container(
-            height: 180,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
+        loading: () => _buildLoadingState(),
         error: (error, stack) => _buildErrorWidget(error, params),
       ),
     );
@@ -69,6 +61,41 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
         bottom: MediaQuery.paddingOf(context).bottom + 16,
       ),
       children: [
+        // 🔹 زر كبير لعرض الخريطة
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SizedBox(
+            width: double.infinity,
+            height: 60,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: context.color.primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              icon: const Icon(Icons.map, size: 28, color: Colors.white),
+              label: Text(
+                "عرض على الخريطة",
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MapViewScreen(categories: categories),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 16),
         _buildAllInHeader(),
         const SizedBox(height: 16),
         _buildCategoryList(categories),
@@ -137,15 +164,13 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
           child: InkWell(
             borderRadius: BorderRadius.circular(12),
             onTap: () {
-              // print data
               debugPrint('Category tapped: ${category.name}');
               debugPrint('Category id: ${category.id}');
 
-              // navigation
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => AdDetailsScreen(model: category,),
+                  builder: (_) => AdDetailsScreen(model: category),
                 ),
               );
             },
@@ -209,7 +234,6 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
               ],
             ),
           ),
-
         );
       },
     );

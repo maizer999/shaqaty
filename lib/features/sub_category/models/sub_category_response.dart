@@ -69,6 +69,24 @@ class SubCategoryItem with SubCategoryItemMappable {
   final int? isEditedByAdmin;
   final String? adminEditReason;
 
+  // new fields
+  final double? latitude;
+  final double? longitude;
+  final String? address;
+  final String? contact;
+  final int? showOnlyToPremium;
+  final String? status;
+  final String? rejectedReason;
+  final String? videoLink;
+  final Map<String, dynamic>? user;
+  final Map<String, dynamic>? category;
+  final List<dynamic>? galleryImages;
+  final List<dynamic>? featuredItems;
+  final bool? isFeature;
+  final int? totalLikes;
+  final bool? isLiked;
+  final TranslatedItem? translatedItem;
+
   const SubCategoryItem({
     this.id,
     this.name,
@@ -85,5 +103,44 @@ class SubCategoryItem with SubCategoryItemMappable {
     this.updatedAt,
     this.isEditedByAdmin,
     this.adminEditReason,
+    this.latitude,
+    this.longitude,
+    this.address,
+    this.contact,
+    this.showOnlyToPremium,
+    this.status,
+    this.rejectedReason,
+    this.videoLink,
+    this.user,
+    this.category,
+    this.galleryImages,
+    this.featuredItems,
+    this.isFeature,
+    this.totalLikes,
+    this.isLiked,
+    this.translatedItem,
+  });
+}
+
+@MappableClass(caseStyle: CaseStyle.snakeCase, ignoreNull: true)
+class TranslatedItem with TranslatedItemMappable {
+  final String? name;
+  final String? description;
+  final String? address;
+  final String? rejectedReason;
+  final String? adminEditReason;
+  final String? city;
+  final String? state;
+  final String? country;
+
+  const TranslatedItem({
+    this.name,
+    this.description,
+    this.address,
+    this.rejectedReason,
+    this.adminEditReason,
+    this.city,
+    this.state,
+    this.country,
   });
 }
