@@ -69,7 +69,7 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
             height: 60,
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: context.color.primaryColor,
+                backgroundColor: const Color(0xFF1E88E5), // Blue
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
