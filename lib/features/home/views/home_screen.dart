@@ -23,6 +23,8 @@ class HomeScreen extends ConsumerWidget {
     ref.watch(categoryProvider(const CategoryParams(page: 1)));
 
     return BaseScaffold(
+      title: "الصفحة الرئيسية",
+
       showFab: true,
       body: SafeArea(
         child: SingleChildScrollView(

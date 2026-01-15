@@ -1,7 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_core/build_context.dart';
+import 'package:flutter_core/core/theme/theme.dart';
+import 'package:flutter_core/core/widgets/custom_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../core/theme/theme.dart';
 import '../../common/base_scaffold.dart';
 import '../../home/views/home_screen.dart';
 import '../providers/add_item_data_notifier.dart';
@@ -114,8 +118,11 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
             "تم رفع البيانات بنجاح",
             context,
             onConfirmed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) =>  HomeScreen()),
+
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (route) => false, // هذا السطر يحذف كل الصفحات السابقة من الذاكرة
               );
             },
           );
@@ -139,6 +146,7 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      title: "تفاصيل العنوان",
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -148,14 +156,7 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(20),
                   children: [
-                    Text(
-                      "أدخل تفاصيل الإعلان",
-                      style: GoogleFonts.cairo(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
+
                     const SizedBox(height: 20),
                     _inputLabel("الاسم"),
                     _textInput(_nameController, "أدخل الاسم هنا", (v) => v!.isEmpty ? "الرجاء إدخال الاسم" : null),
@@ -199,14 +200,15 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _onSubmit,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1E1E1E),
+                      backgroundColor: context.color.territoryColor,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     ),
                     child: _isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text(
+                        : const CustomText(
+                      color: Colors.white ,
                       "إرسال البيانات",
-                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+fontSize: 16, fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -241,7 +243,7 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
             hintStyle: GoogleFonts.cairo(fontSize: 13, color: Colors.grey),
             errorStyle: GoogleFonts.cairo(color: Colors.red, height: 0.8),
             filled: true,
-            fillColor: const Color(0xFFFFFFFF),
+            fillColor: context.color.shimmerHighlightColor,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
