@@ -63,6 +63,7 @@ class AddItemImageView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return BaseScaffold(
+      title: "اضافة صور الاعلان",
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),

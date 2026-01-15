@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_core/build_context.dart';
+import 'package:flutter_core/core/widgets/custom_text.dart';
 import 'package:flutter_core/features/addAds/views/add_item_image_view.dart';
+import 'package:flutter_core/features/common/base_scaffold.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,6 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../core/theme/theme.dart';
 import '../providers/add_item_data_notifier.dart';
 
 class AddItemMapView extends ConsumerStatefulWidget {
@@ -206,11 +210,8 @@ class _AddItemMapViewState extends ConsumerState<AddItemMapView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Select Location'),
-        backgroundColor: Colors.teal,
-      ),
+    return BaseScaffold(
+     title: "اختيار العنوان",
       body: Stack(
         children: [
           GoogleMap(
@@ -276,15 +277,18 @@ class _AddItemMapViewState extends ConsumerState<AddItemMapView> {
             child: ElevatedButton(
               onPressed: _selectedMarker == null ? null : _goToNextView,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
+                backgroundColor: context.color.territoryColor,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Confirm Location',
-                style: TextStyle(fontSize: 16),
+              child:  CustomText(
+                'تآكيد العنوان',
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+
               ),
             ),
           ),
