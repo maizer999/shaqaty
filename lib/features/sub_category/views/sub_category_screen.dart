@@ -50,52 +50,69 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
         loading: () => _buildLoadingState(),
         error: (error, stack) => _buildErrorWidget(error, params),
       ),
+      // 🔹 وضع الزر هنا يجعله ثابتاً في الأسفل
+      bottomNavigationBar: subCategoriesAsync.maybeWhen(
+        data: (categories) => _buildFixedMapButton(categories),
+        orElse: () => const SizedBox.shrink(),
+      ),
+    );
+  }
+
+  // الجزء الخاص بالزر الثابت في الأسفل
+  Widget _buildFixedMapButton(List<SubCategoryItem> categories) {
+    return Container(
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: MediaQuery.paddingOf(context).bottom + 12, // يراعي حواف الشاشات الحديثة
+      ),
+      decoration: BoxDecoration(
+        color: context.color.backgroundColor,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -4),
+          )
+        ],
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        height: 56,
+        child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: context.color.territoryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            elevation: 0,
+          ),
+          icon: const Icon(Icons.map, size: 24, color: Colors.white),
+          label: CustomText(
+            "عرض على الخريطة",
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MapViewScreen(categories: categories),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 
   Widget _buildBody(List<SubCategoryItem> categories) {
     return ListView(
       controller: controller,
-      padding: EdgeInsets.only(
-        top: 12,
-        bottom: MediaQuery.paddingOf(context).bottom + 16,
-      ),
+      padding: const EdgeInsets.only(top: 12, bottom: 16),
       children: [
-        // 🔹 زر كبير لعرض الخريطة
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SizedBox(
-            width: double.infinity,
-            height: 60,
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1E88E5), // Blue
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              icon: const Icon(Icons.map, size: 28, color: Colors.white),
-              label: Text(
-                "عرض على الخريطة",
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => MapViewScreen(categories: categories),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 16),
         _buildAllInHeader(),
         const SizedBox(height: 16),
         _buildCategoryList(categories),
@@ -108,7 +125,9 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () {},
+        onTap: () {
+          // منطق عرض الكل
+        },
         child: Container(
           height: 60,
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -123,12 +142,13 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
               )
             ],
           ),
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.centerRight,
           child: CustomText(
-            "All in ${widget.catName}",
-            fontWeight: FontWeight.w700,
+            "عرض الكل في قسم  ${widget.catName}",
+            fontWeight: FontWeight.w500,
             fontSize: context.font.normal,
             color: context.color.territoryColor,
+            textAlign: TextAlign.right, // محاذاة لليمين
           ),
         ),
       ),
@@ -148,34 +168,32 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
         final category = categories[index];
         final hasSubtitle = (category.description?.isNotEmpty ?? false);
 
-        return Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: context.color.secondaryColor,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.04),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
+        return InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => AdDetailsScreen(model: category),
               ),
-            ],
-          ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(12),
-            onTap: () {
-              debugPrint('Category tapped: ${category.name}');
-              debugPrint('Category id: ${category.id}');
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => AdDetailsScreen(model: category),
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: context.color.secondaryColor,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.04),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
-              );
-            },
+              ],
+            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              textDirection: TextDirection.rtl, // لضمان ترتيب العناصر للعربي
               children: [
                 Container(
                   width: 80,
@@ -202,16 +220,18 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
                         fontWeight: FontWeight.w600,
                         fontSize: context.font.large,
                         maxLines: 2,
+                        textAlign: TextAlign.right,
                       ),
                       if (hasSubtitle)
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: CustomText(
                             category.description ?? "",
-                            fontSize: 16,
+                            fontSize: 14,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             color: context.color.territoryColor.withOpacity(0.7),
+                            textAlign: TextAlign.right,
                           ),
                         ),
                     ],
@@ -226,7 +246,7 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
                     color: context.color.backgroundColor,
                   ),
                   child: Icon(
-                    Icons.arrow_forward_ios_rounded,
+                    Icons.arrow_back_ios_rounded, // تم تغيير الاتجاه ليناسب العربي
                     size: 16,
                     color: context.color.territoryColor,
                   ),
