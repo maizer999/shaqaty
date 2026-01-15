@@ -115,7 +115,7 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
       result.when(
             (response) {
           _showSuccessDialog(
-            "تم رفع البيانات بنجاح",
+           "تم ارسال الاعلان بنجاح",
             context,
             onConfirmed: () {
 
@@ -290,7 +290,7 @@ void _showSuccessDialog(String message, BuildContext context, {VoidCallback? onC
                   if (onConfirmed != null) onConfirmed();
                 },
                 child: Text(
-                  "حسناً",
+                  "تم",
                   style: GoogleFonts.cairo(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
