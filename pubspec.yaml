@@ -154,6 +154,7 @@ flutter:
     - assets/images/
     - assets/svg/bottomnav/
     - assets/svg/
+    - assets/svg/Logo/placeholder.svg
 
 
 

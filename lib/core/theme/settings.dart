@@ -31,7 +31,7 @@ class AppSettings {
   static const String applicationName = 'eClassify';
   static const String packageName = 'com.maizer.Classify';
 
-  static const String hostUrl = "https://admin.shaqaty.com";
+  static const String hostUrl = "http://127.0.0.1:8000";
 
   ///API Setting
 

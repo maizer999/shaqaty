@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multiple_result/multiple_result.dart';
+import '../../../core/constants/api_constants.dart';
 import '../../../core/exceptions/exceptions.dart';
 import '../../../core/network/network_handler.dart';
 import '../models/sub_category_response.dart';
@@ -15,8 +16,7 @@ class SubCategoryService {
     try {
       return await _network.executeApiCall(() async {
         final response = await _network.getRequest(
-          endpoint:
-          'https://admin.shaqaty.com/api/get-item?category_id=$categoryId&page=$page&search=$search',
+          endpoint: '${ApiUrls.items}?category_id=$categoryId&page=$page&search=$search',
           headers: await _network.getFormUrlencodedHeaders(),
         );
 

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multiple_result/multiple_result.dart';
 
+import '../../../core/constants/api_constants.dart';
 import '../../../core/exceptions/exceptions.dart';
 import '../../../core/network/network_handler.dart';
 import '../data/models/category_response.dart';
@@ -18,8 +19,7 @@ class HomeService {
     try {
       return await _network.executeApiCall(() async {
         final response = await _network.getRequest(
-          endpoint:
-          'https://admin.shaqaty.com/api/get-categories?page=$page',
+         endpoint: "${ApiUrls.categories}?page=$page",
           headers: await _network.getFormUrlencodedHeaders(),
         );
 
@@ -44,7 +44,7 @@ class HomeService {
     try {
       return await _network.executeApiCall(() async {
         final response = await _network.getRequest(
-          endpoint: 'https://admin.shaqaty.com/api/get-slider',
+          endpoint: ApiUrls.slider,
           headers: await _network.getFormUrlencodedHeaders(),
         );
 

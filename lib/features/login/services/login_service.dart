@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multiple_result/multiple_result.dart';
+import '../../../core/constants/api_constants.dart';
 import '../../../core/exceptions/exceptions.dart';
 import '../../../core/network/network_handler.dart';
 import '../models/login_response.dart';
@@ -20,7 +21,7 @@ class LoginUserService {
 
       return await _network.executeApiCall(() async {
         final response = await _network.postRequest(
-          endpoint: 'https://admin.shaqaty.com/api/login',
+          endpoint: ApiUrls.login,
           data: requestBody,
           headers: await _network.getFormUrlencodedHeaders(),
         );
