@@ -667,5 +667,19 @@
   "invalidRange": "Invalid Range",
   "note": "Note",
   "expiredItemsMultiRenewNote": "Long-press expired items to renew or delete multiple ads at once.",
-  "deletedSuccessfully": "Deleted Successfully"
+  "deletedSuccessfully": "Deleted Successfully",
+  "settings": "Settings",
+  "accountSettings": "Account Settings",
+  "editProfile": "Edit Profile",
+  "changePassword": "Change Password",
+  "preferences": "Preferences",
+  "langName": "English (US)",
+  "darkMode": "Dark Mode",
+  "business": "Real Estate / My Business",
+  "mySubscription": "My Subscription",
+  "supportLegal": "Support & Legal",
+  "version": "App Version",
+  "deleteAccountTitle": "Delete Account?",
+  "deleteAccountWarning": "This action cannot be undone. All your data will be permanently removed.",
+  "cancel": "Cancel"
 }

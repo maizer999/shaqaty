@@ -667,5 +667,19 @@
   "invalidRange": "نطاق غير صحيح",
   "note": "ملاحظة",
   "expiredItemsMultiRenewNote": "اضغط مطولاً على الإعلانات المنتهية لتجديدها أو حذفها معاً.",
-  "deletedSuccessfully": "تم الحذف بنجاح"
+  "deletedSuccessfully": "تم الحذف بنجاح",
+  "settings": "الإعدادات",
+  "accountSettings": "إعدادات الحساب",
+  "editProfile": "تعديل الملف الشخصي",
+  "changePassword": "تغيير كلمة المرور",
+  "preferences": "التفضيلات",
+  "langName": "العربية",
+  "darkMode": "الوضع الداكن",
+  "business": "العقارات / أعمالي",
+  "mySubscription": "اشتراكي",
+  "supportLegal": "الدعم والقانونية",
+  "version": "إصدار التطبيق",
+  "deleteAccountTitle": "حذف الحساب؟",
+  "deleteAccountWarning": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع بياناتك نهائياً.",
+  "cancel": "إلغاء"
 }

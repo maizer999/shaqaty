@@ -23,22 +23,22 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       activeIcon: AppIcons.homeNavActive,
       label: 'homeTab',
     ),
-    _BottomNavigationItem(
-      icon: AppIcons.chatNav,
-      activeIcon: AppIcons.chatNavActive,
-      label: 'chat',
-    ),
+    // _BottomNavigationItem(
+    //   icon: AppIcons.chatNav,
+    //   activeIcon: AppIcons.chatNavActive,
+    //   label: 'chat',
+    // ),
     // This null value is to be used for giving space at the center of bottom nav to avoid placing items behind the FAB
     null,
-    _BottomNavigationItem(
-      icon: AppIcons.myAdsNav,
-      activeIcon: AppIcons.myAdsNavActive,
-      label: 'myAdsTab',
-    ),
+    // _BottomNavigationItem(
+    //   icon: AppIcons.myAdsNav,
+    //   activeIcon: AppIcons.myAdsNavActive,
+    //   label: 'myAdsTab',
+    // ),
     _BottomNavigationItem(
       icon: AppIcons.profileNav,
       activeIcon: AppIcons.profileNavActive,
-      label: 'profileTab',
+      label: 'settingsLbl',
     ),
   ];
 
