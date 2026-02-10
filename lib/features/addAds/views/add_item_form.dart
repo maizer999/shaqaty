@@ -30,11 +30,19 @@ class AddItemFormScreen extends ConsumerStatefulWidget {
 class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  // المتحكمات الأساسية
   final TextEditingController _nameController = TextEditingController(text: "منتج تجريبي");
   final TextEditingController _descController = TextEditingController(text: "وصف تجريبي");
   final TextEditingController _priceController = TextEditingController(text: "100");
   final TextEditingController _contactController = TextEditingController(text: "0799999999");
   final TextEditingController _videoController = TextEditingController(text: "https://youtube.com/example");
+
+  // الحقول الجديدة المطلوبة
+  final TextEditingController _areaController = TextEditingController(); // المساحة
+  final TextEditingController _buildingAgeController = TextEditingController(); // عمر البناء
+  bool _isFurnished = false; // مفروش أو لا
+
+  // متحكمات الموقع
   final TextEditingController _addressController = TextEditingController(text: "شارع تجريبي، مبنى 1");
   final TextEditingController _countryController = TextEditingController(text: "الأردن");
   final TextEditingController _cityController = TextEditingController(text: "عمان");
@@ -55,8 +63,9 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // تحديث الـ Provider بالبيانات الحالية
       final notifier = ref.read(addItemDataProvider.notifier);
+
+      // تحديث البيانات في الـ Provider
       notifier.setName(_nameController.text);
       notifier.setDescription(_descController.text);
       notifier.setCategoryId("2");
@@ -64,6 +73,13 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
       notifier.setPrice(_priceController.text);
       notifier.setContact(_contactController.text);
       notifier.setVideoLink(_videoController.text);
+
+      // ✅ إرسال الحقول الجديدة للـ Provider
+      // ملاحظة: تأكد من إضافة هذه الدوال في ملف addItemDataProvider
+      // notifier.setArea(_areaController.text);
+      // notifier.setBuildingAge(_buildingAgeController.text);
+      // notifier.setIsFurnished(_isFurnished ? "1" : "0");
+
       notifier.setAddress(_addressController.text);
       notifier.setCountry(_countryController.text);
       notifier.setCity(_cityController.text);
@@ -73,27 +89,9 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
       notifier.setShowOnlyToPremium("1");
       notifier.addImages(widget.images);
 
-      // ✅ طباعة كل البيانات الحالية في Provider
       final state = ref.read(addItemDataProvider);
-      print("=== Provider Current State ===");
-      print("Name: ${state.name}");
-      print("Description: ${state.description}");
-      print("CategoryId: ${state.categoryId}");
-      print("AllCategoryIds: ${state.allCategoryIds}");
-      print("Price: ${state.price}");
-      print("Contact: ${state.contact}");
-      print("VideoLink: ${state.videoLink}");
-      print("Address: ${state.address}");
-      print("Country: ${state.country}");
-      print("City: ${state.city}");
-      print("State: ${state.state}");
-      print("Latitude: ${state.latitude}");
-      print("Longitude: ${state.longitude}");
-      print("ShowOnlyToPremium: ${state.showOnlyToPremium}");
-      print("Images count: ${state.images.length}");
-      print("==============================");
 
-      // متابعة عملية الإرسال
+      // عملية الإرسال عبر الـ Repository
       final result = await ref.read(itemRepositoryProvider).addItem(
         name: state.name ?? "",
         description: state.description ?? "",
@@ -110,19 +108,22 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
         state: state.state ?? "",
         showOnlyToPremium: state.showOnlyToPremium ?? "1",
         galleryImages: state.images,
+        // ✅ تمرير القيم الجديدة للـ API (إذا كان الـ Repository يدعمها)
+        // area: _areaController.text,
+        // buildingAge: _buildingAgeController.text,
+        // furnished: _isFurnished ? "1" : "0",
       );
 
       result.when(
             (response) {
           _showSuccessDialog(
-           "تم ارسال الاعلان بنجاح",
+            "تم ارسال الاعلان بنجاح",
             context,
             onConfirmed: () {
-
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreen()),
-                    (route) => false, // هذا السطر يحذف كل الصفحات السابقة من الذاكرة
+                    (route) => false,
               );
             },
           );
@@ -133,7 +134,6 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
           );
         },
       );
-
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("فشل الإرسال: $e")),
@@ -146,7 +146,7 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      title: "تفاصيل العنوان",
+      title: "تفاصيل الإعلان",
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -156,31 +156,51 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(20),
                   children: [
-
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+                    _sectionTitle("المعلومات الأساسية"),
                     _inputLabel("الاسم"),
                     _textInput(_nameController, "أدخل الاسم هنا", (v) => v!.isEmpty ? "الرجاء إدخال الاسم" : null),
+
                     _inputLabel("الوصف"),
                     _textInput(_descController, "وصف المختصر", (v) => v!.isEmpty ? "الرجاء إدخال الوصف" : null),
+
                     _inputLabel("السعر"),
                     _textInput(_priceController, "0.00", (v) => v!.isEmpty ? "الرجاء تحديد السعر" : null, TextInputType.number),
-                    _inputLabel("رقم التواصل"),
-                    _textInput(_contactController, "07XXXXXXXX", (v) => v!.isEmpty ? "رقم الهاتف مطلوب" : null, TextInputType.phone),
-                    _inputLabel("رابط الفيديو (اختياري)"),
-                    _textInput(_videoController, "https://youtube.com/...", null),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Divider(),
-                    ),
-                    Text(
-                      "الموقع الجغرافي",
-                      style: GoogleFonts.cairo(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+
+                    const Divider(height: 40),
+                    _sectionTitle("تفاصيل البناء والعقار"),
+
+                    _inputLabel("المساحة (م²)"),
+                    _textInput(_areaController, "أدخل المساحة", (v) => v!.isEmpty ? "المساحة مطلوبة" : null, TextInputType.number),
+
+                    _inputLabel("عمر البناء"),
+                    _textInput(_buildingAgeController, "مثال: جديد، 5 سنوات...", (v) => v!.isEmpty ? "عمر البناء مطلوب" : null),
+
+                    // حقل مفروش / غير مفروش
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      decoration: BoxDecoration(
+                        color: context.color.shimmerHighlightColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: SwitchListTile(
+                        title: Text("هل العقار مفروش؟", style: GoogleFonts.cairo(fontSize: 14, fontWeight: FontWeight.w700)),
+                        value: _isFurnished,
+                        activeColor: context.color.territoryColor,
+                        onChanged: (val) => setState(() => _isFurnished = val),
                       ),
                     ),
-                    const SizedBox(height: 20),
+
+                    const Divider(height: 40),
+                    _sectionTitle("بيانات التواصل والوسائط"),
+                    _inputLabel("رقم التواصل"),
+                    _textInput(_contactController, "07XXXXXXXX", (v) => v!.isEmpty ? "رقم الهاتف مطلوب" : null, TextInputType.phone),
+
+                    _inputLabel("رابط الفيديو (اختياري)"),
+                    _textInput(_videoController, "https://youtube.com/...", null),
+
+                    const Divider(height: 40),
+                    _sectionTitle("الموقع الجغرافي"),
                     _inputLabel("الدولة"),
                     _textInput(_countryController, "الأردن", (v) => v!.isEmpty ? "هذا الحقل مطلوب" : null),
                     _inputLabel("المدينة"),
@@ -192,6 +212,8 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
                   ],
                 ),
               ),
+
+              // زر الإرسال
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: SizedBox(
@@ -206,9 +228,10 @@ class _AddItemFormScreenState extends ConsumerState<AddItemFormScreen> {
                     child: _isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
                         : const CustomText(
-                      color: Colors.white ,
+                      color: Colors.white,
                       "إرسال البيانات",
-fontSize: 16, fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -219,6 +242,15 @@ fontSize: 16, fontWeight: FontWeight.w700,
       ),
     );
   }
+
+  // ويدجت لعنوان الأقسام
+  Widget _sectionTitle(String title) => Padding(
+    padding: const EdgeInsets.only(bottom: 15),
+    child: Text(
+      title,
+      style: GoogleFonts.cairo(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+    ),
+  );
 
   Widget _inputLabel(String label) => Padding(
     padding: const EdgeInsets.only(bottom: 8.0, top: 4.0),
@@ -253,16 +285,12 @@ fontSize: 16, fontWeight: FontWeight.w700,
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: Colors.red, width: 1.5),
             ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.red, width: 2.0),
-            ),
           ),
         ),
       );
 }
 
-// ✅ Dialog النجاح مع callback للانتقال للصفحة الرئيسية
+// ✅ Dialog النجاح
 void _showSuccessDialog(String message, BuildContext context, {VoidCallback? onConfirmed}) {
   showDialog(
     context: context,
@@ -272,15 +300,8 @@ void _showSuccessDialog(String message, BuildContext context, {VoidCallback? onC
         textDirection: TextDirection.rtl,
         child: AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          title: const Center(
-            child: Icon(Icons.check_circle, color: Colors.green, size: 60),
-          ),
-          content: Text(
-            message,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.cairo(fontWeight: FontWeight.bold),
-          ),
-          actionsAlignment: MainAxisAlignment.center,
+          title: const Center(child: Icon(Icons.check_circle, color: Colors.green, size: 60)),
+          content: Text(message, textAlign: TextAlign.center, style: GoogleFonts.cairo(fontWeight: FontWeight.bold)),
           actions: [
             SizedBox(
               width: double.infinity,
@@ -289,14 +310,7 @@ void _showSuccessDialog(String message, BuildContext context, {VoidCallback? onC
                   Navigator.of(context).pop();
                   if (onConfirmed != null) onConfirmed();
                 },
-                child: Text(
-                  "تم",
-                  style: GoogleFonts.cairo(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.green,
-                  ),
-                ),
+                child: Text("تم", style: GoogleFonts.cairo(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.green)),
               ),
             ),
           ],

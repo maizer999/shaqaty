@@ -73,9 +73,9 @@ PODS:
   - root_checker_plus (0.0.1):
     - DTTJailbreakDetection
     - Flutter
-  - SDWebImage (5.21.5):
-    - SDWebImage/Core (= 5.21.5)
-  - SDWebImage/Core (5.21.5)
+  - SDWebImage (5.21.6):
+    - SDWebImage/Core (= 5.21.6)
+  - SDWebImage/Core (5.21.6)
   - SDWebImageWebPCoder (0.15.0):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
@@ -200,7 +200,7 @@ SPEC CHECKSUMS:
   geocoding_ios: 86f1c479822f07a2f79f7094f2b753d1e9e20215
   geolocator_apple: ab36aa0e8b7d7a2d7639b3b4e48308394e8cef5e
   Google-Maps-iOS-Utils: 66d6de12be1ce6d3742a54661e7a79cb317a9321
-  google_maps_flutter_ios: 3213e1e5f5588b6134935cb8fc59acb4e6d88377
+  google_maps_flutter_ios: 17552876e72723da1d41accc22f03b5f7afbde69
   GoogleMaps: 8939898920281c649150e0af74aa291c60f2e77d
   image_picker_ios: e0ece4aa2a75771a7de3fa735d26d90817041326
   just_audio: 4e391f57b79cad2b0674030a00453ca5ce817eed
@@ -213,7 +213,7 @@ SPEC CHECKSUMS:
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   root_checker_plus: 0d625cf912b8fa2d7c1976a80a4749acf937ce06
-  SDWebImage: e9c98383c7572d713c1a0d7dd2783b10599b9838
+  SDWebImage: 1bb6a1b84b6fe87b972a102bdc77dd589df33477
   SDWebImageWebPCoder: 0e06e365080397465cc73a7a9b472d8a3bd0f377
   share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
@@ -223,6 +223,6 @@ SPEC CHECKSUMS:
   wakelock_plus: e29112ab3ef0b318e58cfa5c32326458be66b556
   webview_flutter_wkwebview: 8ebf4fded22593026f7dbff1fbff31ea98573c8d
 
-PODFILE CHECKSUM: e40c3913a81867a2ca44213bb3e9a8e80f739950
+PODFILE CHECKSUM: a901b0534ebff1a81cfb53fbf723b1bca433de9f
 
 COCOAPODS: 1.16.2

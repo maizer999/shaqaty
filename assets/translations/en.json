@@ -681,5 +681,11 @@
   "version": "App Version",
   "deleteAccountTitle": "Delete Account?",
   "deleteAccountWarning": "This action cannot be undone. All your data will be permanently removed.",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "sizeLbl": "Size",
+  "ownerLbl": "Advertiser",
+  "priceLbl": "Price",
+  "owner": "Owner",
+  "agent": "Agent",
+  "unknown": "N/A"
 }

@@ -586,6 +586,33 @@ class SubCategoryItemMapper extends ClassMapperBase<SubCategoryItem> {
     key: r'admin_edit_reason',
     opt: true,
   );
+  static double? _$size(SubCategoryItem v) => v.size;
+  static const Field<SubCategoryItem, double> _f$size = Field(
+    'size',
+    _$size,
+    opt: true,
+  );
+  static String? _$propertyAge(SubCategoryItem v) => v.propertyAge;
+  static const Field<SubCategoryItem, String> _f$propertyAge = Field(
+    'propertyAge',
+    _$propertyAge,
+    key: r'property_age',
+    opt: true,
+  );
+  static String? _$advertiserType(SubCategoryItem v) => v.advertiserType;
+  static const Field<SubCategoryItem, String> _f$advertiserType = Field(
+    'advertiserType',
+    _$advertiserType,
+    key: r'advertiser_type',
+    opt: true,
+  );
+  static String? _$expiryDate(SubCategoryItem v) => v.expiryDate;
+  static const Field<SubCategoryItem, String> _f$expiryDate = Field(
+    'expiryDate',
+    _$expiryDate,
+    key: r'expiry_date',
+    opt: true,
+  );
   static double? _$latitude(SubCategoryItem v) => v.latitude;
   static const Field<SubCategoryItem, double> _f$latitude = Field(
     'latitude',
@@ -710,6 +737,10 @@ class SubCategoryItemMapper extends ClassMapperBase<SubCategoryItem> {
     #updatedAt: _f$updatedAt,
     #isEditedByAdmin: _f$isEditedByAdmin,
     #adminEditReason: _f$adminEditReason,
+    #size: _f$size,
+    #propertyAge: _f$propertyAge,
+    #advertiserType: _f$advertiserType,
+    #expiryDate: _f$expiryDate,
     #latitude: _f$latitude,
     #longitude: _f$longitude,
     #address: _f$address,
@@ -747,6 +778,10 @@ class SubCategoryItemMapper extends ClassMapperBase<SubCategoryItem> {
       updatedAt: data.dec(_f$updatedAt),
       isEditedByAdmin: data.dec(_f$isEditedByAdmin),
       adminEditReason: data.dec(_f$adminEditReason),
+      size: data.dec(_f$size),
+      propertyAge: data.dec(_f$propertyAge),
+      advertiserType: data.dec(_f$advertiserType),
+      expiryDate: data.dec(_f$expiryDate),
       latitude: data.dec(_f$latitude),
       longitude: data.dec(_f$longitude),
       address: data.dec(_f$address),
@@ -854,6 +889,10 @@ abstract class SubCategoryItemCopyWith<$R, $In extends SubCategoryItem, $Out>
     String? updatedAt,
     int? isEditedByAdmin,
     String? adminEditReason,
+    double? size,
+    String? propertyAge,
+    String? advertiserType,
+    String? expiryDate,
     double? latitude,
     double? longitude,
     String? address,
@@ -941,6 +980,10 @@ class _SubCategoryItemCopyWithImpl<$R, $Out>
     Object? updatedAt = $none,
     Object? isEditedByAdmin = $none,
     Object? adminEditReason = $none,
+    Object? size = $none,
+    Object? propertyAge = $none,
+    Object? advertiserType = $none,
+    Object? expiryDate = $none,
     Object? latitude = $none,
     Object? longitude = $none,
     Object? address = $none,
@@ -974,6 +1017,10 @@ class _SubCategoryItemCopyWithImpl<$R, $Out>
       if (updatedAt != $none) #updatedAt: updatedAt,
       if (isEditedByAdmin != $none) #isEditedByAdmin: isEditedByAdmin,
       if (adminEditReason != $none) #adminEditReason: adminEditReason,
+      if (size != $none) #size: size,
+      if (propertyAge != $none) #propertyAge: propertyAge,
+      if (advertiserType != $none) #advertiserType: advertiserType,
+      if (expiryDate != $none) #expiryDate: expiryDate,
       if (latitude != $none) #latitude: latitude,
       if (longitude != $none) #longitude: longitude,
       if (address != $none) #address: address,
@@ -1009,6 +1056,10 @@ class _SubCategoryItemCopyWithImpl<$R, $Out>
     updatedAt: data.get(#updatedAt, or: $value.updatedAt),
     isEditedByAdmin: data.get(#isEditedByAdmin, or: $value.isEditedByAdmin),
     adminEditReason: data.get(#adminEditReason, or: $value.adminEditReason),
+    size: data.get(#size, or: $value.size),
+    propertyAge: data.get(#propertyAge, or: $value.propertyAge),
+    advertiserType: data.get(#advertiserType, or: $value.advertiserType),
+    expiryDate: data.get(#expiryDate, or: $value.expiryDate),
     latitude: data.get(#latitude, or: $value.latitude),
     longitude: data.get(#longitude, or: $value.longitude),
     address: data.get(#address, or: $value.address),

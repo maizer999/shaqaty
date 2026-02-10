@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_core/features/sub_category/views/widgets/filter_bottom_sheet.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 import '../../../build_context.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/theme/ui_utils.dart';
@@ -32,82 +31,75 @@ class SubCategoryScreen extends ConsumerStatefulWidget {
 class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
   late final ScrollController controller = ScrollController();
 
+  // 🔹 متغيرات حالة الفلترة
+  double? minPrice, maxPrice, minSize, maxSize;
+  String? condition;
+
   @override
   void dispose() {
     controller.dispose();
     super.dispose();
   }
 
+  // 🔹 فتح نافذة الفلترة المستقلة
+  void _openFilter() async {
+    final result = await showModalBottomSheet<Map<String, dynamic>>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => FilterBottomSheet(
+        initialPrice: RangeValues(minPrice ?? 0, maxPrice ?? 500000),
+        initialSize: RangeValues(minSize ?? 0, maxSize ?? 1000),
+        initialCondition: condition ?? "all",
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        minPrice = result['min_price'];
+        maxPrice = result['max_price'];
+        minSize = result['min_size'];
+        maxSize = result['max_size'];
+        condition = result['condition'];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final params = SubCategoryParams(categoryId: widget.catId);
+    // 🔹 تحضير الـ Params لإرسالها للـ Provider
+    final params = SubCategoryParams(
+      categoryId: widget.catId,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      minSize: minSize,
+      maxSize: maxSize,
+      status: (condition == "all" || condition == null) ? null : condition,
+    );
+
     final subCategoriesAsync = ref.watch(subCategoryProvider(params));
 
     return BaseScaffold(
-      title: widget.catName.tr,
+      title: widget.catName,
+      actions: [
+        IconButton(
+          onPressed: _openFilter,
+          icon: const Icon(Icons.tune_rounded, color: Colors.white),
+        ),
+      ],
       body: subCategoriesAsync.when(
         data: (categories) => _buildBody(categories),
         loading: () => _buildLoadingState(),
         error: (error, stack) => _buildErrorWidget(error, params),
       ),
-      // 🔹 وضع الزر هنا يجعله ثابتاً في الأسفل
       bottomNavigationBar: subCategoriesAsync.maybeWhen(
-        data: (categories) => _buildFixedMapButton(categories),
+        data: (categories) => _buildFixedMapButton(),
         orElse: () => const SizedBox.shrink(),
       ),
     );
   }
 
-  // الجزء الخاص بالزر الثابت في الأسفل
-  Widget _buildFixedMapButton(List<SubCategoryItem> categories) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 16,
-        right: 16,
-        top: 12,
-        bottom: MediaQuery.paddingOf(context).bottom + 12, // يراعي حواف الشاشات الحديثة
-      ),
-      decoration: BoxDecoration(
-        color: context.color.backgroundColor,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -4),
-          )
-        ],
-      ),
-      child: SizedBox(
-        width: double.infinity,
-        height: 56,
-        child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: context.color.territoryColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 0,
-          ),
-          icon: const Icon(Icons.map, size: 24, color: Colors.white),
-          label: CustomText(
-            "عرض على الخريطة",
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => MapViewScreen(categories: categories),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
+  // --- بناء القائمة ---
   Widget _buildBody(List<SubCategoryItem> categories) {
     return ListView(
       controller: controller,
@@ -123,40 +115,41 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
   Widget _buildAllInHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () {
-          // منطق عرض الكل
-        },
-        child: Container(
-          height: 60,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: context.color.secondaryColor,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              )
-            ],
-          ),
-          alignment: Alignment.centerRight,
-          child: CustomText(
-            "عرض الكل في قسم  ${widget.catName}",
-            fontWeight: FontWeight.w500,
-            fontSize: context.font.normal,
-            color: context.color.territoryColor,
-            textAlign: TextAlign.right, // محاذاة لليمين
-          ),
+      child: Container(
+        height: 60,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: context.color.secondaryColor,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
+          ],
+        ),
+        alignment: Alignment.centerRight,
+        child: CustomText(
+          "عرض الكل في قسم ${widget.catName}",
+          fontWeight: FontWeight.w500,
+          color: context.color.territoryColor,
         ),
       ),
     );
   }
 
   Widget _buildCategoryList(List<SubCategoryItem> categories) {
-    if (categories.isEmpty) return const Center(child: Text("No items found"));
+    if (categories.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(40.0),
+          child: Column(
+            children: [
+              Icon(Icons.search_off_rounded, size: 60, color: Colors.grey[400]),
+              const SizedBox(height: 16),
+              const CustomText("لا توجد نتائج تطابق الفلاتر", color: Colors.grey),
+            ],
+          ),
+        ),
+      );
+    }
 
     return ListView.separated(
       itemCount: categories.length,
@@ -164,147 +157,94 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       separatorBuilder: (_, __) => const SizedBox(height: 16),
-      itemBuilder: (context, index) {
-        final category = categories[index];
-        final hasSubtitle = (category.description?.isNotEmpty ?? false);
+      itemBuilder: (context, index) => _buildItemCard(categories[index]),
+    );
+  }
 
-        return InkWell(
+  Widget _buildItemCard(SubCategoryItem item) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdDetailsScreen(model: item))),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: context.color.secondaryColor,
           borderRadius: BorderRadius.circular(16),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => AdDetailsScreen(model: category),
+          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8, offset: const Offset(0, 2))],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          textDirection: TextDirection.rtl,
+          children: [
+            Container(
+              width: 90, height: 90,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.grey[100]),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: UiUtils.imageType(item.image ?? "", fit: BoxFit.cover),
               ),
-            );
-          },
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: context.color.secondaryColor,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              textDirection: TextDirection.rtl, // لضمان ترتيب العناصر للعربي
-              children: [
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: context.color.territoryColor.withOpacity(0.1),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: UiUtils.imageType(
-                      category.image ?? "",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(item.name ?? "", fontWeight: FontWeight.w600, fontSize: context.font.large, maxLines: 1),
+                  const SizedBox(height: 4),
+                  CustomText("\$${item.price?.toInt() ?? '---'}", color: context.color.territoryColor, fontWeight: FontWeight.bold),
+                  const SizedBox(height: 4),
+                  Row(
                     children: [
-                      CustomText(
-                        category.name ?? "",
-                        fontWeight: FontWeight.w600,
-                        fontSize: context.font.large,
-                        maxLines: 2,
-                        textAlign: TextAlign.right,
-                      ),
-                      if (hasSubtitle)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: CustomText(
-                            category.description ?? "",
-                            fontSize: 14,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            color: context.color.territoryColor.withOpacity(0.7),
-                            textAlign: TextAlign.right,
-                          ),
-                        ),
+                      Icon(Icons.straighten, size: 14, color: Colors.grey[500]),
+                      const SizedBox(width: 4),
+                      CustomText("${item.size?.toInt() ?? '--'} م²", fontSize: 12),
+                      const SizedBox(width: 10),
+                      Icon(Icons.location_on_outlined, size: 14, color: Colors.grey[500]),
+                      const SizedBox(width: 4),
+                      Expanded(child: CustomText(item.city ?? "", fontSize: 12, maxLines: 1)),
                     ],
                   ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  width: 35,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: context.color.backgroundColor,
-                  ),
-                  child: Icon(
-                    Icons.arrow_back_ios_rounded, // تم تغيير الاتجاه ليناسب العربي
-                    size: 16,
-                    color: context.color.territoryColor,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // --- زر الخريطة (تم تحديث الانتقال ليدعم الفلترة هناك أيضاً) ---
+  Widget _buildFixedMapButton() {
+    return Container(
+      padding: EdgeInsets.only(left: 16, right: 16, top: 12, bottom: MediaQuery.paddingOf(context).bottom + 12),
+      decoration: BoxDecoration(
+        color: context.color.backgroundColor,
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -4))],
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        height: 56,
+        child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: context.color.territoryColor,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
-        );
-      },
-    );
-  }
-
-  Widget _buildLoadingState() {
-    return Column(
-      children: [
-        const SizedBox(height: 12),
-        _shimmerEffect(height: 60),
-        const SizedBox(height: 16),
-        Expanded(child: _shimmerEffect(height: 90)),
-      ],
-    );
-  }
-
-  Widget _shimmerEffect({required double height}) {
-    return Shimmer.fromColors(
-      baseColor: Theme.of(context).colorScheme.shimmerBaseColor,
-      highlightColor: Theme.of(context).colorScheme.shimmerHighlightColor,
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: 6,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (_, __) => Container(
-          height: height,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
+          icon: const Icon(Icons.map, color: Colors.white),
+          label: const CustomText("عرض على الخريطة", color: Colors.white, fontWeight: FontWeight.w600),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => MapViewScreen(
+                catId: widget.catId,
+                catName: widget.catName,
+              ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildErrorWidget(Object error, SubCategoryParams params) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.error_outline, size: 48, color: Colors.red),
-          const SizedBox(height: 16),
-          const CustomText("Failed to load categories"),
-          TextButton(
-            onPressed: () => ref.invalidate(subCategoryProvider(params)),
-            child: const Text("Try Again"),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget _buildLoadingState() => ShimmerLoading(child: const Center(child: CircularProgressIndicator()));
+  Widget _buildErrorWidget(Object error, SubCategoryParams params) => Center(child: Text("Error: $error"));
 }

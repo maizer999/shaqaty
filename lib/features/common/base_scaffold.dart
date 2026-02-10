@@ -8,37 +8,35 @@ import '../../core/widgets/custom_text.dart';
 import '../addAds/views/select_category_view.dart';
 import '../home/views/home_screen.dart';
 import '../settings/settings_screen.dart';
-
 class BaseScaffold extends StatelessWidget {
-  final Widget? body; // Made optional because we might use the internal stack
+  final Widget? body;
   final String? title;
   final bool showAppBar;
   final bool showBottomNav;
   final bool showFab;
   final Widget? bottomNavigationBar;
   final BottomNavigationController? bottomNavController;
+  final List<Widget>? actions; // <--- أضفنا هذا السطر
 
   const BaseScaffold({
     super.key,
-    this.body, // The specific body if you're NOT using nav
+    this.body,
     this.title,
     this.showAppBar = true,
     this.showBottomNav = true,
     this.bottomNavController,
     this.showFab = false,
     this.bottomNavigationBar,
+    this.actions, // <--- أضفنا هذا السطر هنا أيضاً
   });
 
   @override
   Widget build(BuildContext context) {
-    // If no controller is passed, we use a fallback, but for navigation
-    // to work across the app, you should pass a shared one.
     final controller = bottomNavController ?? BottomNavigationController();
 
-    // The master list of screens for your app's main navigation
     final List<Widget> mainPages = [
-      body ??  HomeScreen(), // Index 0: Home (or passed body)
-      const SettingsScreen(),      // Index 1: Settings
+      body ?? HomeScreen(),
+      const SettingsScreen(),
     ];
 
     return FutureBuilder<bool>(
@@ -55,7 +53,6 @@ class BaseScaffold extends StatelessWidget {
                 preferredSize: const Size.fromHeight(60),
                 child: AppBar(
                   title: CustomText(
-                    // Handle title automatically based on index
                     controller.index == 1 ? 'settingsLbl'.tr() : (title ?? 'home'.tr()),
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
@@ -65,11 +62,11 @@ class BaseScaffold extends StatelessWidget {
                   backgroundColor: AppColors.primary,
                   elevation: 4,
                   iconTheme: const IconThemeData(color: Colors.white),
+                  actions: actions, // <--- تمرير الـ actions للـ AppBar الأصلي
                 ),
               )
                   : null,
 
-              // RIGHT HERE: The BaseScaffold handles the switching logic
               body: SafeArea(
                 child: IndexedStack(
                   index: controller.index,

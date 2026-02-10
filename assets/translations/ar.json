@@ -681,5 +681,11 @@
   "version": "إصدار التطبيق",
   "deleteAccountTitle": "حذف الحساب؟",
   "deleteAccountWarning": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع بياناتك نهائياً.",
-  "cancel": "إلغاء"
+  "cancel": "إلغاء",
+  "sizeLbl": "المساحة",
+  "ownerLbl": "المعلن",
+  "priceLbl": "السعر",
+  "owner": "مالك",
+  "agent": "وسيط",
+  "unknown": "غير محدد"
 }

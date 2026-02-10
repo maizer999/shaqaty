@@ -10,10 +10,22 @@ class SubCategoryParams {
   final int page;
   final String search;
 
+  // 🔹 الحقول الجديدة للفلترة
+  final double? minPrice;
+  final double? maxPrice;
+  final double? minSize;
+  final double? maxSize;
+  final String? status;
+
   SubCategoryParams({
     required this.categoryId,
     this.page = 1,
     this.search = '',
+    this.minPrice,
+    this.maxPrice,
+    this.minSize,
+    this.maxSize,
+    this.status,
   });
 
   @override
@@ -23,22 +35,40 @@ class SubCategoryParams {
               runtimeType == other.runtimeType &&
               categoryId == other.categoryId &&
               page == other.page &&
-              search == other.search;
+              search == other.search &&
+              minPrice == other.minPrice &&
+              maxPrice == other.maxPrice &&
+              minSize == other.minSize &&
+              maxSize == other.maxSize &&
+              status == other.status;
 
   @override
-  int get hashCode => categoryId.hashCode ^ page.hashCode ^ search.hashCode;
+  int get hashCode =>
+      categoryId.hashCode ^
+      page.hashCode ^
+      search.hashCode ^
+      minPrice.hashCode ^
+      maxPrice.hashCode ^
+      minSize.hashCode ^
+      maxSize.hashCode ^
+      status.hashCode;
 }
-
 
 class SubCategoryNotifier extends AutoDisposeFamilyAsyncNotifier<List<SubCategoryItem>, SubCategoryParams> {
   @override
   FutureOr<List<SubCategoryItem>> build(SubCategoryParams arg) async {
     final service = ref.watch(subCategoryServiceProvider);
 
+    // 🔹 تم تحديث الاستدعاء ليرسل بارامترات الفلترة للخدمة (Service)
     final result = await service.getSubCategories(
       categoryId: arg.categoryId,
       page: arg.page,
       search: arg.search,
+      minPrice: arg.minPrice,
+      maxPrice: arg.maxPrice,
+      minSize: arg.minSize,
+      maxSize: arg.maxSize,
+      status: arg.status,
     );
 
     return result.when(

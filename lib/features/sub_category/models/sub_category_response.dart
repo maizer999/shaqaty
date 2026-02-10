@@ -69,7 +69,13 @@ class SubCategoryItem with SubCategoryItemMappable {
   final int? isEditedByAdmin;
   final String? adminEditReason;
 
-  // new fields
+  // New Property Fields (Added based on your DB update)
+  final double? size;           // المساحة
+  final String? propertyAge;    // عمر البناء
+  final String? advertiserType; // نوع المعلن (0: Owner, 1: Agent)
+  final String? expiryDate;     // تاريخ الانتهاء
+
+  // existing new fields
   final double? latitude;
   final double? longitude;
   final String? address;
@@ -103,6 +109,10 @@ class SubCategoryItem with SubCategoryItemMappable {
     this.updatedAt,
     this.isEditedByAdmin,
     this.adminEditReason,
+    this.size,           // Added
+    this.propertyAge,    // Added
+    this.advertiserType, // Added
+    this.expiryDate,     // Added
     this.latitude,
     this.longitude,
     this.address,
