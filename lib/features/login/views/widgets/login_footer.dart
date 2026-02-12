@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:easy_localization/easy_localization.dart'; // Added this
 import '../../../../core/routes/route_constant.dart';
 
 class LoginFooter extends StatelessWidget {
@@ -13,9 +13,15 @@ class LoginFooter extends StatelessWidget {
       child: Text.rich(
         TextSpan(
           style: GoogleFonts.nunito(fontSize: 16.0, color: Colors.white),
-          children: const [
-            TextSpan(text: 'Don’t have account? '),
-            TextSpan(text: 'Sign up', style: TextStyle(color: Color(0xFFF9CA58), fontWeight: FontWeight.bold)),
+          children: [
+            TextSpan(text: 'dontHaveAccount'.tr()), // Translated part 1
+            TextSpan(
+              text: 'signUp'.tr(), // Translated part 2
+              style: const TextStyle(
+                  color: Color(0xFFF9CA58),
+                  fontWeight: FontWeight.bold
+              ),
+            ),
           ],
         ),
       ),

@@ -688,5 +688,20 @@
   "owner": "Owner",
   "agent": "Agent",
   "unknown": "N/A",
-  "addDetails" : "Advertisement details"
+  "addDetails" : "Advertisement details",
+  "accountActions": "Account Actions",
+  "logoutConfirmation": "Are you sure you want to log out?",
+  "loginFailed": "Login Failed",
+  "emailHint": "Enter your email",
+  "emailRequired": "Email required",
+  "passwordHint": "Enter your password",
+  "passwordRequired": "Password required",
+  "orContinueWith": "Or Continue with",
+  "rememberMe": "Remember me",
+  "dontHaveAccount": "Don’t have account? ",
+  "loginTitle" : "LOGIN",
+  "loginPage" : "VIEW",
+  "pageTitle": "PAGE"
+
+
 }

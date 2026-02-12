@@ -110,6 +110,8 @@ class SecureStorageHelper {
 
   static Future<void> logout() async {
     final secureStorage = providerContainer.read(secureStorageProvider);
+    await secureStorage.delete(key: SecureStorageConstants.userName);
+    await secureStorage.delete(key: SecureStorageConstants.password);
     await secureStorage.delete(key: SecureStorageConstants.token);
     await secureStorage.delete(key: SecureStorageConstants.refreshToken);
     await secureStorage.delete(key: SecureStorageConstants.uuid);

@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/constants/app_strings.dart';
 import 'core/utils/system_preferences_helper.dart';
+import 'features/settings/theme_control.dart';
 
 late final ProviderContainer providerContainer;
 
@@ -32,7 +33,6 @@ void main() async {
     ),
   );
 }
-
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
@@ -43,15 +43,36 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
+    // 1. Watch the theme state here
+    final themeMode = ref.watch(themeProvider);
+
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'My App',
+          title: 'Shaqaty',
+          // 2. Link the themeMode to the MaterialApp
+          themeMode: themeMode,
+
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
+
+          theme: ThemeData(
+            brightness: Brightness.light,
+            primaryColor: Colors.deepPurple,
+            primarySwatch: Colors.deepPurple,
+            scaffoldBackgroundColor: Colors.grey.shade50,
+            cardColor: Colors.white, // Ensure card color is set for light mode
+          ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            primaryColor: Colors.deepPurple,
+            scaffoldBackgroundColor: const Color(0xFF121212),
+            cardColor: const Color(0xFF1E1E1E), // Ensure card color is set for dark mode
+          ),
+
           home: const SplashScreen(),
         );
       },

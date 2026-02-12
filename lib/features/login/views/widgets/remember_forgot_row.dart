@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:easy_localization/easy_localization.dart'; // Added this
 import '../../../../core/routes/route_constant.dart';
 
 class RememberForgotRow extends StatelessWidget {
@@ -21,12 +22,20 @@ class RememberForgotRow extends StatelessWidget {
               child: const Icon(Icons.check, size: 12, color: Colors.white),
             ),
             const SizedBox(width: 8),
-            Text('Remember me', style: GoogleFonts.inter(color: Colors.white, fontSize: 13)),
+            // Translated "Remember me"
+            Text(
+                'rememberMe'.tr(),
+                style: GoogleFonts.inter(color: Colors.white, fontSize: 13)
+            ),
           ],
         ),
         GestureDetector(
           onTap: () => Navigator.pushNamed(context, Routes.forgotPassword),
-          child: Text('Forgot password?', style: GoogleFonts.inter(color: Colors.white, fontSize: 13)),
+          // Translated "Forgot password?"
+          child: Text(
+              'forgotPassword'.tr(),
+              style: GoogleFonts.inter(color: Colors.white, fontSize: 13)
+          ),
         ),
       ],
     );

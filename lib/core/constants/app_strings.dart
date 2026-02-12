@@ -12,8 +12,7 @@ class AppStrings {
   static String selectGallery = "assets/images/gallery.png";
   static String loginBackgroundImage = "assets/images/login_backgground.png";
   static String loginCamera = "assets/images/camera.png";
-  static const loginTitle = 'LOGIN';
-  static const loginPage = 'PAGE';
+
   static const emailHint = 'Enter your gmail address';
   static const passwordHint = 'Enter your password';
   static const rememberMe = 'Remember me';

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../../core/network/app_cached_image.dart';
+import 'package:easy_localization/easy_localization.dart'; // إضافة المكتبة
 
 class LoginHeader extends StatelessWidget {
   const LoginHeader({super.key});
@@ -13,25 +11,37 @@ class LoginHeader extends StatelessWidget {
 
     return Column(
       children: [
-
         ClipRRect(
-          borderRadius: BorderRadius.circular(100), // Adjust this for more/less rounding
+          borderRadius: BorderRadius.circular(100),
           child: Image.asset(
-            'assets/svg/home.png',
+            'assets/images/logo.png',
             height: size.height / 6,
             fit: BoxFit.cover,
           ),
         ),
-
-
-        // SvgPicture.asset('assets/svg/logo2.svg', height: size.height / 8),
         const SizedBox(height: 16),
         Text.rich(
           TextSpan(
-            style: GoogleFonts.inter(fontSize: 23.12, color: Colors.white, letterSpacing: 2.0),
-            children: const [
-              TextSpan(text: 'LOGIN', style: TextStyle(fontWeight: FontWeight.w800)),
-              TextSpan(text: 'PAGE', style: TextStyle(color: Color(0xFFFE9879), fontWeight: FontWeight.w800)),
+            style: GoogleFonts.inter(
+                fontSize: 23.12,
+                color: Colors.white,
+                letterSpacing: 2.0
+            ),
+            children: [
+              // ترجمة الجزء الأول (LOGIN)
+              TextSpan(
+                  text: 'loginTitle'.tr(),
+                  style: const TextStyle(fontWeight: FontWeight.w800)
+              ),
+              const TextSpan(text: ' '), // مسافة بسيطة بين الكلمتين
+              // ترجمة الجزء الثاني (PAGE)
+              TextSpan(
+                  text: 'pageTitle'.tr(),
+                  style: const TextStyle(
+                      color: Color(0xFFFE9879),
+                      fontWeight: FontWeight.w800
+                  )
+              ),
             ],
           ),
         ),

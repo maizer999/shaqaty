@@ -688,5 +688,18 @@
   "owner": "مالك",
   "agent": "وسيط",
   "unknown": "غير محدد",
-  "addDetails" : "تفاصيل الاعلان"
+  "addDetails" : "تفاصيل الاعلان",
+  "accountActions": "إجراءات الحساب",
+  "logoutConfirmation": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "loginFailed": "فشل تسجيل الدخول",
+  "emailHint": "أدخل بريدك الإلكتروني",
+  "emailRequired": "البريد الإلكتروني مطلوب",
+  "passwordHint": "أدخل كلمة المرور",
+  "passwordRequired": "كلمة المرور مطلوبة",
+  "orContinueWith": "أو الاستمرار بواسطة",
+  "rememberMe": "تذكرني",
+  "dontHaveAccount": "ليس لديك حساب؟ ",
+   "loginTitle" : "تسجيل",
+   "loginPage" : "صفحة",
+  "pageTitle": "الدخول"
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart'; // Added this
 
 class SignInButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -19,16 +20,24 @@ class SignInButton extends StatelessWidget {
         height: 50,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.orange, // change to your color
+          color: Colors.orange,
           borderRadius: BorderRadius.circular(10),
         ),
         child: isLoading
-            ? const CircularProgressIndicator(
-          color: Colors.white,
+            ? const SizedBox(
+          height: 20,
+          width: 20,
+          child: CircularProgressIndicator(
+            color: Colors.white,
+            strokeWidth: 2,
+          ),
         )
-            : const Text(
-          "Sign In",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            : Text(
+          "signIn".tr(), // Translated "Sign In"
+          style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_core/core/widgets/custom_text.dart';
 import 'package:flutter_core/core/widgets/auth_text_field.dart';
+import 'package:easy_localization/easy_localization.dart'; // Added this
 import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/language/secure_storage.dart';
 import 'controller/login_provider.dart';
@@ -11,7 +12,6 @@ import 'package:flutter_core/features/login/views/widgets/login_header.dart';
 import 'package:flutter_core/features/login/views/widgets/remember_forgot_row.dart';
 import 'package:flutter_core/features/login/views/widgets/sign_in_button.dart';
 import 'package:flutter_core/features/login/views/widgets/social_buttons.dart';
-
 import '../../home/views/home_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -28,14 +28,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool isObscure = true;
 
   @override
-  void initState() {
-    super.initState();
-    // Default values for testing; clear these for production
-    emailController.text = 'maizer99@gmail.com';
-    passwordController.text = '123456';
-  }
-
-  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
@@ -43,20 +35,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // Default values for testing; clear these for production
+    emailController.text = 'maizer99@gmail.com';
+    passwordController.text = '123456';
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    /// ✅ SIDE EFFECTS (dialog + navigation)
     ref.listen(loginUserProvider, (previous, next) {
       next.whenOrNull(
         error: (error, _) {
           showDialog(
             context: context,
             builder: (_) => AlertDialog(
-              title: const CustomText("Login Failed"),
+              title: CustomText("loginFailed".tr()), // Translated
               content: CustomText(error.toString()),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("OK"),
+                  child: CustomText("ok".tr()), // Translated
                 ),
               ],
             ),
@@ -66,9 +66,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           if (data != null && mounted) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (_) =>  HomeScreen(),
-              ),
+              MaterialPageRoute(builder: (_) =>  HomeScreen()),
             );
           }
         },
@@ -100,10 +98,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       /// 📧 Email
                       AuthTextField(
                         controller: emailController,
-                        hint: 'Enter your email',
+                        hint: 'emailHint'.tr(), // Translated
                         icon: Icons.mail_rounded,
                         validator: (v) =>
-                        v == null || v.isEmpty ? 'Email required' : null,
+                        v == null || v.isEmpty ? 'emailRequired'.tr() : null, // Translated
                       ),
 
                       const SizedBox(height: 12),
@@ -111,7 +109,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       /// 🔐 Password
                       AuthTextField(
                         controller: passwordController,
-                        hint: 'Enter your password',
+                        hint: 'passwordHint'.tr(), // Translated
                         icon: Icons.lock,
                         obscure: isObscure,
                         suffix: IconButton(
@@ -119,12 +117,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             isObscure ? Icons.visibility : Icons.visibility_off,
                             color: Colors.white70,
                           ),
-                          onPressed: () {
-                            setState(() => isObscure = !isObscure);
-                          },
+                          onPressed: () => setState(() => isObscure = !isObscure),
                         ),
                         validator: (v) =>
-                        v == null || v.isEmpty ? 'Password required' : null,
+                        v == null || v.isEmpty ? 'passwordRequired'.tr() : null, // Translated
                       ),
 
                       const SizedBox(height: 16),
@@ -136,7 +132,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         isLoading: loginState.isLoading,
                         onTap: () async {
                           if (loginState.isLoading) return;
-
                           FocusScope.of(context).unfocus();
 
                           if (_formKey.currentState!.validate()) {
@@ -147,15 +142,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               username: username,
                               password: password,
                             );
-
-                            await SecureStorageHelper.setCredentials(
-                                username, password);
+                            await SecureStorageHelper.setCredentials(username, password);
                           }
                         },
                       ),
 
                       const SizedBox(height: 20),
-                      const DividerWithText(text: 'Or Continue with'),
+                      DividerWithText(text: 'orContinueWith'.tr()), // Translated
                       const SizedBox(height: 20),
                       const SocialButtons(),
                       const SizedBox(height: 20),

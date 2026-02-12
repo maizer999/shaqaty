@@ -6,6 +6,19 @@ import '../../shared/models/user_service/user_access_permission.dart';
 import '../constants/shared_pref_constants.dart';
 
 class SystemPreferencesHelper {
+  static const String _darkModeKey = "isDarkMode";
+
+  static Future<void> saveBool(String key, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(key, value);
+  }
+
+  // Get a boolean value
+  static Future<bool?> getBool(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(key);
+  }
+
   Future<Locale?> loadLocale() async {
     final prefs = await SharedPreferences.getInstance();
     final languageCode = prefs.getString('locale') ?? 'en';
