@@ -687,5 +687,6 @@
   "priceLbl": "السعر",
   "owner": "مالك",
   "agent": "وسيط",
-  "unknown": "غير محدد"
+  "unknown": "غير محدد",
+  "addDetails" : "تفاصيل الاعلان"
 }

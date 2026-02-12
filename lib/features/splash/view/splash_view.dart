@@ -5,6 +5,7 @@ import 'package:flutter_core/features/login/views/widgets/login_header.dart';
 import 'package:http/http.dart' as ref;
 import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/language/secure_storage.dart';
+import '../../../core/utils/system_preferences_helper.dart';
 import '../../home/views/home_screen.dart';
 import '../../login/views/controller/login_provider.dart';
 
@@ -27,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // 1. Check for stored credentials
     final credentials = await SecureStorageHelper.getCredentials();
-
+    SystemPreferencesHelper.setLanguageCode("ar");
     print(credentials[SecureStorageConstants.userName]);
     print(credentials[SecureStorageConstants.password]);
 

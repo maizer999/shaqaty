@@ -6,10 +6,12 @@ import 'package:flutter_core/features/splash/view/splash_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/constants/app_strings.dart';
+import 'core/utils/system_preferences_helper.dart';
 
 late final ProviderContainer providerContainer;
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   providerContainer = ProviderContainer();
@@ -20,8 +22,9 @@ void main() async {
   ]);
 
   runApp(
+
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('ar')],
+      supportedLocales: const [Locale('ar'), Locale('en')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
       startLocale: const Locale('ar'),

@@ -687,5 +687,6 @@
   "priceLbl": "Price",
   "owner": "Owner",
   "agent": "Agent",
-  "unknown": "N/A"
+  "unknown": "N/A",
+  "addDetails" : "Advertisement details"
 }

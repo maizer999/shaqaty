@@ -120,7 +120,7 @@ dependencies:
   dotted_border: ^2.1.0
   flutter_image_compress: ^2.4.0
 
-
+  flutter_launcher_icons: ^0.13.1
   auto_route_generator: ^10.2.3
   build_runner: ^2.5.0
   custom_lint: any
@@ -146,6 +146,11 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  ios: true
+  image_path: "assets/images/icon.png"
+  remove_alpha_ios: true
 
 flutter:
   uses-material-design: true

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_core/features/sub_category/views/widgets/area_search_autocomplete.dart';
 import 'package:flutter_core/features/sub_category/views/widgets/filter_bottom_sheet.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../build_context.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/theme/ui_utils.dart';
-import '../../../core/utils/shimmer_loading.dart';
 import '../../../core/widgets/custom_text.dart';
 import '../../add_details/ad_details_screen.dart';
 import '../../common/base_scaffold.dart';
 import '../controllers/sub_category_provider.dart';
 import '../models/sub_category_response.dart';
+import '../services/sub_category_service.dart';
 import 'map_view_cat_view.dart';
 
 class SubCategoryScreen extends ConsumerStatefulWidget {
@@ -31,7 +32,7 @@ class SubCategoryScreen extends ConsumerStatefulWidget {
 class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
   late final ScrollController controller = ScrollController();
 
-  // 🔹 متغيرات حالة الفلترة
+  // 🔹 متغيرات حالة الفلترة (السعر، المساحة، الحالة)
   double? minPrice, maxPrice, minSize, maxSize;
   String? condition;
 
@@ -67,9 +68,14 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 🔹 تحضير الـ Params لإرسالها للـ Provider
+    // 🔹 1. مراقبة اسم المنطقة المختارة من الـ Provider التلقائي
+    // بمجرد تغيير القيمة في AreaSearchAutocomplete سيتم إعادة بناء الشاشة
+    final selectedAreaName = ref.watch(selectedAreaNameProvider);
+
+    // 🔹 2. تحضير الـ Params مع تضمين الـ areaName المختار
     final params = SubCategoryParams(
       categoryId: widget.catId,
+      areaName: selectedAreaName, // القيمة القادمة من Autocomplete
       minPrice: minPrice,
       maxPrice: maxPrice,
       minSize: minSize,
@@ -82,13 +88,20 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
     return BaseScaffold(
       title: widget.catName,
       actions: [
+        // زر لمسح فلتر المنطقة إذا كان مفعلاً
+        if (selectedAreaName != null)
+          IconButton(
+            onPressed: () => ref.read(selectedAreaNameProvider.notifier).state = null,
+            icon: const Icon(Icons.location_off, color: Colors.white),
+            tooltip: "مسح تصفية المنطقة",
+          ),
         IconButton(
           onPressed: _openFilter,
           icon: const Icon(Icons.tune_rounded, color: Colors.white),
         ),
       ],
       body: subCategoriesAsync.when(
-        data: (categories) => _buildBody(categories),
+        data: (categories) => _buildBody(categories, selectedAreaName),
         loading: () => _buildLoadingState(),
         error: (error, stack) => _buildErrorWidget(error, params),
       ),
@@ -99,12 +112,30 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
     );
   }
 
-  // --- بناء القائمة ---
-  Widget _buildBody(List<SubCategoryItem> categories) {
+  // --- بناء الجسم الرئيسي ---
+  Widget _buildBody(List<SubCategoryItem> categories, String? activeArea) {
     return ListView(
       controller: controller,
       padding: const EdgeInsets.only(top: 12, bottom: 16),
       children: [
+        // 🔹 حقل البحث التلقائي (Autocomplete)
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: AreaSearchAutocomplete(),
+        ),
+
+        // تنبيه للمستخدم عند تفعيل فلتر المنطقة
+        if (activeArea != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: CustomText(
+              "عرض النتائج في: $activeArea",
+              color: context.color.territoryColor,
+              fontWeight: FontWeight.bold,
+              fontSize: context.font.small,
+            ),
+          ),
+
         _buildAllInHeader(),
         const SizedBox(height: 16),
         _buildCategoryList(categories),
@@ -144,7 +175,7 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
             children: [
               Icon(Icons.search_off_rounded, size: 60, color: Colors.grey[400]),
               const SizedBox(height: 16),
-              const CustomText("لا توجد نتائج تطابق الفلاتر", color: Colors.grey),
+              const CustomText("لا توجد نتائج تطابق الفلاتر المختارة", color: Colors.grey),
             ],
           ),
         ),
@@ -201,7 +232,7 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
                       const SizedBox(width: 10),
                       Icon(Icons.location_on_outlined, size: 14, color: Colors.grey[500]),
                       const SizedBox(width: 4),
-                      Expanded(child: CustomText(item.city ?? "", fontSize: 12, maxLines: 1)),
+                      Expanded(child: CustomText(item.city ?? item.state ?? "", fontSize: 12, maxLines: 1)),
                     ],
                   ),
                 ],
@@ -213,7 +244,6 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
     );
   }
 
-  // --- زر الخريطة (تم تحديث الانتقال ليدعم الفلترة هناك أيضاً) ---
   Widget _buildFixedMapButton() {
     return Container(
       padding: EdgeInsets.only(left: 16, right: 16, top: 12, bottom: MediaQuery.paddingOf(context).bottom + 12),
@@ -245,6 +275,21 @@ class _SubCategoryScreenState extends ConsumerState<SubCategoryScreen> {
     );
   }
 
-  Widget _buildLoadingState() => ShimmerLoading(child: const Center(child: CircularProgressIndicator()));
-  Widget _buildErrorWidget(Object error, SubCategoryParams params) => Center(child: Text("Error: $error"));
+  Widget _buildLoadingState() => const Center(child: Padding(
+    padding: EdgeInsets.all(20.0),
+    child: CircularProgressIndicator(),
+  ));
+
+  Widget _buildErrorWidget(Object error, SubCategoryParams params) => Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const CustomText("حدث خطأ أثناء تحميل البيانات", color: Colors.red),
+          TextButton(
+              onPressed: () => ref.refresh(subCategoryProvider(params)),
+              child: const Text("إعادة المحاولة")
+          )
+        ],
+      )
+  );
 }
