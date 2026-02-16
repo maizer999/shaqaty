@@ -36,7 +36,8 @@ class LoginUserNotifier
         state = AsyncValue.data(loginResponse);
       },
           (error) {
-        state = AsyncValue.error(error, StackTrace.current);
+            print("object${error.message}");
+        state = AsyncValue.error(error.message ?? "Error", StackTrace.current);
       },
     );
   }
