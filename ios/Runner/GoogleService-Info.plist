@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>416382625901-ia4v0abv08mijlobk3t5atut940cgdmu.apps.googleusercontent.com</string>
+	<string>416382625901-ohi8v9pjci9batpbs4ino4r0k0krj613.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.416382625901-ia4v0abv08mijlobk3t5atut940cgdmu</string>
+	<string>com.googleusercontent.apps.416382625901-ohi8v9pjci9batpbs4ino4r0k0krj613</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>416382625901-4go9r5idog1l1rl0935kcb10ndubifto.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.maizer.Classify</string>
+	<string>com.maizer.flutterCore</string>
 	<key>PROJECT_ID</key>
 	<string>classify-26e2c</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:416382625901:ios:dcbd544e351bb896d23764</string>
+	<string>1:416382625901:ios:6fa813f25046eb13d23764</string>
 </dict>
 </plist>

@@ -289,6 +289,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.2"
+  cloud_firestore:
+    dependency: transitive
+    description:
+      name: cloud_firestore
+      sha256: "54484b2fc49f41b46f35b60a54b12351181eeaad22c0e3def276a81e17ae7c9b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.2"
+  cloud_firestore_platform_interface:
+    dependency: transitive
+    description:
+      name: cloud_firestore_platform_interface
+      sha256: dfaa8b2c0d0a824af289d4159816a5c78417feec264c2194081d645687195158
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.6"
+  cloud_firestore_web:
+    dependency: transitive
+    description:
+      name: cloud_firestore_web
+      sha256: "35d01f502b3b701d700470d32a8f82704dac8341a66e86c074900cde5bab343d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.2"
   code_assets:
     dependency: transitive
     description:
@@ -513,6 +537,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  drop_shadow_image:
+    dependency: transitive
+    description:
+      name: drop_shadow_image
+      sha256: d73a954ce7c7aaa17ea27d45c2fdbfb7f868d20edd0482bbc94a3d69308d86a7
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.1"
   easy_localization:
     dependency: "direct main"
     description:
@@ -626,7 +658,7 @@ packages:
     source: hosted
     version: "6.1.2"
   firebase_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_core
       sha256: "923085c881663ef685269b013e241b428e1fb03cdd0ebde265d9b40ff18abf80"
@@ -1678,6 +1710,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.2"
+  mad2_groups:
+    dependency: "direct main"
+    description:
+      name: mad2_groups
+      sha256: "8b55c3f04c959044457989795e65a1734eaeab078548e72b837a684789d9a4e0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   matcher:
     dependency: transitive
     description:
@@ -2014,6 +2054,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.2"
+  random_string:
+    dependency: transitive
+    description:
+      name: random_string
+      sha256: "03b52435aae8cbdd1056cf91bfc5bf845e9706724dd35ae2e99fa14a1ef79d02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
   remove_emoji_input_formatter:
     dependency: "direct main"
     description:

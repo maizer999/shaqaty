@@ -141,6 +141,8 @@ dependencies:
   firebase_auth: ^6.1.4
   flutter_secure_storage: ^9.2.4
   flutter_facebook_auth: ^7.1.5
+  mad2_groups: ^1.0.3
+  firebase_core: ^4.4.0
 
 
 dependency_overrides:

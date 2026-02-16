@@ -6,6 +6,8 @@ import 'package:flutter_core/features/splash/view/splash_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'features/settings/theme_control.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 late final ProviderContainer providerContainer;
 
@@ -19,6 +21,10 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
 

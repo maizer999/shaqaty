@@ -12,34 +12,21 @@
           "package_name": "com.maizer.Classify"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "416382625901-3tgt2sht17csfkemqoqhvigrhh5obsah.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.maizer.Classify",
-            "certificate_hash": "d7406651a98abc977bc86093093818d17e649cb8"
-          }
-        },
-        {
-          "client_id": "416382625901-945q4rsg109fkuoj2onef5ncfoofudrd.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCN69sBBCaQFiUix-5pxzQE838ZnxyE7Yk"
+          "current_key": "AIzaSyDaRd3ORkZqh8-gBryB80LqHr0WUMQRwi8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "416382625901-945q4rsg109fkuoj2onef5ncfoofudrd.apps.googleusercontent.com",
+              "client_id": "416382625901-oualb87gnolc0t92k17bhcshsp0v7eg7.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "416382625901-oudj1tr5odeeoh3etjtsrrdigeu2f8vr.apps.googleusercontent.com",
+              "client_id": "416382625901-ia4v0abv08mijlobk3t5atut940cgdmu.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.maizer.Classify"
