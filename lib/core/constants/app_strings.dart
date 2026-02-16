@@ -97,7 +97,7 @@ class AppStrings {
   static const String chat = "Chat" ;
   static const String myAdsTab =  "My Ads" ;
   static const String profileTab   =  "Profile" ;
-  static const String addDetails   =  "add_details" ;
+  static const String addDetails   =  "advertisement_details" ;
   static const String addAdvertisement   =  "add_advertisement" ;
   static const String selectCategory   =  "select_category" ;
 

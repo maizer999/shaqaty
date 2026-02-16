@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_core/features/sub_category/views/sub_category_screen.dart';
 import 'package:flutter_core/features/sub_category/views/widgets/filter_bottom_sheet.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../core/theme/ui_utils.dart';
 import '../../../core/widgets/custom_text.dart';
+import '../../advertisement_details/ad_details_screen.dart';
 import '../models/sub_category_response.dart';
-import '../controllers/sub_category_provider.dart'; // أضف هذا
-import '../../add_details/ad_details_screen.dart';
+import '../controllers/sub_category_provider.dart';
 import '../../common/base_scaffold.dart';
 
-class MapViewScreen extends ConsumerStatefulWidget { // حوله إلى Consumer
-  final int catId; // مرر الـ ID بدلاً من القائمة فقط لتتمكن من إعادة الطلب
+class MapViewScreen extends ConsumerStatefulWidget {
+  final int catId;
   final String catName;
 
   const MapViewScreen({super.key, required this.catId, required this.catName});
@@ -24,7 +23,7 @@ class _MapViewScreenState extends ConsumerState<MapViewScreen> {
   GoogleMapController? _mapController;
   SubCategoryItem? _selectedItem;
 
-  // متغيرات الفلتر
+  // Filter variables
   double? minPrice, maxPrice, minSize, maxSize;
   String? condition;
 
@@ -53,7 +52,6 @@ class _MapViewScreenState extends ConsumerState<MapViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // جلب البيانات بناءً على الفلاتر الحالية
     final params = SubCategoryParams(
       categoryId: widget.catId,
       minPrice: minPrice,
@@ -91,6 +89,9 @@ class _MapViewScreenState extends ConsumerState<MapViewScreen> {
       );
     }).toSet();
 
+    // Bottom padding to avoid map controls
+    final bottomPadding = MediaQuery.of(context).padding.bottom + 70;
+
     return Stack(
       children: [
         GoogleMap(
@@ -104,137 +105,133 @@ class _MapViewScreenState extends ConsumerState<MapViewScreen> {
           onMapCreated: (c) => _mapController = c,
           myLocationEnabled: true,
         ),
-        if (_selectedItem != null) _buildSelectedCard(),
+
+        // Positioned card above map controls
+        if (_selectedItem != null)
+          Positioned(
+            bottom: bottomPadding,
+            left: 16,
+            right: 16,
+            child: _buildSelectedCard(),
+          ),
       ],
     );
   }
 
-  // الـ Card الخاص بالعقار المختار (نفس الكود السابق الخاص بك)
   Widget _buildSelectedCard() {
     if (_selectedItem == null) return const SizedBox.shrink();
 
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => AdDetailsScreen(model: _selectedItem!),
-              ),
-            );
-          },
-          child: Container(
-            height: 160,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  blurRadius: 15,
-                  offset: const Offset(0, 5),
-                ),
-              ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => AdDetailsScreen(model: _selectedItem!),
+          ),
+        );
+      },
+      child: Container(
+        height: 160,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
             ),
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              textDirection: TextDirection.rtl,
-              children: [
-                // 1. Image (Right Side)
-                Container(
-                  width: 100,
-                  height: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.grey[100],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: UiUtils.imageType(
-                      _selectedItem!.image ?? "",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+          ],
+        ),
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          textDirection: TextDirection.rtl,
+          children: [
+            // Image
+            Container(
+              width: 100,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.grey[100],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: UiUtils.imageType(
+                  _selectedItem!.image ?? "",
+                  fit: BoxFit.cover,
                 ),
+              ),
+            ),
+            const SizedBox(width: 12),
 
-                const SizedBox(width: 12),
-
-                // 2. Content Column (Text and Buttons)
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            // Content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title + Close
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    textDirection: TextDirection.rtl,
                     children: [
-                      // Title and Close Button Row
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        textDirection: TextDirection.rtl,
-                        children: [
-                          // Title
-                          Expanded(
-                            child: CustomText(
-                              _selectedItem!.name ?? "",
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                              maxLines: 1,
-                              textAlign: TextAlign.right,
-                            ),
-                          ),
-
-                          // Close Button
-                          InkWell(
-                            onTap: () => setState(() => _selectedItem = null),
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.grey[100],
-                              ),
-                              child: const Icon(
-                                Icons.close,
-                                size: 16,
-                                color: Colors.black54,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 6),
-
-                      // Description
                       Expanded(
                         child: CustomText(
-                          _selectedItem!.description ?? "",
-                          fontSize: 13,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          color: Colors.grey[600],
+                          _selectedItem!.name ?? "",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          maxLines: 1,
                           textAlign: TextAlign.right,
                         ),
                       ),
-
-                      // Price
-                      if ((_selectedItem!.price ?? 0) > 0)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: CustomText(
-                            "${_selectedItem!.price?.toStringAsFixed(2)} \$",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.teal,
-                            textAlign: TextAlign.right,
+                      InkWell(
+                        onTap: () => setState(() => _selectedItem = null),
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey[100],
+                          ),
+                          child: const Icon(
+                            Icons.close,
+                            size: 16,
+                            color: Colors.black54,
                           ),
                         ),
+                      ),
                     ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 6),
+
+                  // Description
+                  Expanded(
+                    child: CustomText(
+                      _selectedItem!.description ?? "",
+                      fontSize: 13,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      color: Colors.grey[600],
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+
+                  // Price
+                  if ((_selectedItem!.price ?? 0) > 0)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: CustomText(
+                        "${_selectedItem!.price?.toStringAsFixed(2)} \$",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.teal,
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

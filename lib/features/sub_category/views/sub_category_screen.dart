@@ -6,7 +6,7 @@ import '../../../build_context.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/theme/ui_utils.dart';
 import '../../../core/widgets/custom_text.dart';
-import '../../add_details/ad_details_screen.dart';
+import '../../advertisement_details/ad_details_screen.dart';
 import '../../common/base_scaffold.dart';
 import '../controllers/sub_category_provider.dart';
 import '../models/sub_category_response.dart';

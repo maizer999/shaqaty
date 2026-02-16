@@ -27,7 +27,7 @@ class AuthenticationFailedException implements AppException {
 
   @override
   String? get message =>
-      response?["error_description"] ?? 'Authentication failed';
+      response?["message"] ?? 'Authentication failed';
 
   Map? response;
 
@@ -211,6 +211,7 @@ class AppException implements Exception {
     return '$message';
   }
 }
+
 
 class CommonExceptionHandler {
   static String getErrorMessage(Exception error) {

@@ -38,8 +38,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void initState() {
     super.initState();
     // Default values for testing; clear these for production
-    emailController.text = 'maizer99@gmail.com';
-    passwordController.text = '123456';
+    emailController.text = 'maizer99@yahoo.com';
+    passwordController.text = '1234';
   }
 
 

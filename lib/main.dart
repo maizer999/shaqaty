@@ -5,8 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_core/features/splash/view/splash_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'core/constants/app_strings.dart';
-import 'core/utils/system_preferences_helper.dart';
 import 'features/settings/theme_control.dart';
 
 late final ProviderContainer providerContainer;
