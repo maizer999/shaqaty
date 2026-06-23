@@ -8,6 +8,7 @@ import '../../core/utils/language/secure_storage.dart';
 import '../../../main.dart';
 import '../common/base_scaffold.dart';
 import '../login/views/login_view.dart';
+import '../subscription/views/subscription_screen.dart';
 
 class SettingsScreen extends ConsumerWidget { // Changed to ConsumerWidget
   const SettingsScreen({super.key});
@@ -47,7 +48,7 @@ class SettingsScreen extends ConsumerWidget { // Changed to ConsumerWidget
             icon: Icons.language_rounded,
             title: "language".tr(),
             trailing: CustomText("langName".tr(), color: Colors.grey),
-            onTap: () {},
+            onTap: () => _showLanguageDialog(context),
           ),
           _buildModernItem(
             context,
@@ -78,7 +79,14 @@ class SettingsScreen extends ConsumerWidget { // Changed to ConsumerWidget
             context,
             icon: Icons.card_membership_rounded,
             title: "mySubscription".tr(),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const SubscriptionScreen(),
+                ),
+              );
+            },
           ),
           _buildModernItem(
             context,
@@ -226,6 +234,43 @@ class SettingsScreen extends ConsumerWidget { // Changed to ConsumerWidget
   }
 
   // --- Dialogs ---
+
+  void _showLanguageDialog(BuildContext context) {
+    final current = context.locale.languageCode;
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: CustomText("selectLanguage".tr(), fontWeight: FontWeight.bold),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _languageOption(dialogContext, "english".tr(), 'en', current),
+            _languageOption(dialogContext, "arabic".tr(), 'ar', current),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _languageOption(
+    BuildContext context,
+    String label,
+    String code,
+    String currentCode,
+  ) {
+    final selected = code == currentCode;
+    return ListTile(
+      onTap: () async {
+        await context.setLocale(Locale(code));
+        if (context.mounted) Navigator.pop(context);
+      },
+      title: CustomText(label, fontWeight: FontWeight.w500),
+      trailing: selected
+          ? Icon(Icons.check_circle, color: Theme.of(context).primaryColor)
+          : const Icon(Icons.circle_outlined, color: Colors.grey),
+    );
+  }
 
   void _showLogoutDialog(BuildContext context) {
     showDialog(

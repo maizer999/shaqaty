@@ -65,7 +65,7 @@ class CommonBottomSheet {
                           onTap: () {
                             Navigator.of(context).pop();
                           },
-                          child: Icon(
+                          child: FaIcon(
                             FontAwesomeIcons.xmark,
                             color: AppColors.kDarkRed,
                             size: AppSizes.hSize24,

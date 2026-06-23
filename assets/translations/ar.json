@@ -701,5 +701,17 @@
   "dontHaveAccount": "ليس لديك حساب؟ ",
    "loginTitle" : "تسجيل",
    "loginPage" : "صفحة",
-  "pageTitle": "الدخول"
+  "pageTitle": "الدخول",
+
+  "subscriptionPackages": "باقات الاشتراك",
+  "active": "مُفعّل",
+  "duration": "المدة",
+  "currentPlan": "الباقة الحالية",
+  "noPackagesFound": "لا توجد باقات",
+  "paymentSuccessful": "تم الدفع بنجاح",
+  "packageActivated": "تم تفعيل الباقة بنجاح",
+  "somethingWentWrong": "حدث خطأ ما",
+  "selectLanguage": "اختر اللغة",
+  "arabic": "العربية",
+  "english": "English"
 }

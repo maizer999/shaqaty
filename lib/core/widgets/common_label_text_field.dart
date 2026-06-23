@@ -277,7 +277,7 @@ class _CommonLabelTextFieldState extends State<CommonLabelTextField> {
       return widget.suffixIcon;
     } else if (widget.isPassword == true) {
       return IconButton(
-        icon: Icon(
+        icon: FaIcon(
           isPasswordiconClicked
               ? FontAwesomeIcons
                   .eyeSlash // Show "eye-slash" when password is visible

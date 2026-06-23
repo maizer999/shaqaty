@@ -8,202 +8,16 @@ enum IssueType {
   userNotAuthorized,
 }
 
-class ConnectionIssueException implements AppException {
-  ConnectionIssueException({this.response});
-
-  @override
-  String? get message => 'No Internet connection';
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.noInternetConnection;
-}
-
-class AuthenticationFailedException implements AppException {
-  AuthenticationFailedException({this.response});
-
-  @override
-  String? get message =>
-      response?["message"] ?? 'Authentication failed';
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.userNotAuthorized;
-}
-
-class InvalidRequestException implements AppException {
-  InvalidRequestException({this.response});
-
-  @override
-  String? get message =>
-      'Invalid request, please check method, url, & parameters';
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.serverMaintenance;
-}
-
-class MalformedOutputException implements AppException {
-  MalformedOutputException({this.response});
-
-  @override
-  String? message;
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.serverMaintenance;
-}
-
-class ServerErrorException implements AppException {
-  ServerErrorException({this.response});
-
-  @override
-  String? get message {
-    if (response != null) {
-      final error = ErrorModel.fromResponse(response);
-      return "${AppStrings.issueTypeEnumServerMaintenance} \n ${error.responseMessage}";
-    }
-    return null;
-  }
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.serverMaintenance;
-}
-
-class ServiceUnavailableException implements AppException {
-  ServiceUnavailableException({this.response});
-
-  @override
-  String? get message {
-    if (response != null) {
-      final error = ErrorModel.fromResponse(response);
-      return error.responseMessage;
-    }
-    return 'Service Unavailable';
-  }
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.serverMaintenance;
-}
-
-class NoDataFoundException implements AppException {
-  NoDataFoundException({this.response});
-
-  @override
-  String? get message => AppStrings.noDataFound;
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.serverMaintenance;
-}
-
-class NotFoundException implements AppException {
-  NotFoundException({
-    this.response,
-  });
-
-  @override
-  String? get message => AppStrings.notFound;
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.serverMaintenance;
-}
-
-class UnknownErrorException implements AppException {
-  UnknownErrorException({this.response});
-
-  @override
-  String? get message {
-    if (response != null) {
-      final error = ErrorModel.fromResponse(response);
-      return error.responseMessage;
-    }
-    return 'Undefined Error';
-  }
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.serverMaintenance;
-}
-
-class FillAllFieldsException implements AppException {
-  @override
-  String? get message => 'Fill All Fields Exception';
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.serverMaintenance;
-}
-
-class ErrorModelException implements AppException {
-  ErrorModelException({required this.errorModel, this.response});
-
-  @override
-  String? get message => errorModel.responseMessage;
-
-  final Map? response;
-  final ErrorModel errorModel;
-
-  List<Object?> get props => [message, response, errorModel];
-
-  @override
-  IssueType? issueType = IssueType.serverMaintenance;
-}
-
-class UserNotSupportedException implements AppException {
-  UserNotSupportedException({this.response});
-
-  @override
-  String? get message => 'User Not supported';
-
-  Map? response;
-
-  List<Object?> get props => [message, response];
-
-  @override
-  IssueType? issueType = IssueType.userNotSupported;
-}
-
+/// ==========================================
+/// Base Exception Class
+/// ==========================================
 class AppException implements Exception {
   final String? message;
-
   IssueType? issueType;
 
   AppException({
     required this.message,
+    this.issueType,
   });
 
   @override
@@ -212,7 +26,164 @@ class AppException implements Exception {
   }
 }
 
+/// ==========================================
+/// Subclasses (Extending AppException)
+/// ==========================================
 
+class ConnectionIssueException extends AppException {
+  final Map? response;
+
+  ConnectionIssueException({this.response})
+      : super(
+    message: 'No Internet connection',
+    issueType: IssueType.noInternetConnection,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+class AuthenticationFailedException extends AppException {
+  final Map? response;
+
+  AuthenticationFailedException({this.response})
+      : super(
+    message: response?["message"] ?? 'Authentication failed',
+    issueType: IssueType.userNotAuthorized,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+class InvalidRequestException extends AppException {
+  final Map? response;
+
+  InvalidRequestException({this.response})
+      : super(
+    message: 'Invalid request, please check method, url, & parameters',
+    issueType: IssueType.serverMaintenance,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+class MalformedOutputException extends AppException {
+  final Map? response;
+
+  MalformedOutputException({this.response, String? customMessage})
+      : super(
+    message: customMessage,
+    issueType: IssueType.serverMaintenance,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+class ServerErrorException extends AppException {
+  final Map? response;
+
+  ServerErrorException({this.response})
+      : super(
+    message: response != null
+        ? "${AppStrings.issueTypeEnumServerMaintenance} \n ${ErrorModel.fromResponse(response).responseMessage}"
+        : null,
+    issueType: IssueType.serverMaintenance,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+class ServiceUnavailableException extends AppException {
+  final Map? response;
+
+  ServiceUnavailableException({this.response})
+      : super(
+    message: response != null
+        ? ErrorModel.fromResponse(response).responseMessage
+        : 'Service Unavailable',
+    issueType: IssueType.serverMaintenance,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+class NoDataFoundException extends AppException {
+  final Map? response;
+
+  NoDataFoundException({this.response})
+      : super(
+    message: AppStrings.noDataFound,
+    issueType: IssueType.serverMaintenance,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+class NotFoundException extends AppException {
+  final Map? response;
+
+  NotFoundException({this.response})
+      : super(
+    message: AppStrings.notFound,
+    issueType: IssueType.serverMaintenance,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+class UnknownErrorException extends AppException {
+  final Map? response;
+
+  UnknownErrorException({this.response})
+      : super(
+    message: response != null
+        ? ErrorModel.fromResponse(response).responseMessage
+        : 'Undefined Error',
+    issueType: IssueType.serverMaintenance,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+class FillAllFieldsException extends AppException {
+  final Map? response;
+
+  FillAllFieldsException({this.response})
+      : super(
+    message: 'Fill All Fields Exception',
+    issueType: IssueType.serverMaintenance,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+class ErrorModelException extends AppException {
+  final Map? response;
+  final ErrorModel errorModel;
+
+  ErrorModelException({required this.errorModel, this.response})
+      : super(
+    message: errorModel.responseMessage,
+    issueType: IssueType.serverMaintenance,
+  );
+
+  List<Object?> get props => [message, response, errorModel];
+}
+
+class UserNotSupportedException extends AppException {
+  final Map? response;
+
+  UserNotSupportedException({this.response})
+      : super(
+    message: 'User Not supported',
+    issueType: IssueType.userNotSupported,
+  );
+
+  List<Object?> get props => [message, response];
+}
+
+/// ==========================================
+/// Exception Helper Handler
+/// ==========================================
 class CommonExceptionHandler {
   static String getErrorMessage(Exception error) {
     if (error is ErrorModelException) {
@@ -223,7 +194,6 @@ class CommonExceptionHandler {
     if (error is NoDataFoundException) {
       return AppStrings.noDataFound;
     }
-
     if (error is UserNotSupportedException) {
       return AppStrings.userNotSupportedMessage;
     } else if (error is ServerErrorException) {
@@ -232,28 +202,10 @@ class CommonExceptionHandler {
       return AppStrings.noInternetConnectionMessage;
     } else if (error is NotFoundException) {
       return AppStrings.notFound;
+    } else if (error is AppException) {
+      return error.message ?? AppStrings.undefined;
     } else {
       return AppStrings.undefined;
     }
   }
 }
-//
-// void showErrorDialog(AppException error) {
-//   final router = providerContainer.read(autoRouterProvider);
-//   if (error is ServerErrorException || error is ConnectionIssueException) {
-//     router.navigate(
-//       CommonResponseDialogRoute(
-//         responseMessage: error.message ?? "An error occurred",
-//       ),
-//     );
-//   } else if (error is AuthenticationFailedException) {
-//     router.navigate(UserLoginRoute());
-//   } else {
-//     router.navigate(
-//       // Handle other exceptions or show a generic error dialog
-//       CommonResponseDialogRoute(
-//         responseMessage: error.message ?? AppLocal.undefined,
-//       ),
-//     );
-//   }
-// }

@@ -89,7 +89,7 @@ class CustomFormBuilderDropdown extends StatelessWidget {
             children: [
               (isCrossRequired && readOnly == false)
                   ? GestureDetector(
-                      onTap: onTap, child: Icon(FontAwesomeIcons.x, size: 12))
+                      onTap: onTap, child: FaIcon(FontAwesomeIcons.x, size: 12))
                   : SizedBox(),
               Image.asset(
                 AppImages.downArrow,

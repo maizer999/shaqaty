@@ -27,7 +27,7 @@ class HiveUtils {
   }
 
   static String? getUserId() {
-    return Hive.box(HiveKeys.userDetailsBox).get("id").toString();
+    return  Hive.box(HiveKeys.userDetailsBox).get("id").toString();
   }
 
   static AppTheme getCurrentTheme() {

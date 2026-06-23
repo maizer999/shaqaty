@@ -26,16 +26,18 @@ class LoginUserNotifier
       password: password,
     );
 
-    result.when(
-          (loginResponse) {
-        // Access token if needed
+    await result.when(
+          (loginResponse) async {
+        // Persist the auth token so authed requests send a real Bearer token
+        // (without this, calls go out as "Bearer null" → Unauthenticated).
         final token = loginResponse.meta?.token;
-
-        // Store token here if you want
+        if (token != null && token.isNotEmpty) {
+          await SecureStorageHelper.setAccessToken(token);
+        }
 
         state = AsyncValue.data(loginResponse);
       },
-          (error) {
+          (error) async {
             print("object${error.message}");
         state = AsyncValue.error(error.message ?? "Error", StackTrace.current);
       },

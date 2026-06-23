@@ -701,7 +701,17 @@
   "dontHaveAccount": "Don’t have account? ",
   "loginTitle" : "LOGIN",
   "loginPage" : "VIEW",
-  "pageTitle": "PAGE"
+  "pageTitle": "PAGE",
 
-
+  "subscriptionPackages": "Subscription Packages",
+  "active": "Active",
+  "duration": "Duration",
+  "currentPlan": "Current plan",
+  "noPackagesFound": "No packages found",
+  "paymentSuccessful": "Payment successful",
+  "packageActivated": "Package activated successfully",
+  "somethingWentWrong": "Something went wrong",
+  "selectLanguage": "Select language",
+  "arabic": "العربية",
+  "english": "English"
 }

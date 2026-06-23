@@ -54,7 +54,7 @@ class CustomBottomSheet {
                                   onTap: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Icon(FontAwesomeIcons.xmark,
+                                  child: FaIcon(FontAwesomeIcons.xmark,
                                       color: AppColors.kDarkRed,
                                       size: AppSizes.hSize24,),),
                             ],),),

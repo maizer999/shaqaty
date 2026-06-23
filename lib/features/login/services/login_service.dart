@@ -5,10 +5,33 @@ import 'package:multiple_result/multiple_result.dart';
 import '../../../core/constants/api_constants.dart';
 import '../../../core/exceptions/exceptions.dart';
 import '../../../core/network/network_handler.dart';
+import '../../../core/utils/language/secure_storage.dart';
 import '../models/login_response.dart';
 
 class LoginUserService {
   final NetworkHandler _network = NetworkHandler();
+
+  /// Finds the auth token wherever the backend placed it (meta.token,
+  /// top-level token/access_token, or data.token/access_token) and persists it
+  /// so subsequent authed requests send a real Bearer token.
+  Future<void> _persistToken(
+    Map<String, dynamic> json,
+    LoginResponse response,
+  ) async {
+    final data = json['data'];
+    final token = response.meta?.token ??
+        json['token']?.toString() ??
+        json['access_token']?.toString() ??
+        (data is Map
+            ? (data['token'] ?? data['access_token'])?.toString()
+            : null);
+
+    log('🔑 login token resolved: ${token == null ? 'NULL' : 'present'} | raw=$json');
+
+    if (token != null && token.isNotEmpty) {
+      await SecureStorageHelper.setAccessToken(token);
+    }
+  }
 
   Future<Result<LoginResponse, AppException>> loginUserService({
     required String username,
@@ -27,7 +50,13 @@ class LoginUserService {
         final response = await _network.postRequest(
           endpoint: ApiUrls.login,
           data: requestBody,
-          headers: await _network.getFormUrlencodedHeaders(),
+          // Send JSON with a matching Content-Type. The previous
+          // form-urlencoded header shipped a JSON body, so Laravel couldn't
+          // read email/password and always returned "Invalid login credentials".
+          headers: const {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
         );
 
         log("🟢 RAW RESPONSE: ${response.data}");
@@ -53,6 +82,8 @@ class LoginUserService {
 
         final loginResponse =
         LoginResponseMapper.fromMap(jsonResponse);
+
+        await _persistToken(jsonResponse, loginResponse);
 
         return Success(loginResponse);
       });
@@ -99,6 +130,8 @@ class LoginUserService {
         final Map<String, dynamic> jsonResponse = response.data;
         final loginResponse = LoginResponseMapper.fromMap(jsonResponse);
 
+        await _persistToken(jsonResponse, loginResponse);
+
         return Success(loginResponse);
       });
     } on AppException catch (e) {
@@ -122,6 +155,8 @@ class LoginUserService {
 
         final Map<String, dynamic> jsonResponse = response.data;
         final loginResponse = LoginResponseMapper.fromMap(jsonResponse);
+
+        await _persistToken(jsonResponse, loginResponse);
 
         return Success(loginResponse);
       });

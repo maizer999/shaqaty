@@ -95,7 +95,7 @@ dependencies:
   hijri: ^3.0.0
   hijri_picker:
     git: https://github.com/ahmedoid/hijri_picker.git
-  font_awesome_flutter: ^10.8.0
+  font_awesome_flutter: ^11.0.0
   dart_debouncer: ^1.1.1
   #  flutter_pdfview: ^1.4.3
   #  pdf: ^3.11.3
@@ -143,6 +143,9 @@ dependencies:
   flutter_facebook_auth: ^7.1.5
   mad2_groups: ^1.0.3
   firebase_core: ^4.4.0
+
+  # payments
+  flutter_stripe: ^11.5.0
 
 
 dependency_overrides:

@@ -34,7 +34,7 @@ class OptionalIcons extends StatelessWidget {
 }
 
 class CustomIconButton extends StatelessWidget {
-  final IconData icon;
+  final FaIconData icon;
   final VoidCallback? onPressed;
   const CustomIconButton({super.key, required this.icon, this.onPressed});
 
@@ -46,7 +46,7 @@ class CustomIconButton extends StatelessWidget {
         radius: AppSizes.radius18,
         child: Builder(
           builder: (context) {
-            return Icon(icon, size: AppSizes.size16);
+            return FaIcon(icon, size: AppSizes.size16);
           },
         ),
       ),

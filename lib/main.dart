@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_core/features/splash/view/splash_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'features/settings/theme_control.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +26,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Stripe: merchant-level settings are applied at startup. The publishable
+  // key comes from the authed /get-payment-settings endpoint and is applied
+  // lazily via StripeService.configure() before any payment is presented.
+  Stripe.merchantIdentifier = 'merchant.com.maizer.shaqaty';
+  Stripe.urlScheme = 'flutterstripe';
 
   runApp(
 

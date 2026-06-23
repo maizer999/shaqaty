@@ -56,7 +56,7 @@ class CommonDialog {
                     AppSizes.height20,
                     if (isCloseButtonRequired)
                       IconButton(
-                        icon: const Icon(
+                        icon: const FaIcon(
                           FontAwesomeIcons.circleXmark,
                           color: AppColors.kDarkRed,
                         ),

@@ -30,7 +30,7 @@ class SuccessRejectDialog {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
+              FaIcon(
                 FontAwesomeIcons.circleCheck,
                 size: AppSizes.hSize50,
                 color: AppColors.kPrimaryGreenColor,
@@ -91,7 +91,7 @@ class SuccessRejectDialog {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(
+          FaIcon(
             FontAwesomeIcons.circleXmark,
             size: AppSizes.hSize50,
             color: AppColors.kDarkRed,
@@ -137,12 +137,12 @@ void showCommonStatusDialog(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           isSuccess
-              ? Icon(
+              ? FaIcon(
                   FontAwesomeIcons.circleCheck,
                   size: AppSizes.hSize50,
                   color: AppColors.kPrimaryGreenColor,
                 )
-              : Icon(
+              : FaIcon(
                   FontAwesomeIcons.circleXmark,
                   size: AppSizes.hSize50,
                   color: AppColors.kDarkRed,

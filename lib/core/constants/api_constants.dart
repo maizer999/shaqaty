@@ -11,4 +11,10 @@ class ApiUrls {
   static const String items =  "$base/get-item";
   static const String cites =  "$base/area";
   static const String googleLogin = "$base/signup-with-google";
+
+  // subscription / packages
+  static const String getPackage = "$base/get-package";
+  static const String paymentSettings = "$base/get-payment-settings";
+  static const String assignFreePackage = "$base/assign-free-package";
+  static const String paymentIntent = "$base/payment-intent";
 }
